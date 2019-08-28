@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Week 1A - DOM Review</title>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="First assignment for IGME 330"/>
+    <meta name="keywords" content="HTML, CSS, XML, JavaScript"/>
+    <meta name="author" content="Ian Effendi"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet"/> 
+    <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
+    
+    <!-- Using CSS, make the button 50 pixels tall by 100 pixels wide -->
+    <style type="text/css">
+      * {
+        font-family: 'Crimson Text', serif;
+        font-size: 36px;
+      }
+      
+      p {
+        font-size: 0.9em;
+      }
+      
+      button {
+        height: 50px;
+        width: 100px;
+        font-size: 0.6em;
+        display: block;
+        margin-bottom: 5px;
+      }
+      
+      input {
+        height: 50px;
+        border: 1px solid #727272;
+        display: block;
+      }
+    </style>
+    
+    
+  </head>
+  <body>
+    
+    <!-- HEADER -->
+    <header>
+      <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
+      <p>Ian Effendi | Week 1A - DOM Review</p>    
+    </header>
+    
+    <!-- MAIN -->
+    <main>
+      
+      <!-- Input -->
+      <button id="#btn">Click Me!</button>
+      
+      <!-- Add first name input -->
+      <input id="firstName" placeholder="Type your first name."/>
+      
+      <!-- Add last name input -->
+      <input id="lastName" placeholder="Type your last name."/>
+      
+      <!-- Output -->
+      <div><p id="result">???</p></div>      
+      
+    </main>
+    
+    <!-- FOOTER -->
+    <footer>
+      <p><a href="../../index.html">Return to the homepage</a>.</p>   
+    </footer>     
+    
+    <!-- Using JavaScript, give the paragraph a red text color and a yellow background color -->            
+    <script type="text/javascript">
+            
+      function displayGreeting(firstName, lastName) {
+        if(!firstName) firstName = "Tom";
+        if(!lastName) lastName = "Brady";
+        document.querySelector("#result").innerHTML = `Hello ${firstName} ${lastName}`;
+      }
+      
+      function getFirstName() {
+        return document.querySelector("#firstName").value;
+      }
+      
+      function getLastName() {
+        return document.querySelector("#lastName").value;
+      }
+      
+      function init() {   
+        
+        // Imperatively change paragraph style.
+        let para = document.querySelector("#result");
+        para.style.color = "red";
+        para.style.backgroundColor = "yellow";
+        console.log("Update paragraph.");
+        
+        // Set up the button.
+        let btn = document.querySelector("button");
+        btn.onclick = function() {
+          let firstName = getFirstName();
+          let lastName = getLastName();
+          displayGreeting(firstName, lastName);
+        };
+        
+      }
+      
+      window.onload = init; 
+      
+    </script>
+    
+  </body>  
+</html>
