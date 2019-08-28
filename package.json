@@ -1,0 +1,19 @@
+{
+  "name": "igme330",
+  "version": "1.0.0",
+  "description": "Material for class website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rimij405/igme-330-review.git"
+  },
+  "author": "Ian Effendi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rimij405/igme-330-review/issues"
+  },
+  "homepage": "https://github.com/rimij405/igme-330-review#readme"
+}
