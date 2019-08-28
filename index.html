@@ -25,11 +25,11 @@
       
       <!-- NAV LINKS -->
       <ul id="nav-links">
-        <li class="nav-link"><a href="#">Assignments</a></li>
-        <li class="nav-link"><a href="#">Projects</a></li>
-        <li class="nav-link"><a href="#">Other Links</a></li>
-        <li class="nav-link right"><a href="#" target="_blank">GitHub <i class="fad fa-external-link fa-xs"></i></a></li>
-        <li class="nav-link right"><a href="#" target="_blank">Syllabus <i class="fad fa-external-link fa-xs"></i></a></li>
+        <li class="nav-link"><a href="javascript:void(0)" onclick="scrollToElement('#assignments')">Assignments</a></li>
+        <li class="nav-link"><a href="javascript:void(0)" onclick="scrollToElement('#projects')">Projects</a></li>
+        <li class="nav-link"><a href="javascript:void(0)" onclick="scrollToElement('#other-links')">Other Links</a></li>
+        <li class="nav-link right"><a href="https://www.github.com/rimij405" target="_blank">GitHub <i class="fad fa-external-link fa-xs"></i></a></li>
+        <li class="nav-link right"><a href="https://github.com/tonethar/IGME-330-Fall-2019" target="_blank">Syllabus <i class="fad fa-external-link fa-xs"></i></a></li>
       </ul>
       
     </nav>
@@ -77,5 +77,23 @@
         (C) 2019 - Ian Effendi
       </div>    
     </footer>  
+    
+    <script type="text/javascript">
+      
+      /* Scroll to element that is supplied in the query. */
+      function scrollToElement(query) {
+        if(query != null && query != undefined) {
+          console.log(`Scrolling to element '${query}'`);
+          document.querySelector(query).scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+      
+      /* Displays message when the window is loaded. */
+      window.onload = (function(){
+        console.log("Window loaded.");        
+      })();
+      
+    </script>
+    
   </body>
 </html>
