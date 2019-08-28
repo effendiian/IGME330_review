@@ -6,25 +6,30 @@
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
       <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet"/>
       <link href="main.css" type="text/css" rel="stylesheet"/>
+      <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
   </head>
   <body>  
     
     <!-- HEADER -->
     <header>
-      <h1>IGME 330</h1>
+      <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
       <p>Ian Effendi | Rich Media Web Application Development I</p>    
     </header>
 
     <!-- NAVIGATION BAR -->
     <nav>
       
+      <!-- HAMBURGER ICON -->
+      <a class="hidden" href="javascript:void(0)"><i class="fas fa-bars"></i></a>
+      <a class="hidden" href="javascript:void(0)"><i class="fas fa-times-octagon"></i></a>
+      
       <!-- NAV LINKS -->
       <ul id="nav-links">
         <li class="nav-link"><a href="#">Assignments</a></li>
         <li class="nav-link"><a href="#">Projects</a></li>
         <li class="nav-link"><a href="#">Other Links</a></li>
-        <li class="nav-link"><a href="#" target="_blank">GitHub</a></li>
-        <li class="nav-link"><a href="#" target="_blank">Syllabus</a></li>
+        <li class="nav-link right"><a href="#" target="_blank">GitHub <i class="fad fa-external-link fa-xs"></i></a></li>
+        <li class="nav-link right"><a href="#" target="_blank">Syllabus <i class="fad fa-external-link fa-xs"></i></a></li>
       </ul>
       
     </nav>
@@ -34,27 +39,31 @@
       
       <!-- ASSIGNMENTS -->
       <div id="assignments">
-        <h2>Assignments</h2>
+        <h2><i class="fad fa-dice-d6"></i> Assignments</h2>
         <ul id="assignment-links">
-          <li class="content-link">Title (<a href="#">Assignment</a>) (<a href="#">Submission</a>)</li>
+          <li class="content-link">Title (<a href="#">Details</a>) (<a href="#">Submission</a>)</li>
           <li class="content-link">This section is under construction...</li>
         </ul>
       </div>
+      
+      <div class="divisor"></div>
       
       <!-- PROJECTS -->
       <div id="projects">
-        <h2>Projects</h2>
+        <h2><i class="fad fa-dice-d12"></i> Projects</h2>
         <ul id="project-links">
-          <li class="content-link">Title (<a href="#">Assignment</a>) (<a href="#">Submission</a>)</li>
+          <li class="content-link">Title (<a href="#">Details</a>) (<a href="#">Submission</a>)</li>
           <li class="content-link">This section is under construction...</li>
         </ul>
       </div>
       
+      <div class="divisor"></div>
+      
       <!-- LINKS -->
       <div id="links">
-        <h2>Relevant Links</h2>
+        <h2><i class="fad fa-exchange"></i> Relevant Links</h2>
         <ul id="other-links">
-          <li class="content-link">Title (<a href="#">Assignment</a>) (<a href="#">Submission</a>)</li>
+          <li class="content-link">Title (<a href="#">Link</a>)</li>
           <li class="content-link">This section is under construction...</li>
         </ul>
       </div>
@@ -63,7 +72,7 @@
 
     <!-- FOOTER -->
     <footer>
-      <p>This website is hosted by the <a href="https://www.rit.edu/">Rochester Institute of Technology</a>.</p>
+      <p>This is a student website hosted on servers owned by the <a href="https://www.rit.edu/">Rochester Institute of Technology</a> <i class="fad fa-external-link fa-xs"></i>.</p>
       <div class="copyright">
         (C) 2019 - Ian Effendi
       </div>    
