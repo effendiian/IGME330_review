@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Canvas 1</title>
+	<style type="text/css">
+	body{
+		background: #dddddd;
+ 	}
+
+	canvas{
+		background: #ffffff;
+		cursor: pointer;
+		margin-left: 10px;
+		margin-top: 10px;
+		box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+ 	}
+	
+	</style>
+	
+	<script>
+		"use strict";
+		// #1 - wait for page to load
+		window.onload = init; 
+		
+		function init(){
+			console.log("init() called");
+			// #2 - get pointer to <canvas> element on page
+			let canvas = document.querySelector('canvas');
+			
+			// #3 - get pointer to "drawing context" and drawing API
+			let ctx = canvas.getContext('2d');
+			
+			/* #4 - start drawing! */
+			
+			// draw filled square
+			ctx.fillStyle = "red"; 
+			// ctx.fillRect(x,y,width,height);
+			ctx.fillRect(20,20,100,100);
+			
+			
+			/** 
+			// draw stroked square
+			ctx.strokeStyle="#00FF00"; // any legal CSS color will work for .fillStyle or .strokeStyle
+			ctx.lineWidth=5;
+			// ctx.strokeRect(x,y,width,height);
+			ctx.strokeRect(220,20,100,100);
+			**/
+			
+			
+			/**
+			// fill and stroke circle
+			ctx.fillStyle = "yellow";
+			ctx.beginPath();
+			//  ctx.arc(x,y,radius,startAngle,endAngle, clockwise)
+			ctx.arc(470, 70, 50, 0, Math.PI * 2, false); 
+			ctx.closePath();
+ 			ctx.fill();
+ 			ctx.stroke();
+ 			**/
+ 			
+			/**
+			// stroke line
+			ctx.lineWidth = 20; 
+			ctx.strokeStyle = "rgb(55, 11, 200)"; // any legal CSS color will work for .fillStyle or .strokeStyle
+			ctx.beginPath(); 
+			ctx.moveTo(20, 180);
+			ctx.lineTo(520, 180); 
+			ctx.closePath(); 
+			ctx.stroke();
+			**/
+			
+			/**
+			// fill text
+			ctx.font = "48px Verdana italic"; // the value of .font must be a valid CSS declaration
+			ctx.fillText("Rich Media Web App Dev I",20,300);
+			**/
+			
+			
+			/**
+			// stroke text
+			ctx.strokeStyle = "purple";
+			ctx.lineWidth = 1; 
+			ctx.strokeText("Rich Media Web App Dev I",20,300);
+			**/
+			
+			
+			/**
+			// Bonus: A Parallelogram
+			ctx.beginPath();
+            ctx.moveTo(50, 50); // "pick up" pen and move to top-left corner
+            ctx.lineTo(250, 50); // extend path to top-right corner
+            ctx.lineTo(200, 150); // extend path to bottom-right corner
+            ctx.lineTo(0, 150); // extend path to bottom-left corner
+            
+            // closing the path will automatically extend the path back to (50,50) where it started
+            ctx.closePath();
+            
+            // we can't yet see the path, so stroke and fill it.
+            ctx.fillStyle = "yellow"; 
+            ctx.fill();
+            ctx.strokeStyle="#red";
+            ctx.lineWidth=10; 
+			ctx.stroke();
+			**/
+			
+			
+		}
+		
+		console.log("In bottom of <script> tag!");
+	</script>
+	
+</head>
+<body>
+	<canvas width="750" height="500">
+         Get a browser that supports Canvas!
+         <!-- The user will only see the above text if their browser is older and doesn't support <canvas> -->
+	
+      </canvas>
+</body>
+</html>
