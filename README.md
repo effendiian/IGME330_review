@@ -12,7 +12,7 @@ Assignments for the course offered by the [Rochester Institute of Technology](ht
 
 ## Assignments ##
 
-*Under construction...*
+[Week 1A - DOM Review Exercise](https://github.com/tonethar/IGME-330-Fall-2019/blob/master/weekly/week-01A-notes.md)
 
 ## Projects ##
 
