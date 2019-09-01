@@ -21,9 +21,39 @@
         font-size: 0.9em;
       }
       
+      header {
+        text-align: center;
+      }
+      
+      main {
+        margin: 0px auto;
+      }
+      
       canvas {
+        padding: 0px;
+        margin: auto;
+        display: block;
         border: 1px solid gray;
       }
+      
+      button {
+        height: 50px;
+        font-size: 0.6em;
+        display: inline-block;
+        margin-bottom: 5px;
+      }
+      
+      #colorPicker {
+        padding-top: 1em;
+        border-top: 1px solid black;
+      }     
+      
+      #instructions, #walkers {
+        padding: 15px;
+        margin: auto;
+        display: block;
+      }
+      
     </style>
     
     <script type="text/javascript">            
@@ -268,10 +298,17 @@
     
     <!-- MAIN -->
     <main>
+            
       <canvas width="640" height="480">
       </canvas>
-            
-      <div class="walkers">        
+      
+      <div id="instructions">
+        <h3>Instructions</h3>
+        <p>On startup, six walkers are initialized (#212121, cyan, yellow, magenta, black, red). From there, you can add new walkers of a custom color, remove the last added walker, or clear all walkers from the data structure, leaving behind the trail.</p>
+        <p>Possible improvements: Randomize color selection, weighting, and initial starting values. Could also add boundaries so walkers don't draw outside a specific position.</p>
+      </div>
+      
+      <div id="walkers">        
         <h3>Walkers</h3>
         <ul id="walkerlist">
           <li>
@@ -279,7 +316,7 @@
           </li>
         </ul>    
         
-        <span class="label">New Walker Color </span><input id="walkerColor" placeholder="#212121" />        
+        <p id="colorPicker">New Walker Color: <input id="walkerColor" placeholder="#212121" /></p>      
         <button id="addWalker">Add New Walker</button>
         <button id="rmWalker">Remove Last Walker</button>
         <button id="clrWalkers">Remove All Walkers</button>
