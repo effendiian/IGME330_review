@@ -13,6 +13,11 @@ Assignments for the course offered by the [Rochester Institute of Technology](ht
 ## Assignments ##
 
 [Week 1A - DOM Review Exercise](https://github.com/tonethar/IGME-330-Fall-2019/blob/master/weekly/week-01A-notes.md)
+[Week 1B - Random Walker](https://github.com/tonethar/IGME-330-Master/blob/master/notes/HW-random-walker.md)
+
+## Study Guides ##
+
+[Study Guide 1](https://github.com/tonethar/IGME-330-Master/blob/master/notes/HW-SG-1.md)
 
 ## Projects ##
 
