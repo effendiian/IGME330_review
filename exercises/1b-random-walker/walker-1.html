@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Week 1B - Random Walker 1</title>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="First assignment for IGME 330"/>
+    <meta name="keywords" content="HTML, CSS, XML, JavaScript"/>
+    <meta name="author" content="Ian Effendi"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet"/> 
+    <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
+    
+    <!-- Using CSS, make the button 50 pixels tall by 100 pixels wide -->
+    <style type="text/css">
+      * {
+        font-family: 'Crimson Text', serif;
+        font-size: 36px;
+      }
+      
+      p {
+        font-size: 0.9em;
+      }
+      
+      canvas {
+        border: 1px solid gray;
+      }
+    </style>
+    
+    <script type="text/javascript">
+      
+      let walker = {
+        x: 320,
+        y: 240,
+        color: "black",
+        width: 5,
+        move: function() {
+          if(flipWeightedCoin()){
+            this.x += flipWeightedCoin() ? -this.width : this.width;
+          } else {
+            this.y += flipWeightedCoin() ? -this.width : this.width;
+          }
+        }
+      }
+      
+		// #0 - in this class we will always use ECMAScript 5's "strict" mode
+		// See what 'use strict' does here:
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+		'use strict';
+		let ctx;
+		// #1 call the init function after the pages loads
+		window.onload = function(){
+			console.log("page loaded!");
+			// #2 Now that the page has loaded, start drawing!
+			
+			// A - canvas variable points at <canvas> tag
+			let canvas = document.querySelector('canvas');
+			
+			// B - the ctx variable points at a "2D drawing context"
+			ctx = canvas.getContext('2d');
+			
+			// C - all fill operations are now in red
+			ctx.fillStyle = 'green'; 
+			
+			// D - fill a rectangle with the current fill color
+			ctx.fillRect(20,20,600,440); 
+			
+			setInterval(drawWalker,1000/12);
+	//		setInterval(cls,5000);
+		}
+		
+		
+		function drawWalker(){
+			ctx.fillStyle = walker.color;
+		//	ctx.globalAlpha = 0.2;
+			ctx.fillRect(walker.x-walker.width/2,walker.y-walker.width/2,walker.width/2,walker.width/2);
+			walker.move();
+		}
+		
+		// UTILS
+		function getRandomColor(){
+			function getByte(){
+				return 55 + Math.round(Math.random() * 200);
+			}
+			return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",.8)";
+		}
+		
+		function cls(){
+			ctx.clearRect(0,0,640,480);
+		}
+		
+		function flipWeightedCoin(weight = 0.5){
+			return Math.random() < weight;
+		}
+    </script>    
+  </head>
+  <body>
+    
+    <!-- HEADER -->
+    <header>
+      <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
+      <p>Ian Effendi | Week 1B - Random Walker 1</p>    
+    </header>
+    
+    <!-- MAIN -->
+    <main>
+      <canvas width="640" height="480">
+      </canvas>
+    </main>
+    
+    <!-- FOOTER -->
+    <footer>
+      <p><a href="../../index.html">Return to the homepage</a>.</p>   
+    </footer>
+  </body>  
+</html>

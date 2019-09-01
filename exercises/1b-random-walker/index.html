@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Week 1B - Random Walker</title>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="First assignment for IGME 330"/>
+    <meta name="keywords" content="HTML, CSS, XML, JavaScript"/>
+    <meta name="author" content="Ian Effendi"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet"/> 
+    <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
+    
+    <!-- Using CSS, make the button 50 pixels tall by 100 pixels wide -->
+    <style type="text/css">
+      * {
+        font-family: 'Crimson Text', serif;
+        font-size: 36px;
+      }
+      
+      p {
+        font-size: 0.9em;
+      }
+      
+      canvas {
+        border: 1px solid gray;
+      }
+    </style>
+    
+    <script type="text/javascript">            
+      
+      // #0 - in this class we will always use ECMAScript 5's "strict" mode
+      // See what 'use strict' does here:
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+      'use strict';
+      let ctx;
+      
+      /* Data */
+      
+      // Data that can be set by the user.
+      let data = {
+        borderColor: 'black',
+        backgroundColor: 'green',        
+        walkerColor: '#212121',
+        walkers: [],
+        hasWalkers: function() {
+          return (this.walkers && this.walkers.constructor === Array && this.walkers.length > 0);     
+        },
+        addWalker: function(walker){
+          if(walker && this.walkers){
+            this.walkers.push(walker);
+          }
+        },
+        removeWalker: function(){
+          if(this.walkers && this.hasWalkers()){
+            return this.walkers.pop();
+          } else {
+            return null;
+          }
+        }
+      }
+      
+      /* Utilities */
+            
+      // Flip weighted coin.      
+      function flip(weight = 0.5) {
+        return Math.random() < weight;
+      }
+      
+      // Clear the canvas.
+      function cls(){
+        ctx.clearRect(0, 0, 640, 480);
+      }
+      
+      // Get a random color.
+      function getRandomColor(){
+          function getByte(){
+              return 55 + Math.round(Math.random() * 200);
+          }
+          return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",.8)";
+      }
+                  
+      /* Walker */
+      
+      // Create a walker.
+      function Walker(x = 320, y = 240, color = "black", width = 8, weight = 0.5){
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.width = width;
+        this.halfWidth = this.width/2;
+        this.weight = weight;        
+        this.move = function() {
+          if(flip()){
+            this.x = this.x + (flip() ? -this.width : this.width);            
+          } else {
+            this.y = this.y + (flip() ? -this.width : this.width);  
+          }
+        }
+      }
+      
+      // Initialize the walkers.
+      function initWalkers() {
+        
+        // Initialize the walkers.
+        data.addWalker(new Walker(320, 240, data.walkerColor));
+        data.addWalker(new Walker(320, 240, 'cyan'));
+        data.addWalker(new Walker(320, 240, 'yellow'));        
+        data.addWalker(new Walker(320, 240, 'magenta'));
+        data.addWalker(new Walker(320, 240, 'black'));
+        data.addWalker(new Walker(320, 240, 'red'));
+        
+        
+        console.log("Initialized the walkers.");   
+      }
+      
+      // Initialize the canvas.
+      function initCanvas() {
+
+        // A - canvas variable points at <canvas> tag
+        let canvas = document.querySelector('canvas');
+
+        // B - the ctx variable points at a "2D drawing context"
+        ctx = canvas.getContext('2d');
+
+        // C - all fill operations are now in green
+        ctx.fillStyle = data.backgroundColor;
+
+        // D - fill a rectangle with the current fill color
+        ctx.fillRect(20,20,600,440); 
+        
+        console.log("Initialized the canvas.");        
+      }
+      
+      // Initialize the callback functions.
+      function initCallbacks(){
+        
+        // Prep buttons.
+        let el = {
+          list: document.querySelector("#walkerlist"),
+          input: document.querySelector("#walkerColor"),
+          addWalker: document.querySelector("#addWalker"),
+          removeWalker: document.querySelector("#rmWalker"),
+          clearAll: document.querySelector("#clrWalkers"),
+          clear: function(){
+            if(this.list){
+              while(this.hasEntries()){
+                this.removeEntry();
+              }
+            }
+          },
+          hasEntries: function(){
+            return this.list && this.list.lastElementChild;            
+          },
+          addEntry: function(idx){
+            if(this.list){              
+              let childSpan = document.createElement("span");
+              childSpan.classList.add("label");            
+              childSpan.textContent = `Walker #${idx} | ${data.walkers[idx].color || '#212121'}`;
+
+              let child = document.createElement("li");
+              child.appendChild(childSpan);
+
+              this.list.appendChild(child);   
+            }
+          },
+          removeEntry: function(){
+            if(this.list){
+              let child = this.list.lastElementChild;
+              this.list.removeChild(child);
+            }
+          },
+          update: function(){
+            if(this.list){
+              this.clear(); // Clear the list.
+              if(this.list && data && data.hasWalkers()){
+                for(let i = 0; i < data.walkers.length; i++){
+                  this.addEntry(i);
+                }
+              }
+            }            
+          }          
+        };
+        
+        // Add walker.
+        function addWalker() {
+          data.walkerColor = el.input.value;
+          data.addWalker(new Walker(320, 240, data.walkerColor));     
+          el.addEntry(data.walkers.length - 1);
+          el.update();
+        };
+        
+        function removeWalker() {
+          if(data && data.walkers && data.hasWalkers()){
+            data.walkers.length = (data.walkers.length - 1);
+          }
+          el.removeEntry();
+          el.update();
+        };
+        
+        function clearWalkers() {
+          if(data && data.walkers && data.hasWalkers()){
+            data.walkers.length = 0;
+          }
+          el.clear();
+          el.update();
+        };
+        
+        // Add event listeners.
+        el.addWalker.addEventListener('click', addWalker);
+        el.removeWalker.addEventListener('click', removeWalker);
+        el.clearAll.addEventListener('click', clearWalkers);     
+        
+        // Update once.
+        el.update();
+      }
+      
+      
+      // Function called after page load.
+      function init() {
+        console.log("Page loaded!");
+        
+        initWalkers();
+        initCanvas();
+        initCallbacks();
+        
+        // Start drawing!
+        setInterval(drawWalkers, 1000/12);   
+        
+      };
+      
+      // Call the init function after the page loads.
+      window.onload = init;
+      
+      // Draw the walkers.
+      function drawWalkers() {
+        if(data && data.walkers && data.hasWalkers()){
+          for(let i = 0; i < data.walkers.length; i++){
+            let walker = data.walkers[i];    
+            drawWalker(walker);
+            walker.move();
+          }
+        }        
+      }
+      
+      // Draw a single walker and move it.
+      function drawWalker(walker){
+        if(ctx && walker){
+          ctx.fillStyle = walker.color;
+          // ctx.globalAlpha = 0.2;
+          ctx.fillRect(
+            walker.x - walker.halfWidth,
+            walker.y - walker.halfWidth,
+            walker.halfWidth,
+            walker.halfWidth
+          );
+        }        
+      }
+      
+    </script>    
+  </head>
+  <body>
+    
+    <!-- HEADER -->
+    <header>
+      <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
+      <p>Ian Effendi | Week 1B - Random Walker</p>    
+    </header>
+    
+    <!-- MAIN -->
+    <main>
+      <canvas width="640" height="480">
+      </canvas>
+            
+      <div class="walkers">        
+        <h3>Walkers</h3>
+        <ul id="walkerlist">
+          <li>
+            <span class="label">Walker | Color</span>
+          </li>
+        </ul>    
+        
+        <span class="label">New Walker Color </span><input id="walkerColor" placeholder="#212121" />        
+        <button id="addWalker">Add New Walker</button>
+        <button id="rmWalker">Remove Last Walker</button>
+        <button id="clrWalkers">Remove All Walkers</button>
+      </div>
+      
+    </main>
+    
+    <!-- FOOTER -->
+    <footer>
+      <p><a href="../../index.html">Return to the homepage</a>.</p>   
+    </footer>
+  </body>  
+</html>
