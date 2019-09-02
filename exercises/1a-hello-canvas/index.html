@@ -2,12 +2,54 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Template</title>
-	<style type="text/css">
-	canvas{
-		border:1px solid gray;
-	}
+	<title>IGME 330 - Ian Effendi</title>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Hello canvas assignment for IGME 330"/>
+    <meta name="keywords" content="HTML, CSS, XML, JavaScript"/>
+    <meta name="author" content="Ian Effendi"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet"/> 
+    <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
+    <style type="text/css">
+      * {
+        font-family: 'Crimson Text', serif;
+        font-size: 36px;
+      }
+      
+      #fontLoader {
+        height: 0;
+        width: 0;
+        overflow: hidden;
+      }
+      
+      #anton {
+        font-family: 'Anton', cursive;
+      }
+      
+      #crimson {
+        font-family: 'Crimson Text', cursive;
+      }
+      
+      p {
+        font-size: 0.9em;
+      }
+      
+      header {
+        text-align: center;
+      }
+      
+      main {
+        margin: 0px auto;
+      }
+      
+      canvas {
+        padding: 0px;
+        margin: auto;
+        display: block;
+        border: 1px solid gray;
+      }
 	</style>
+  
   <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
 	<script>
@@ -21,64 +63,134 @@
 		window.onload = init;
 	
 		function init(){
-			// #2 Now that the page has loaded, start drawing!
-			console.log('init called');
-			
-			// A - canvas variable points at <canvas> tag
-		
-			
-			// B - the ctx variable points at a "2D drawing context"
-			
-			
-			// C - all fill operations are now in yellow
-			
-			
-			// D - fill a rectangle with the current fill color
-			
-			
-			// E - set the current font
-			
-			
-			// F - change the current fill color
-			
-			
-			// G - draw and fill text using current fill color
-			
-			
-			/*
-			Make your version different:
+          
+          // #2 Now that the page has loaded, start drawing!
+          console.log('init called');
 
-			i) Change the yellow rectangle to a different solid color.
+          // A - canvas variable points at <canvas> tag
+          let canvas = document.querySelector('canvas');
 
-			ii) Change the text to your name, and change the color of the text to 
-			something else. Note: Color can be specified in any legal CSS way, 
-			i.e. pre-defined keyword, hex, shorthand hex, RGB value, RGB percentage, RGBA,
-			 or even HSL
-			http://www.w3schools.com/cssref/css_colors_legal.asp
+          // B - the ctx variable points at a "2D drawing context"
+          let ctx = canvas.getContext('2d');	
+
+          ctx.save();
+          ctx.shadowColor = "red";
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 5;
+          ctx.shadowBlur = 35;
+
+          /*
+          Make your version different:
+
+          i) Change the yellow rectangle to a different solid color.
+
+          ii) Change the text to your name, and change the color of the text to 
+          something else. Note: Color can be specified in any legal CSS way, 
+          i.e. pre-defined keyword, hex, shorthand hex, RGB value, RGB percentage, RGBA,
+           or even HSL
+          http://www.w3schools.com/cssref/css_colors_legal.asp
 
 
-			iii) Change the font of your name to something else. If you know how to embed
-			 web fonts, find something here and use it: http://www.google.com/fonts
+          iii) Change the font of your name to something else. If you know how to embed
+           web fonts, find something here and use it: http://www.google.com/fonts
 
-			iv) Add another line of text that reads “IGM”. Make sure that this text
-			 appears in a different color and font than your name did.
+          iv) Add another line of text that reads “IGM”. Make sure that this text
+           appears in a different color and font than your name did.
 
-			v) Add two squares to your canvas (50 x 50  or so) using 
-			ctx.fillRect(x,y,width,height)- and make sure that the square color is the 
-			same as the first text you 
-			drew (your name).
+          v) Add two squares to your canvas (50 x 50  or so) using 
+          ctx.fillRect(x,y,width,height)- and make sure that the square color is the 
+          same as the first text you 
+          drew (your name).
 
-			*/
+          */
 
+          // C - all fill operations are now in yellow
+          ctx.fillStyle = "blue";
 
+          // D - fill a rectangle with the current fill color
+          ctx.fillRect(0, 0, 640, 480);
+
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+
+          // E - set the current font
+          ctx.font = 'bold 60pt Anton, serif';
+
+          // F - change the current fill color
+          ctx.fillStyle = '#ff3344';	
+
+          // G - draw and fill text using current fill color
+          ctx.fillText('Ian Effendi', 320, 240);
+
+          ctx.font = 'italic 24pt Crimson Text';
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText('IGM 330', 320, 300);
+
+          ctx.fillStyle = '#ff3344';
+          ctx.fillRect(100, 100, 50, 50);
+
+          ctx.fillStyle = '#eeaa55';
+          ctx.fillRect(200, 100, 50, 50);
+
+          ctx.fillStyle = '#bb5566';
+          ctx.fillRect(300, 100, 50, 50);
+          
+          ctx.restore();
+          
+          ctx.strokeStyle = "green";
+          ctx.lineWidth = 7;
+          
+          ctx.beginPath();
+          ctx.moveTo(0, 90);
+          ctx.lineTo(640, 90);
+          ctx.closePath();
+          ctx.stroke();
+          
+          ctx.strokeStyle = "magenta";
+          ctx.lineWidth = 4;
+          
+          ctx.beginPath();
+          ctx.moveTo(40, 0);
+          ctx.lineTo(40, 480);
+          ctx.closePath();
+          ctx.stroke();
+
+          ctx.strokeStyle = "magneta";
+          ctx.fillStyle = "yellow";
+          ctx.moveTo(500, 400);
+          ctx.lineTo(600, 400);
+          ctx.lineTo(550, 300);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
 
 		}
 	</script>
 </head>
 <body>
-	<canvas width="640" height="480">
-		Get a real browser!
-		<!-- The user will only see the above text if their browser is older and doesn't support <canvas> -->
-	</canvas>
+  
+  <div id="fontLoader">
+    <p id="anton">Anton Font</p>  
+    <p id="crimson">Crimson Text Font</p>
+  </div>
+  
+    <!-- HEADER -->
+    <header>
+      <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
+      <p>Ian Effendi | Week 1B - Hello Canvas</p>    
+    </header>
+    
+    <!-- MAIN -->
+    <main>
+            
+      <canvas width="640" height="480">
+      </canvas>
+      
+    </main>
+    
+    <!-- FOOTER -->
+    <footer>
+      <p><a href="../../index.html">Return to the homepage</a>.</p>   
+    </footer>
 </body>
 </html>
