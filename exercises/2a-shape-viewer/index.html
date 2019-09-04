@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>IGME 330 - Shape Viewer!</title>
+    <meta name="description" content="Hello canvas assignment for IGME 330"/>
+    <meta name="keywords" content="HTML, CSS, XML, JavaScript"/>
+    <meta name="author" content="Ian Effendi"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet"/> 
+    <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
+
+  <style type="text/css">
+  * {
+    font-family: 'Crimson Text', serif;
+  }
+            
+  p {
+    font-size: 1em;
+  }
+  
+  header, footer {
+    text-align: center;
+    font-size: 36px;
+  }
+
+  main {
+    margin: 0px auto;
+    display: block;
+  }
+
+  section {
+    margin: 0px auto;
+  }
+  
+  canvas {
+    padding: 0px;
+    margin: auto;
+    display: block;
+    border: 1px solid gray;
+		box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+  }
+
+	body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+	
+  section#controls {
+    padding: 0px;
+    margin: auto;
+    display: block;
+    text-align: center;
+  }
+
+	button {
+    margin: 2em;
+		width:100px;
+		height:40px;
+		font-size:18px;
+	}
+	
+	li {
+    margin-bottom: 1em;
+	}
+	
+	
+	</style>
+	
+	<script>
+		// #0 - in this class we will always use ECMAScript 5's "strict" mode
+		// See what 'use strict' does here:
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+		'use strict';
+		
+		// #1 call the init function after the pages loads
+		// this is called an "event handler"
+		window.onload = init;
+	
+    var ctx;
+
+    // canvas element.
+    let canvas = {
+      el: null,
+      width: 500,
+      height: 300,
+      bgColor: 'yellow'
+    };
+
+		function init(){
+			// #2 Now that the page has loaded, start drawing!
+			console.log('init called');
+			
+			// A - canvas variable points at <canvas> tag
+			canvas.el = document.querySelector('canvas');
+			
+			// B - the ctx variable points at a "2D drawing context"
+			ctx = canvas.el.getContext('2d');	
+			
+			// C - all fill operations are now in yellow
+			ctx.fillStyle = 'yellow'; 
+			
+			// D - fill a rectangle covering the entire canvas with the current fill color
+			ctx.fillRect(0, 0, canvas.width, canvas.height); 
+      
+			// #3 Hook up buttons
+      initButtons();
+      
+    }
+    
+    // add event listeners.
+    function initButtons(){
+      initButton('#red', drawRed);
+      initButton('#green', drawGreen);
+      initButton('#blue', drawBlue);
+      initButton('#clear', clear);
+      initButton('#triangle', drawTriangle);
+      initButton('#circle', drawCircle);
+    }
+
+    // Set up the callbacks.
+    function initButton(buttonSelector, callback){
+      if(buttonSelector && callback){
+        let button = document.querySelector(buttonSelector);
+        button.onclick = callback;
+      }
+    }
+
+    // Clear the canvas.
+    function clear() {
+      console.log("canvas cleared.");
+      drawBox(0, 0, canvas.width, canvas.height, canvas.bgColor);
+    }
+
+    /* DRAW BOX () */
+
+    // Draw rect of specified size at specified location with chosen color.
+    function drawBox(x, y, width, height, color) {
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, width, height);
+      ctx.restore();
+    }
+
+    // Draw red box.
+		function drawRed(){
+      console.log("drawRed called!");
+      clear();
+      drawBox(20, 20, canvas.width * 0.92, canvas.height * 0.8666, 'red');
+		}    
+    
+    // Draw green box.
+		function drawGreen(){
+			console.log("drawGreen called!");
+      clear();
+			drawBox(20, 20, canvas.width * 0.92, canvas.height * 0.8666, '#008000');
+    }
+    
+    // Draw blue box.
+    function drawBlue(){
+      console.log("drawBlue called!");
+      clear();
+      drawBox(20, 20, canvas.width * 0.92, canvas.height * 0.8666, '#000080');
+    }
+    
+    // Draw the triangle. 
+    function drawTriangleWith(x, y, size){
+      ctx.save();
+
+      // Calculate point positions.
+
+      // let dX = x;
+      let dY = y + (Math.sqrt(3) * size);
+      let cY = dY;
+      let bY = dY;
+      let aY = y - (Math.sqrt(3) * size);
+
+      // let aX = x;
+      let cX = x - (size * 2);
+      let bX = x + (size * 2);
+     
+      ctx.beginPath();
+      ctx.moveTo(x, aY);
+      ctx.lineTo(bX, bY);
+      ctx.lineTo(cX, cY);
+      ctx.closePath();
+
+      ctx.fillStyle = 'magenta';
+      ctx.strokeStyle = 'green';
+      ctx.lineWidth = 10;
+      ctx.stroke();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // draw magenta triangle with 10 pixel stroke near center with a random size.
+    function drawTriangle(){
+      clear();
+      drawTriangleWith((canvas.width / 2) - (Math.random() * 100) + (Math.random() * 100), (canvas.height / 2)  - (Math.random() * 100) + (Math.random() * 100), 15 + (Math.random() * 15));
+    }
+
+    // draw circle with settings.
+    function drawCircleWith(x, y, radius){
+
+      ctx.save();
+     
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+      ctx.closePath();
+
+      ctx.fillStyle = 'magenta';
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 5;
+      ctx.stroke();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // draw circle callback.
+    function drawCircle(){
+      clear();
+      drawCircleWith((canvas.width / 2) - (Math.random() * 100) + (Math.random() * 100), (canvas.height / 2)  - (Math.random() * 100) + (Math.random() * 100), 20 + (Math.random() * 25))
+    }
+
+	</script>
+</head>
+<body>
+  
+  <!-- HEADER -->
+  <header>
+    <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
+    <p>Ian Effendi | Week 1B - Hello Canvas</p>    
+  </header>
+
+	<canvas width="500" height="300">
+		Get a real browser!
+	</canvas>
+	
+	<section id="controls">
+		<button id="red">Fill Red</button>
+    <button id="green">Fill Green</button>
+    <button id="blue">Fill Blue</button>
+    <button id="triangle">Triangle</button>
+    <button id="circle">Circle</button>
+    <button id="clear">Clear</button>
+	</section>	
+	
+	<section id="assignment">
+  <h2>Shape Viewer!</h2>
+	<p>If you don't know how to do any of these off the top of your head, use the Interwebs or our book to find out.</p>
+		<ol>
+			<li>(10%) Create a new style rule that will increase the vertical space between <code>&lt;li&gt;</code> tags on the page - try setting the <code>margin-bottom</code> property.</li>
+			<li>(20%) Get the "Fill Green" button working. Clicking it should draw a green rectangle on the canvas. In your code, use the hexadecimal value for green rather than the CSS keyword.</li>
+			<li>(20%) Add a new button titled "Fill Blue" to the page. Clicking it should draw a blue rectangle on the canvas.</li>
+			<li>(20%) Add a new button titled "Triangle" to the page. Clicking it should fill a magenta triangle with a 10-pixel thick green stroke on the canvas.</li>
+			<li>(20%) Add a new button titled "Circle" to the page. Clicking it should fill a purple circle with a 5-pixel thick white stroke on the canvas.</li>
+			<li>(10%) Because portions of the triangle and circle shapes may still be visible when you click other buttons, add code to effectively "clear" the image by re-drawing the 500x300-pixel yellow background. Add this to any function where its necessary.</li>
+			<li>Optional Challenge (+30% bonus if all completed. No partial bonus. ): At this point you have 3 buttons calling three different functions that all do basically the same thing. 
+			The is wasteful and violates the <abbr>D.R.Y.</abbr> principle of Software engineering ("<b>D</b>on't <b>R</b>epeat <b>Y</b>ourself"). 
+			Generalizing your code so that you have 1 function instead of 3 (i.e. <em>Procedural Abstraction</em>) would probably be a good idea. 
+			Go ahead and replace <code>drawRed()</code>, <code>drawGreen()</code>, and <code>drawBlue()</code> with a function named <code>drawBox()</code>. 
+			All three buttons should call the same <code>drawBox()</code> function, and draw the appropriate color box based on the button that was clicked. (This is trickier than you might think, and there are at least 2 ways to do it)</li>
+			
+		</ol>
+  </section>   
+    
+    
+  <!-- FOOTER -->
+  <footer>
+    <p><a href="../../index.html">Return to the homepage</a>.</p>   
+  </footer>
+
+</body>
+</html>
