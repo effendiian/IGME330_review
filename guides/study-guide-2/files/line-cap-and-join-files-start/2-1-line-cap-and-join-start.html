@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>2-1 Cap and Join Demo</title>
+	<style type="text/css">
+	body{
+		background: #dddddd;
+ 	}
+
+	canvas{
+		background: #ffffff;
+		cursor: pointer;
+		margin-left: 10px;
+		margin-top: 10px;
+		box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+ 	}
+ 	
+ 	#controls{
+ 		margin-left: 10px;
+		margin-top: 10px;
+		font-family: verdana,tahoma,sans-serif;
+		
+ 	}
+ 	
+ 	label + label{
+ 		margin-left:20px;
+ 	}
+	
+	</style>
+	
+	<script>
+		"use strict";
+		// global variables :-p
+		var ctx = undefined;
+		var gLineCap = "butt";
+		var gLineJoin = "bevel";
+		var gLineDash = [];
+		
+		// #1 - wait for page to load
+		window.onload = init; 
+		
+		function init(){
+			console.log("init() called");
+			// #2 - get pointer to <canvas> element on page
+			var canvas = document.querySelector('canvas');
+			
+			// #3 - get pointer to "drawing context" and drawing API
+			ctx = canvas.getContext('2d');
+			
+			
+			document.querySelector('#lineCapChooser').onchange = function(e){
+				gLineCap = e.target.value;
+				drawLines();
+			};
+			
+			document.querySelector('#lineJoinChooser').onchange = function(e){
+				gLineJoin = e.target.value;
+				drawLines();
+			};
+			
+			document.querySelector('#lineDashChooser').onchange = function(e){
+				if(e.target.value == "dashed"){
+					gLineDash = [16,5]; // 16-pixel line followed by 5-pixel space
+				} else{
+					gLineDash = []; // no dashes
+				}
+				drawLines();
+			};
+		
+			
+			
+			drawLines();
+		}
+		
+		function drawLines(){
+			/* #4 - start drawing! */
+			// clear screen
+			ctx.clearRect(0,0,300,300);
+			
+			// See SG-2 for rest of code
+		}
+		
+		
+		
+	
+	</script>
+	
+</head>
+<body>
+	<canvas width="300" height="300">
+         Get a browser that supports Canvas!
+         <!-- The user will only see the above text if their browser is older and doesn't support <canvas> -->
+	
+      </canvas>
+      <section id="controls">
+      	<label>lineCap: 
+			<select id="lineCapChooser">
+				<option value="butt" selected>butt</option>
+				<option value="round">round</option>
+        		<option value="square">square</option>
+    		</select>
+    	</label>
+    	
+    	<label>lineJoin: 
+			<select id="lineJoinChooser">
+				<option value="bevel" selected>bevel</option>
+				<option value="round">round</option>
+        		<option value="miter">miter</option>
+    		</select>
+    	</label>
+    	
+    	<label>setLineDash: 
+			<select id="lineDashChooser">
+				<option value="solid" selected>solid</option>
+				<option value="dashed">dashed</option>
+    		</select>
+    	</label>
+    	
+    	</section>
+</body>
+</html>

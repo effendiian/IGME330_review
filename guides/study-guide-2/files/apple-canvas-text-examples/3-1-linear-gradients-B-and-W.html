@@ -1,0 +1,50 @@
+<html>
+<head>
+	<!--
+		A canvas example from:
+		https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/HTML-canvas-guide/GradientsandPatterns/GradientsandPatterns.html
+		
+		Their coding style is different from what we'll be using in class - use our style, not theirs.
+	-->
+    <title>Simple gradient example</title>
+    <script type="text/javascript">
+        var can, ctx;
+ 
+	function init() {
+		can = document.getElementById("can");
+		ctx = can.getContext("2d");
+		drawGradients();
+	}
+ 
+    function drawGradients() {
+		var grad = ctx.createLinearGradient(0, 0, 50, 0);
+		grad.addColorStop(0, 'black');
+		grad.addColorStop(1, 'rgba(255, 255, 255, 0.5)');
+		ctx.fillStyle = grad;
+		ctx.fillRect(0, 0, 75, 75);
+		
+		var g2 = ctx.createLinearGradient(0, 0, 0, 50);
+		g2.addColorStop(0, 'black');
+		g2.addColorStop(1, 'rgba(255, 255, 255, 0.5)');
+		ctx.fillStyle = g2;
+		ctx.fillRect(75, 0, 75, 75);
+
+		var g3 = ctx.createLinearGradient(150, 0, 200, 50);
+		g3.addColorStop(0, 'black');
+		g3.addColorStop(1, 'rgba(255, 255, 255, 0.5)');
+		ctx.fillStyle = g3;
+		ctx.fillRect(150, 0, 75, 75);
+		
+		var g4 = ctx.createLinearGradient(275, 50, 225, 0);
+		g4.addColorStop(0, 'black');
+		g4.addColorStop(1, 'rgba(255, 255, 255, 0.5)');
+		ctx.fillStyle = g4;
+		ctx.fillRect(225, 0, 75, 75);
+	}
+    </script>
+</head>
+<body onload="init()" style="background-color:#e0e0e0">
+    <canvas id="can" height="200" width="400">
+    </canvas>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<html>
+<head>
+	<!--
+	Name: 			animated-curves-playground.html
+	Author: 		Tony Jefferson
+	Last Modified: 	5/28/2015	
+	-->
+	
+    <title>Quadratic Bezier curves animation playground</title>
+    <style>
+    	body{
+    		background-color: #e0e0e0;
+    	}
+    	
+		canvas{
+			background: #ffffff;
+			cursor: pointer;
+			margin-left: 9px;
+			margin-top: 13px;
+			box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+		}
+		
+		p.draggable{
+			position:absolute;
+			font-size:14px;
+			font-weight:bold;
+			font-family:tahoma,verdana,sans-serif;
+			cursor:move;
+		}
+		
+		#output{
+			font-size:14px;
+			font-family:monospace;
+			display:block;
+			margin-top:25px;
+		}
+		
+		#controls{
+			font-size:18px;
+			font-family:tahoma,verdana,sans-serif;
+			margin-top:25px;
+		}
+		
+		h2,p{
+			font-family:tahoma,verdana,sans-serif;
+		}
+		
+		label + label{
+			margin-left:15px;
+		}
+ 	</style>
+    <script>
+	"use strict";
+	// global variables :-p
+	var canvas,ctx;
+	var startPoint,endPoint,controlPoint;
+	var selectedElement = null;
+	var vector,speed = 2.0,paused=false;
+	
+	window.onload = init; 
+ 		
+	function init() {
+		canvas = document.querySelector("canvas");
+		ctx = canvas.getContext("2d");
+		setup();
+		drawQuadraticCurve();
+		ctx.fillStyle = "red";
+		ctx.textAlign = "center"
+		ctx.font = "18px sans-serif";
+  		ctx.fillText("Drag the start point, end point,", canvas.width/2, 50);
+  		ctx.fillText("or control point.", canvas.width/2, 75);
+  		vector = getRandomUnitVector();
+  		loop();
+	}
+	
+	function setup(){
+		var doMouseDown = function(e){
+			e.preventDefault();
+			selectedElement = e.target;
+			speed = 0;
+		};
+		
+		startPoint = document.querySelector("#startPoint");
+		startPoint.name = "start";
+		startPoint.style.left = 0;
+		startPoint.style.top = canvas.height/2.0;
+		showPosition(startPoint,startPoint.name,{x:startPoint.style.left,y:startPoint.style.top});
+		startPoint.onmousedown = doMouseDown;
+		
+		endPoint = document.querySelector("#endPoint");
+		endPoint.name = "end";
+		endPoint.style.left = canvas.width;
+		endPoint.style.top = canvas.height/2.0;
+		showPosition(endPoint,endPoint.name,{x:endPoint.style.left,y:endPoint.style.top});
+		endPoint.onmousedown = doMouseDown;
+		
+		controlPoint = document.querySelector("#controlPoint");
+		controlPoint.name = "control";
+		controlPoint.style.left = canvas.width/2;
+		controlPoint.style.top = 10;
+		showPosition(controlPoint,controlPoint.name,{x:controlPoint.style.left,y:controlPoint.style.top});
+		controlPoint.onmousedown = doMouseDown;
+		
+		document.onmousemove = function(e){
+			e.preventDefault();
+			if(selectedElement){
+			 	var mousePos = getMousePos(canvas,e);
+				selectedElement.style.left = mousePos.x
+			 	selectedElement.style.top = mousePos.y
+			 	showPosition(selectedElement,selectedElement.name,mousePos);
+			 	drawQuadraticCurve();
+			 }
+		};
+		
+		document.onmouseup = function(e){
+			selectedElement = null;
+			speed = getRandom(2.0,15.0);
+			vector = getRandomUnitVector();
+		};
+		
+		document.querySelector("#pauseCheckbox").onchange = function(e){
+			paused = e.target.checked;
+		};
+			
+		document.querySelector("#hidePointsCheckbox").onchange = function(e){
+			var hide = e.target.checked;
+			if (hide){
+				startPoint.style.visibility = "hidden";
+				endPoint.style.visibility = "hidden";
+				controlPoint.style.visibility = "hidden";
+			} else {
+				startPoint.style.visibility = "visible";
+				endPoint.style.visibility = "visible";
+				controlPoint.style.visibility = "visible";
+			}
+		};
+		document.querySelector("#hidePointsCheckbox").click();
+	}
+	
+	function showPosition(element,name,mousePos){
+		element.innerHTML = "&nbsp;&nbsp;&nbsp;&bullet; " + name +  " (" + mousePos.x + "," + mousePos.y + ")";
+	}
+	
+	function getMousePos(parentElement,event) {
+        var rect = parentElement.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+      }
+      
+    function drawQuadraticCurve(){
+    	ctx.clearRect(0,0,canvas.width,canvas.height);
+    	ctx.lineWidth="3";
+		ctx.strokeStyle = "purple";
+		ctx.beginPath();
+		
+		// cast the values from strings to numbers
+		var startX = parseInt(startPoint.style.left);
+		var startY = parseInt(startPoint.style.top);
+		var endX = parseInt(endPoint.style.left);
+		var endY = parseInt(endPoint.style.top);
+		var controlX = parseInt(controlPoint.style.left);
+		var controlY = parseInt(controlPoint.style.top);
+		
+		ctx.moveTo(startX, startY);
+		ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+		ctx.stroke();
+		
+		var s0 = "/* Quadratic Bezier Curve */"
+		var s1 = "ctx.moveTo(" + startX + ", " +  startY + ");";
+		var s2 = "ctx.quadraticCurveTo(" + controlX + ", " +  controlY + ", " + endX + ", " +  endY + ");";
+		var s3 = "ctx.stroke();";
+		document.querySelector("#output").innerHTML = s0 + "\n" + s1 + "\n" + s2 + "\n" + s3;
+    }
+ 
+ 	function loop(){
+ 		// schedule next frame
+ 		requestAnimationFrame(loop);
+ 		
+ 		if (paused) return;
+ 		
+ 		// move CP1
+ 		var controlX = parseFloat(controlPoint.style.left);
+		var controlY = parseFloat(controlPoint.style.top);
+		controlX += speed * vector.x;
+		controlY += speed * vector.y;
+		
+		// check boundaries
+		if (controlX >= canvas.width || controlX <= 0){
+			vector.x *= -1;	// flip direction
+			controlX += speed * vector.x; // move once
+		}
+		
+		if (controlY >= canvas.height || controlY <= 0){
+			vector.y *= -1;	// flip direction
+			controlY += speed * vector.y;
+		}
+		
+		controlPoint.style.left = controlX;
+		controlPoint.style.top = controlY;
+		
+		showPosition(controlPoint,controlPoint.name,{x:parseInt(controlX),y:parseInt(controlY)});
+		drawQuadraticCurve();
+ 	}
+ 	
+ 	function getRandomUnitVector(){
+		var x = getRandom(-1,1);
+		var y = getRandom(-1,1);
+		var length = Math.sqrt(x*x + y*y);
+		if(length == 0){ // very unlikely
+			x=1; // point right
+			y=0;
+			length=1;
+		} else{
+			x /= length;
+			y /= length;
+		}
+		
+		return {x:x, y:y};
+	}
+
+
+	function getRandom(min, max) {
+  			return Math.random() * (max - min) + min;
+		}
+
+
+    </script>
+</head>
+<body>
+    <canvas height="400" width="600"></canvas>
+     <div id="controls">
+     	<label>Hide Points <input type="checkbox" id="hidePointsCheckbox"></label>
+     	<label>Pause <input type="checkbox" id="pauseCheckbox"></label>
+     </div>
+    <textarea id="output" rows="5" cols="50" readonly spellcheck="false"></textarea>
+   
+    <p class="draggable" id="startPoint">(?,?)</p>
+    <p class="draggable" id="endPoint">(?,?)</p>
+    <p class="draggable" id="controlPoint">(?,?)</p>
+</body>
+</html>

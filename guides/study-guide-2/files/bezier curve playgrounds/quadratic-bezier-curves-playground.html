@@ -1,0 +1,158 @@
+<html>
+<head>
+	<!--
+	Name: 			quadratic-bezier-curves-playground.html
+	Author: 		Tony Jefferson
+	Last Modified: 	5/27/2015	
+	-->
+	
+    <title>Quadratic Bezier curves playground</title>
+    <style>
+    	body{
+    		background-color: #e0e0e0;
+    	}
+    	
+		canvas{
+			background: #ffffff;
+			cursor: pointer;
+			margin-left: 9px;
+			margin-top: 13px;
+			box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+		}
+		
+		p.draggable{
+			position:absolute;
+			font-size:14px;
+			font-weight:bold;
+			font-family:tahoma,verdana,sans-serif;
+			cursor:move;
+		}
+		
+		#output{
+			font-size:14px;
+			font-family:monospace;
+			display:block;
+			margin-top:25px;
+		}
+		
+		h2,p{
+			font-family:tahoma,verdana,sans-serif;
+		}
+ 	</style>
+    <script>
+	"use strict";
+	// global variables :-p
+	var canvas,ctx;
+	var startPoint,endPoint,controlPoint;
+	var selectedElement = null;
+	
+	window.onload = init; 
+ 		
+	function init() {
+		canvas = document.querySelector("canvas");
+		ctx = canvas.getContext("2d");
+		setupDragging();
+		drawQuadraticCurve();
+		ctx.fillStyle = "red";
+		ctx.textAlign = "center"
+		ctx.font = "18px sans-serif";
+  		ctx.fillText("Drag the start point, end point,", canvas.width/2, 50);
+  		ctx.fillText("or control point.", canvas.width/2, 75);
+	}
+	
+	function setupDragging(){
+		var doMouseDown = function(e){
+			e.preventDefault();
+			selectedElement = e.target;
+		};
+		
+		startPoint = document.querySelector("#startPoint");
+		startPoint.name = "start";
+		startPoint.style.left = 0;
+		startPoint.style.top = canvas.height;
+		showPosition(startPoint,startPoint.name,{x:startPoint.style.left,y:startPoint.style.top});
+		startPoint.onmousedown = doMouseDown;
+		
+		endPoint = document.querySelector("#endPoint");
+		endPoint.name = "end";
+		endPoint.style.left = canvas.width;
+		endPoint.style.top = canvas.height;
+		showPosition(endPoint,endPoint.name,{x:endPoint.style.left,y:endPoint.style.top});
+		endPoint.onmousedown = doMouseDown;
+		
+		controlPoint = document.querySelector("#controlPoint");
+		controlPoint.name = "control";
+		controlPoint.style.left = canvas.width/2;
+		controlPoint.style.top = 10;
+		showPosition(controlPoint,controlPoint.name,{x:controlPoint.style.left,y:controlPoint.style.top});
+		controlPoint.onmousedown = doMouseDown;
+		
+		document.onmousemove = function(e){
+			e.preventDefault();
+			if(selectedElement){
+			 	var mousePos = getMousePos(canvas,e);
+				selectedElement.style.left = mousePos.x
+			 	selectedElement.style.top = mousePos.y
+			 	showPosition(selectedElement,selectedElement.name,mousePos);
+			 	drawQuadraticCurve();
+			 }
+		};
+		
+		document.onmouseup = function(e){
+			selectedElement = null;
+		};
+	}
+	
+	function showPosition(element,name,mousePos){
+		element.innerHTML = "&nbsp;&nbsp;&nbsp;&bullet; " + name +  " (" + mousePos.x + "," + mousePos.y + ")";
+	}
+	
+	function getMousePos(parentElement,event) {
+        var rect = parentElement.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+      }
+      
+    function drawQuadraticCurve(){
+    	ctx.clearRect(0,0,canvas.width,canvas.height);
+    	ctx.lineWidth="3";
+		ctx.strokeStyle = "purple";
+		ctx.beginPath();
+		
+		// cast the values from strings to numbers
+		var startX = parseInt(startPoint.style.left);
+		var startY = parseInt(startPoint.style.top);
+		var endX = parseInt(endPoint.style.left);
+		var endY = parseInt(endPoint.style.top);
+		var controlX = parseInt(controlPoint.style.left);
+		var controlY = parseInt(controlPoint.style.top);
+		
+		ctx.moveTo(startX, startY);
+		ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+		ctx.stroke();
+		
+		var s0 = "/* Quadratic Bezier Curve */"
+		var s1 = "ctx.moveTo(" + startX + ", " +  startY + ");";
+		var s2 = "ctx.quadraticCurveTo(" + controlX + ", " +  controlY + ", " + endX + ", " +  endY + ");";
+		var s3 = "ctx.stroke();";
+		document.querySelector("#output").innerHTML = s0 + "\n" + s1 + "\n" + s2 + "\n" + s3;
+    }
+ 
+
+    </script>
+</head>
+<body>
+    <canvas height="400" width="600"></canvas>
+    <textarea id="output" rows="5" cols="50" readonly spellcheck="false"></textarea>
+   <hr />
+    <h2>Quadratic Bezier curves playground</h2>
+    <p>The <code>ctx.quadraticCurveTo(cpx, cpy, x, y)</code> method of the Canvas 2D API adds a quadratic Bezier curve to the path. It requires two points. The first point is a control point and the second one is the end point. The starting point is the last point in the current path, which can be changed using <code>moveTo()</code> before creating the quadratic Bezier curve.</p>
+    <img src="Bezier_2_big.gif" height="150" width="360"/>
+    
+    <p class="draggable" id="startPoint">(?,?)</p>
+    <p class="draggable" id="endPoint">(?,?)</p>
+    <p class="draggable" id="controlPoint">(?,?)</p>
+</body>
+</html>

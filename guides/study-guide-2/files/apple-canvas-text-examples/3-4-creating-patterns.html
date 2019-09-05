@@ -1,0 +1,64 @@
+<html>
+<head>
+    <title>Patterns</title>
+    <style>
+    	span + span{
+    		margin-left:100px;
+    	}
+    </style>
+    <script type="text/javascript">
+        function init() {
+            var can = document.getElementById("can");
+            var ctx = can.getContext("2d");
+ 
+            // get images into objects
+            var dot = document.getElementById("dot");
+            var block = document.getElementById("block");
+            var cork = document.getElementById("cork");
+ 
+            // create patterns from images
+            var pat = ctx.createPattern(dot, "repeat");
+            var pat2 = ctx.createPattern(block, "repeat");
+            var pat3 = ctx.createPattern(cork, "repeat");
+ 
+            // make line thicker so pattern shows
+            ctx.lineWidth = 3;
+ 
+            // stroke line and fill rect with dot pattern
+            ctx.beginPath();
+            ctx.moveTo(10, 10);
+            ctx.lineTo(100, 10);
+            ctx.strokeStyle=pat;
+            ctx.stroke();
+            ctx.fillStyle = pat;
+            ctx.fillRect(10, 20, 100, 150);
+ 
+            // stroke line and fill rect with block pattern
+            ctx.beginPath();
+            ctx.moveTo(150, 10);
+            ctx.lineTo(250, 10);
+            ctx.strokeStyle = pat2;
+            ctx.stroke();
+            ctx.fillStyle = pat2;
+            ctx.fillRect(150, 20, 100, 150);
+ 
+            // stroke line and fill rect with cork pattern
+            ctx.beginPath();
+            ctx.moveTo(300, 10);
+            ctx.lineTo(400, 10);
+            ctx.strokeStyle = pat3;
+            ctx.stroke();
+            ctx.fillStyle = pat3;
+            ctx.fillRect(300, 20, 100, 150);
+        }
+</script>
+</head>
+<body onload="init()">
+    <span>Dot: <img id="dot" src="dot.png" /></span>
+    <span>Block: <img id="block" src="block.png" /></span>
+    <span>Cork: <img id="cork" src="cork.png" /></span>
+    <br>
+    <canvas id="can" height="200" width="500">
+    </canvas>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<html>
+
+<head>
+  <title>Moving Curves</title>
+  <style>
+    canvas{
+			background: #ffffff;
+			cursor: pointer;
+			margin-left: 10px;
+			margin-top: 10px;
+			box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+		}
+ 	</style>
+  <script type="text/javascript">
+    var canvas, ctx;
+
+    var gElapsedTime = 0;
+    var gLastTime = Date.now();
+    var gCtrlX = 5;
+    var gCtrlY = 150;
+    var gSpeed = {
+      x: 0.45,
+      y: 0.15
+    };
+    var gVector = {
+      x: 1,
+      y: 1
+    };
+
+    function init() {
+      canvas = document.querySelector("canvas");
+      ctx = canvas.getContext("2d");
+      loop();
+    }
+    
+ 	function loop(){
+ 		// schedule next frame
+ 		requestAnimationFrame(loop);
+      
+        // Calculate time since last frame.
+        let timeSinceLastFrame = Date.now() - gLastTime;
+        gLastTime = Date.now(); 
+        gElapsedTime += timeSinceLastFrame;
+       		
+ 		// Move control point 1.
+        gCtrlX += gSpeed.x * timeSinceLastFrame * gVector.x;
+        gCtrlY += gSpeed.y * timeSinceLastFrame * gVector.y;
+            		
+		// check boundaries
+		if (gCtrlX >= canvas.width || gCtrlX <= 0){
+			gVector.x *= -1;	// flip direction
+            gCtrlX += gSpeed.x * gVector.x;
+		}
+		
+		if (gCtrlY >= canvas.height || gCtrlY <= 0){
+			gVector.y *= -1;	// flip direction
+            gCtrlY += gSpeed.y * gVector.y;
+		}
+				
+        drawCurves();
+      
+        if(gElapsedTime > 500){
+          console.log(`< X: ${Math.trunc(gCtrlX)} , Y: ${Math.trunc(gCtrlY)} >`);
+          gElapsedTime = 0;          
+        }
+ 	}
+
+    function drawCurves() {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, 600, 400);
+      
+      ctx.lineWidth = "3";
+      
+      ctx.strokeStyle = "black";
+      var ctrlX = 5;
+      var ctrlY = 150;
+      var ctrlXa = 50;
+      var ctrlYa = 300;
+      
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(gCtrlX, gCtrlY, canvas.width, canvas.height);
+      ctx.stroke();
+
+      ctx.strokeStyle = "red";
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(gCtrlX, gCtrlY, ctrlXa, ctrlYa, canvas.width, canvas.height);
+      ctx.stroke();
+    }
+  </script>
+</head>
+
+<body onload="init()" style="background-color:#e0e0e0">
+  <canvas height="400" width="600">
+  </canvas>
+</body>
+
+</html>

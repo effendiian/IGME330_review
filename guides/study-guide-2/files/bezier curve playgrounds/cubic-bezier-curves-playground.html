@@ -1,0 +1,170 @@
+<html>
+<head>
+	<!--
+	Name: 			cubic-bezier-curves-playground.html
+	Author: 		Tony Jefferson
+	Last Modified: 	5/27/2015	
+	-->
+	
+    <title>Cubic Bezier curves playground</title>
+    <style>
+    	body{
+    		background-color: #e0e0e0;
+    	}
+    	
+		canvas{
+			background: #ffffff;
+			cursor: pointer;
+			margin-left: 9px;
+			margin-top: 13px;
+			box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+		}
+		
+		p.draggable{
+			position:absolute;
+			font-size:14px;
+			font-weight:bold;
+			font-family:tahoma,verdana,sans-serif;
+			cursor:move;
+		}
+		
+		#output{
+			font-size:14px;
+			font-family:monospace;
+			display:block;
+			margin-top:25px;
+		}
+		
+		h2,p{
+			font-family:tahoma,verdana,sans-serif;
+		}
+ 	</style>
+    <script>
+	"use strict";
+	// global variables :-p
+	var canvas,ctx;
+	var startPoint,endPoint,cp1,cp2;
+	var selectedElement = null;
+	
+	window.onload = init; 
+ 		
+	function init() {
+		canvas = document.querySelector("canvas");
+		ctx = canvas.getContext("2d");
+		setupDragging();
+		drawCubicBezierCurve();
+		ctx.fillStyle = "red";
+		ctx.textAlign = "center"
+		ctx.font = "18px sans-serif";
+  		ctx.fillText("Drag the start point, end point,", canvas.width/2, 50);
+  		ctx.fillText("or either control point.", canvas.width/2, 75);
+	}
+	
+	function setupDragging(){
+		var doMouseDown = function(e){
+			e.preventDefault();
+			selectedElement = e.target;
+		};
+		
+		startPoint = document.querySelector("#startPoint");
+		startPoint.name = "start";
+		startPoint.style.left = 0;
+		startPoint.style.top = 0;
+		showPosition(startPoint,startPoint.name,{x:startPoint.style.left,y:startPoint.style.top});
+		startPoint.onmousedown = doMouseDown;
+		
+		endPoint = document.querySelector("#endPoint");
+		endPoint.name = "end";
+		endPoint.style.left = canvas.width;
+		endPoint.style.top = canvas.height;
+		showPosition(endPoint,endPoint.name,{x:endPoint.style.left,y:endPoint.style.top});
+		endPoint.onmousedown = doMouseDown;
+		
+		cp1 = document.querySelector("#cp1");
+		cp1.name = "CP-1";
+		cp1.style.left = 0;
+		cp1.style.top = canvas.height;
+		showPosition(cp1,cp1.name,{x:cp1.style.left,y:cp1.style.top});
+		cp1.onmousedown = doMouseDown;
+		
+		cp2 = document.querySelector("#cp2");
+		cp2.name = "CP-2";
+		cp2.style.left = canvas.width;
+		cp2.style.top = 0;
+		showPosition(cp2,cp2.name,{x:cp2.style.left,y:cp2.style.top});
+		cp2.onmousedown = doMouseDown;
+		
+		document.onmousemove = function(e){
+			e.preventDefault();
+			if(selectedElement){
+			 	var mousePos = getMousePos(canvas,e);
+				selectedElement.style.left = mousePos.x
+			 	selectedElement.style.top = mousePos.y
+			 	showPosition(selectedElement,selectedElement.name,mousePos);
+			 	drawCubicBezierCurve();
+			 }
+		};
+		
+		document.onmouseup = function(e){
+			selectedElement = null;
+		};
+	}
+	
+	function showPosition(element,name,mousePos){
+		element.innerHTML = "&nbsp;&nbsp;&nbsp;&bullet; " + name +  " (" + mousePos.x + "," + mousePos.y + ")";
+	}
+	
+	function getMousePos(parentElement,event) {
+        var rect = parentElement.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+      }
+      
+    function drawCubicBezierCurve(){
+    	ctx.clearRect(0,0,canvas.width,canvas.height);
+    	ctx.lineWidth="3";
+		ctx.strokeStyle = "purple";
+		ctx.beginPath();
+		
+		// cast the values from strings to numbers
+		var startX = parseInt(startPoint.style.left);
+		var startY = parseInt(startPoint.style.top);
+		var endX = parseInt(endPoint.style.left);
+		var endY = parseInt(endPoint.style.top);
+		var cp1X = parseInt(cp1.style.left);
+		var cp1Y = parseInt(cp1.style.top);
+		var cp2X = parseInt(cp2.style.left);
+		var cp2Y = parseInt(cp2.style.top);
+		
+		ctx.moveTo(startX, startY);
+		ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, endX, endY);
+		ctx.stroke();
+		
+		var s0 = "/* Cubic Bezier Curve */"
+		var s1 = "ctx.moveTo(" + startX + ", " +  startY + ");";
+		var s2 = "ctx.bezierCurveTo(" + cp1X + ", " +  cp1Y + ", " + cp2X + ", " + cp2Y + ", " + endX + ", " +  endY + ");";
+		var s3 = "ctx.stroke();";
+		document.querySelector("#output").innerHTML = s0 + "\n" + s1 + "\n" + s2 + "\n" + s3;
+    }
+ 
+
+    </script>
+</head>
+<body>
+    <canvas height="400" width="600"></canvas>
+    <textarea id="output" rows="5" cols="50" readonly spellcheck="false"></textarea>
+     <hr />
+    <h2>Cubic Bezier curves playground</h2>
+    <p>The <code>ctx.bezierCurveTo()</code> method of the Canvas 2D API adds a cubic Bezier curve to the path. It requires three points. The first two points are control points and the third one is the end point. The starting point is the last point in the current path, which can be changed using <code>moveTo()</code> before creating the Bezier curve.</p>
+   	<img src="Bezier_3_big.gif" height="150" width="360"/>
+    
+    
+    <p class="draggable" id="startPoint">(?,?)</p>
+    <p class="draggable" id="endPoint">(?,?)</p>
+    <p class="draggable" id="cp1">(?,?)</p>
+    <p class="draggable" id="cp2">(?,?)</p>
+   
+</body>
+</html>
