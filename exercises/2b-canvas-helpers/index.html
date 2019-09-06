@@ -72,14 +72,91 @@
         init();
 
         function init() {
-            let ctx = document.querySelector('canvas').getContext('2d');
-            // test the drawRectangle() function
-            drawRectangle(ctx);
-            drawRectangle(ctx, 100, 100, 250, 250, "red", "yellow", 10);
-            drawCircle(ctx);
-            drawLine(ctx);
-            drawTriangle(ctx);
-            drawArc(ctx);
+            let canvas = document.querySelector('canvas');
+            let ctx = canvas.getContext('2d');
+            
+            // drawFlower(ctx, canvas.width / 2, canvas.height / 2);
+            drawArc(ctx, 0, canvas.height, canvas.width, canvas.height, 300, 275, 'green', 'brown', 2);
+
+
+            drawLine(ctx, 0, 45 - 50, canvas.width, canvas.height - 45 - 50, 'red', 5);
+            drawLine(ctx, 0, 45, canvas.width, canvas.height - 45, 'green', 5);
+            drawLine(ctx, 0, 45 + 50, canvas.width, canvas.height - 45 + 50, 'blue', 5);
+            
+            drawLine(ctx, 0, canvas.height - 45 - 50, canvas.width, 45 - 50, 'red', 5);
+            drawLine(ctx, 0, canvas.height - 45, canvas.width, 45, 'green', 5);
+            drawLine(ctx, 0, canvas.height - 45 + 50, canvas.width, 45 + 50, 'blue', 5);
+
+            drawFlower(ctx, 10, 20, 'red', 'white');
+            drawFlower(ctx, 530, 130, 'red', 'white');
+
+            drawCircleInCircle(ctx, canvas.width / 2, canvas.height / 2, 100, 5, 25, 'gray', 'green', 4);
+            drawSquareInCircle(ctx, canvas.width / 2, canvas.height / 2, 40, 5, 25, 'magenta', 'cyan', 2);
+            drawTriangleInCircle(ctx, canvas.width / 2, canvas.height / 2, 100);
+            drawCircleInCircle(ctx, canvas.width / 2, canvas.height / 2, 150, 10, 5, 'cyan', 'black', 3);
+
+            
+            //drawCircleInCircle(ctx, canvas.width / 2, canvas.height / 2, 290, 10);
+            //drawSquareInCircle(ctx, canvas.width / 2, canvas.height / 2, 290, 10);
+            //drawTriangleInCircle(ctx, canvas.width / 2, canvas.height / 2, 290, 10);
+
+        }
+
+        function drawTriangleInCircle(ctx, x, y, radius = 100, count = 5, size = 25, fillStyle = 'red', strokeStyle = 'yellow', lineWidth = 2){
+            ctx.save();
+            for(let i = 0; i <= count; i++){
+                let angle = (i * Math.trunc(360 / count)) * Math.PI / 180;
+                let rX = radius * Math.sin(angle);
+                let rY = radius * Math.cos(angle);
+                ctx.save();                
+                ctx.translate(x, y);
+                ctx.rotate(Math.PI);
+                drawTriangle(ctx, rX - (size / 2), rY, rX + (size / 2), rY, rX, rY + size, fillStyle, strokeStyle, lineWidth);
+                ctx.restore();
+            }
+            ctx.restore();
+        }
+
+        function drawSquareInCircle(ctx, x, y, radius = 100, count = 5, size = 25, fillStyle = 'red', strokeStyle = 'yellow', lineWidth = 2){
+            ctx.save();
+            for(let i = 0; i <= count; i++){
+                let angle = (i * Math.trunc(360 / count)) * Math.PI / 180;
+                let rX = radius * Math.sin(angle);
+                let rY = radius * Math.cos(angle);
+                drawRectangle(ctx, (x - size / 2) + rX, (y - size / 2) + rY, size, size, fillStyle, strokeStyle, lineWidth);
+            }
+            ctx.restore();
+        }
+
+        function drawCircleInCircle(ctx, x, y, radius = 100, count = 5, size = 25, fillStyle = 'red', strokeStyle = 'black', lineWidth = 2){
+            ctx.save();
+            //  ctx.translate(x, y);
+            for(let i = count; i >= 0; i--){
+                let angle = (i * Math.trunc(360 / count)) * Math.PI / 180;
+                let rX = radius * Math.sin(angle);
+                let rY = radius * Math.cos(angle);
+                drawCircle(ctx, x + rX, y + rY, size, fillStyle, strokeStyle, lineWidth);
+            }
+            ctx.restore();
+        }
+
+        function drawFlower(ctx, x, y, fillStyle = 'red', strokeStyle = 'yellow'){
+            let radius = 2;
+            let count = 1;
+            if(radius > 0){
+                count = Math.trunc(360 / (2 * Math.PI * radius));
+            }                
+
+            for(let i = 0; i < count; i++){
+                ctx.save();
+                let angle =  (i * count) * Math.PI / 180;
+                let rX = radius * Math.sin(angle);
+                let rY = radius * Math.cos(angle);
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                drawRectangle(ctx, rX, rY, 50, 50, fillStyle, strokeStyle, 1);
+                ctx.restore();
+            }            
         }
 
         // we took care of drawRectangle() for you - now you need to complete the other 4 functions
