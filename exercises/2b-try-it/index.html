@@ -59,9 +59,9 @@
             ctx.restore();
         }
 
-        function drawBoxes(x, y, width = 50, height = 50, color = 'blue', padding = { x: 100, y: 0 }, count = 7){
+        function drawBoxes(x, y, width = 50, height = 50, padding = { x: 100, y: 0 }, count = 7){
             for(let i = 0; i < count; i++){
-                drawBox(x + i * padding.x, y + i * padding.y, width, height, color);
+                drawBox(x + i * padding.x, y + i * padding.y, width, height, 'blue');
             }
         }
 
@@ -75,6 +75,67 @@
             ctx.restore();
         }
 
+		function drawCircles(x, y, radius = 25, padding = { x: 100, y: 0 }, count = 9) {
+			let alpha = 1.0;
+			for(let i = 0; i < count; i++){
+				alpha -= 0.1;
+				drawCircle(x + i * padding.x, y + i * padding.y, radius, `rgba(255,0,0,${alpha})`);
+			}
+		}
+
+		function drawDiamond(x, y, width, height, color = 'yellow', angle = 45) {
+			ctx.save();
+			ctx.translate(x, y);
+			ctx.rotate(angle * Math.PI / 180);
+			ctx.fillStyle = color;
+			ctx.fillRect(0, 0, width, height);
+			ctx.restore();
+		}
+
+		function drawDiamonds(x, y, width = 45, height = 45, color = 'yellow', angle = 45, padding = { x: 100, y: 0 }, count = 7) {
+			for(let i = 0; i < count; i++){
+				drawDiamond(x + i * padding.x, y + i * padding.y, width, height, color, angle);
+			}
+		}
+
+		function drawTriangle(x, y, width, height, lerp = 1){
+			// determine color from lerp (0, 1);
+			let color = `rgb(${lerp * 255},0,0)`;
+
+			// draw the triangle.
+			ctx.save();
+			ctx.translate(x, y);
+			ctx.fillStyle = color;
+			ctx.beginPath();
+			ctx.moveTo(0, height);
+			ctx.lineTo(0 + (width / 2), height);
+			ctx.lineTo(0, 0);
+			ctx.lineTo(0 - (width / 2), height);
+			ctx.closePath();
+			ctx.fill();
+			ctx.restore();
+		}
+
+		function drawTriangles(x, y, width = 45, height = 45, padding = { x: 100, y: 0 }, count = 7) {
+			for(let i = 0; i < count; i++){
+				drawTriangle(x + i * padding.x, y + i * padding.y, width, height, i / count);
+			}
+		}
+
+		function drawWatermark(text, x, y, angle = 45){
+			ctx.save();
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.translate(x, y);
+			ctx.rotate(angle * Math.PI / 180);
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = '#808080';
+			ctx.globalAlpha = 0.8;
+			ctx.font = "100pt courier";
+			ctx.strokeText(text, 0, 0);
+			ctx.restore();
+		}
+
 		function init(){
 			canvas = document.querySelector('canvas');
             ctx = canvas.getContext('2d');
@@ -83,21 +144,19 @@
             clear('#66cdaa');			
 
             // Row 1 - Draw the boxes.
-            drawBoxes(10, 20, 50, 50, 'blue', { x: 100, y: 0}, 7);
+            drawBoxes(10, 20, 50, 50, { x: 100, y: 0 }, 7);
 			
 			// Row 2 - Draw the circles.
-			drawCircle(30, 200, 20, 'red');
+			drawCircles(30, 200, 20, { x: 75, y: 0 }, 9);
 			
-			// row 3
+			// Row 3 - Draw rotated squares.
+			drawDiamonds(30, 300, 42, 42, 'yellow', 45);
 			
-			
-			// row 4
-			
-			
-			
+			// Row 4 - Draw ramp colored triangles.
+			drawTriangles(30, 420);
+						
 			// watermark
-			
-
+			drawWatermark("IGME-330", canvas.width * 0.5, canvas.height * 0.5, 25);
 		}
 	</script>
 </head>
