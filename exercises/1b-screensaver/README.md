@@ -4,6 +4,7 @@ The Canvas API provides a means for drawing graphics via JavaScript and the HTML
 - [Intro-to-Canvas.pdf](../presentations/Intro-to-Canvas.pdf)
 
 ## I. Demo!
+
 - Start file for today's "screen saver" demo is below
 - Concepts covered:
   - Getting a reference to the 2D drawing context with `canvas.getContext('2d')`
@@ -102,6 +103,7 @@ We will demo how to draw a variety of shapes in class. Below are a couple possib
 ![screenshot](./_images/screen-saver-4.gif)
 
 ## IV. Homework
+
 Do ONE of the following:
 
 - Modify the above "screen saver" in some significant ways (so that it draws differently/looks different)

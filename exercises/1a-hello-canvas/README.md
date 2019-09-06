@@ -1,6 +1,7 @@
 # HW - *Hello Canvas*
 
 ## I. Overview
+
 - This exercise will cover the following concepts:
   - the canvas drawing state:
     - drawing state attributes: `.font`, `.shadowColor`, `shadowOffsetX`, `.shadowOffsetY`, `.shadowBlur`, `textAlign`, `textBaseline`
@@ -17,8 +18,9 @@
 
 In this example the placement of the shapes is random.
 
-![screenshot](./_images/HW-hello-canvas-done.jpg)
+![screenshot](https://github.com/tonethar/IGME-330-Master/raw/master/notes/_images/HW-hello-canvas-done.jpg)
 
 ## III. Submission
-- the start files and instructions are here -> [Hello-Canvas-start-files.zip](_files/Hello-Canvas-start-files.zip)
+
+- the start files and instructions are here -> [Hello-Canvas-start-files.zip](https://github.com/tonethar/IGME-330-Master/blob/master/notes/_files/Hello-Canvas-start-files.zip)
 - see mycourses.rit.edu for due date

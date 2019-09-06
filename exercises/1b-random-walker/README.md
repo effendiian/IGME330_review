@@ -1,16 +1,18 @@
-# HW - Random Walker
+# HW - Random Walker #
 
-Random walks are a process consisting of a sequence of steps of whose characteristics (such as magnitude and direction) is determined by chance - https://en.wikipedia.org/wiki/Random_walk
+[Random walks](https://en.wikipedia.org/wiki/Random_walk) are a process consisting of a sequence of steps of whose characteristics (such as magnitude and direction) is determined by chance.
 
 Random walks are studied in many fields:
+
 - the "random walk hypothesis" is used to model shares prices and other factors.
 - random walks describe the statistical properties of genetic drift
 - random walks are used as simplified models of physical Brownian motion and diffusion such as the random movement of molecules in liquids and gases
 - random walks are used to describe individual animal movements
 
-## I. Assignment & Start Code
+## I. Assignment & Start Code ##
 
 Try to do something interesting by adding on to the code below - ideas:
+
 - multiple walkers & colors
 - biased movements  - ex. tend to move right and down
 - "wrapping" or "bouncing" walkers
@@ -105,26 +107,26 @@ Try to do something interesting by adding on to the code below - ideas:
 </html>
 ```
 
-## II. Screenshots
+## II. Screenshots ##
 
 **walker-1.html**
 
-![screenshot](./_images/HW-walker-1.gif)
+![screenshot](https://github.com/tonethar/IGME-330-Master/raw/master/notes/_images/HW-walker-1.gif)
 
 **walker-2.html**
 
  - multiple walkers in an array
  
-![screenshot](./_images/HW-walker-2.gif)
+![screenshot](https://github.com/tonethar/IGME-330-Master/raw/master/notes/_images/HW-walker-2.gif)
 
 **walker-4.html**
 
 - "biased" walkers that tend to go either left, right, up, or down
 
-![screenshot](./_images/HW-walker-4.gif)
+![screenshot](https://github.com/tonethar/IGME-330-Master/raw/master/notes/_images/HW-walker-4.gif)
 
 **walker-6.html**
 
 - controls!
 
-![screenshot](./_images/HW-walker-6.gif)
+![screenshot](https://github.com/tonethar/IGME-330-Master/raw/master/notes/_images/HW-walker-6.gif)
