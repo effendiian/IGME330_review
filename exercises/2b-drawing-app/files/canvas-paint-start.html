@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Canvas Paint App</title>
+	 <style>
+      body {
+         background: #eeeeee;
+         font-family: tahoma, verdana, sans serif;
+      }
+
+      #mainCanvas {
+         background: #ffffff;
+         position:absolute;
+         z-index: 0;
+         left: 10px;
+         top: 10px;
+         box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+      }
+      
+      
+       #controls {
+         position: absolute;
+          z-index: 2;
+         left: 25px;
+         top: 25px;
+      }
+      
+      label{
+      	font-size: 12px;
+      	margin-right:0.75em;
+      }
+      
+    </style>
+    
+	<script>
+	"use strict";
+	window.onload = init;
+	
+	// GLOBALS
+	var canvas,ctx,dragging=false,lineWidth,strokeStyle;
+	
+	// CONSTANTS
+	
+	
+	// FUNCTIONS
+	function init(){
+		// initialize some globals
+		canvas = document.querySelector('#mainCanvas');
+		ctx = canvas.getContext('2d');
+		
+		
+		
+	}
+	
+	
+	// EVENT CALLBACK FUNCTIONS
+	function doMousedown(e){
+		console.log(e.type);
+	}
+ 
+ 	function doMousemove(e) {
+ 		
+	}
+	
+	function doMouseup(e) {
+		console.log(e.type);
+	}
+	
+	// if the user drags out of the canvas
+	function doMouseout(e) {
+		console.log(e.type);
+	}
+	
+	function doClear(){
+		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+		drawGrid(ctx,'lightgray', 10, 10);
+	}
+	
+	function doExport(){
+		// open a new window and load the image in it
+		// http://www.w3schools.com/jsref/met_win_open.asp
+		var data = canvas.toDataURL(); 
+		var windowName = "canvasImage";
+		var windowOptions = "left=0,top=0,width=" + canvas.width + ",height=" + canvas.height +",toolbar=0,resizable=0";
+		var myWindow = window.open(data,windowName,windowOptions);
+		myWindow.resizeTo(canvas.width,canvas.height); // needed so Chrome would display image
+	 }
+	
+	
+	// UTILITY FUNCTIONS
+	/*
+	These utility functions do not depend on any global variables being in existence, 
+	and produce no "side effects" such as changing ctx state variables.
+	They are "pure functions" - see: http://en.wikipedia.org/wiki/Pure_function
+	*/
+	
+	// Function Name: getMouse()
+	// returns mouse position in local coordinate system of element
+	// Author: Tony Jefferson
+	// Last update: 3/1/2014
+	function getMouse(e){
+		var mouse = {}
+		mouse.x = e.pageX - e.target.offsetLeft;
+		mouse.y = e.pageY - e.target.offsetTop;
+		return mouse;
+	}
+	
+	/*
+	Function Name: drawGrid()
+	Description: Fills the entire canvas with a grid
+	Last update: 9/1/2014
+	*/
+	function drawGrid(ctx, color, cellWidth, cellHeight){
+		// save the current drawing state as it existed before this function was called
+		ctx.save()
+		
+		// set some drawing state variables
+		ctx.strokeStyle = color;
+		ctx.fillStyle = '#ffffff';
+		ctx.lineWidth = 0.5;
+		ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+		
+		// vertical lines all set!
+		for (var x = cellWidth + 0.5; x < ctx.canvas.width; x += cellWidth) {
+			ctx.beginPath();
+			ctx.moveTo(x, 0);
+			ctx.lineTo(x, ctx.canvas.height);
+			ctx.stroke();
+		}
+		
+		/*
+			Need horizontal lines!
+			You write it!
+		*/
+		
+		
+		// restore the drawing state
+		ctx.restore();
+	}
+	
+	
+	</script>
+</head>
+<body>
+	<canvas id="mainCanvas" width="700" height="500">
+	Get a real browser!
+	</canvas>
+	
+	<div id="controls">
+		<label>Tool:
+			<select id="toolChooser">
+				<option value="toolPencil">Pencil</option>
+    		</select>
+    	</label>
+    	
+    	<label>Line Width: 
+			<select id="lineWidthChooser">
+				<option value="1">1</option>
+				<option value="2">2</option>
+        		<option value="3" selected>3</option>
+        		<option value="4">4</option>
+				<option value="5">5</option>
+        		<option value="6">6</option>
+        		<option value="7">7</option>
+				<option value="8">8</option>
+        		<option value="9">9</option>
+        		<option value="10">10</option>
+    		</select>
+    	</label>
+    	
+    	
+    	<span><input id="clearButton" type="button" value="Clear"/></span>
+    	<span><input id="exportButton" type="button" value="Export"/></span>
+    </div>
+
+</body>
+</html>
