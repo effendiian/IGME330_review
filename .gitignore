@@ -1,5 +1,6 @@
 ## Custom ignore commands ##
 
+.vscode
 *.code-workspace
 *rsa*
 
