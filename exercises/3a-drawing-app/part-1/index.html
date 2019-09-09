@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Canvas Paint Appliction (1)</title>
+  <title>Canvas Paint Appliction (Part 1)</title>
   <meta name="description" content="Canvas helper function testing suite." />
   <meta name="keywords" content="HTML, CSS, XML, JavaScript" />
   <meta name="author" content="Ian Effendi" />
@@ -97,22 +97,22 @@
       ctx = canvas.getContext('2d');
       lineWidth = DEFAULT_LINE_WIDTH;
       strokeStyle = DEFAULT_STROKE_STYLE;
-      
+
       // set initial properties
       ctx.lineWidth = lineWidth;
       ctx.strokeStyle = strokeStyle;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      
+
       // draw the grid.
       drawGrid(ctx, 'lightgray', 10, 10);
-      
+
       // Hook up event listeners
       canvas.onmousedown = doMousedown;
       canvas.onmousemove = doMousemove;
       canvas.onmouseup = doMouseup;
       canvas.onmouseout = doMouseout;
-      
+
       // hook up gui.
       document.querySelector('#clearButton').onclick = doClear;
       document.querySelector('#exportButton').onclick = doExport;
@@ -130,44 +130,44 @@
     // EVENT CALLBACK FUNCTIONS
     function doMousedown(e) {
       dragging = true;
-      
+
       // get mouse location.
       let mouse = getMouse(e);
-      
+
       // pencil tool.
       ctx.beginPath();
-      
+
       // move pen to x, y of mouse.
       ctx.moveTo(mouse.x, mouse.y);
-      
+
     }
 
     function doMousemove(e) {
-      if(!dragging) return;
-      
+      if (!dragging) return;
+
       // pencil tool.
       ctx.lineWidth = lineWidth;
       ctx.strokeStyle = strokeStyle;
-      
+
       // draw line to x, y of mouse.
       let mouse = getMouse(e);
       ctx.lineTo(mouse.x, mouse.y);
-      
+
       // stroke.
       ctx.stroke();
     }
 
-    function doMouseup(e) {      
-      if(dragging){
+    function doMouseup(e) {
+      if (dragging) {
         dragging = false;
         ctx.closePath();
       }
-      
+
     }
 
     // if the user drags out of the canvas
     function doMouseout(e) {
-      if(dragging){
+      if (dragging) {
         dragging = false;
         ctx.closePath();
       }
@@ -187,7 +187,7 @@
       win.document.write(content);
       win.resizeTo(canvas.width, canvas.height);
     }
-    
+
     /* function doExport() {
       
       // Security update prevents the original from working.
@@ -246,7 +246,7 @@
       }
 
       // HORIZONTAL LINES
-      for (let y = cellHeight + 0.5; y < ctx.canvas.height; y += cellHeight){
+      for (let y = cellHeight + 0.5; y < ctx.canvas.height; y += cellHeight) {
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(ctx.canvas.width, y);
@@ -266,7 +266,7 @@
   <!-- HEADER -->
   <header>
     <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
-    <p>Ian Effendi | Week 2B - Canvas Drawing Application (Part 1)</p>
+    <p>Ian Effendi | Week 3B - Canvas Drawing Application (Part 1)</p>
   </header>
 
   <main>
@@ -308,7 +308,7 @@
           <option value="red">Black</option>
         </select>
       </label>
-      
+
       <span><input id="clearButton" type="button" value="Clear" /></span>
       <span><input id="exportButton" type="button" value="Export" /></span>
     </div>
