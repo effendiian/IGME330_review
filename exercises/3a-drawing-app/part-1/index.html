@@ -2,238 +2,323 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Canvas Paint Appliction (1)</title>
-    <meta name="description" content="Canvas helper function testing suite." />
-    <meta name="keywords" content="HTML, CSS, XML, JavaScript" />
-    <meta name="author" content="Ian Effendi" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
+  <meta charset="UTF-8" />
+  <title>Canvas Paint Appliction (1)</title>
+  <meta name="description" content="Canvas helper function testing suite." />
+  <meta name="keywords" content="HTML, CSS, XML, JavaScript" />
+  <meta name="author" content="Ian Effendi" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
 
-    <style>
+  <style>
+    * {
+      font-family: 'Crimson Text', serif;
+      font-size: 36px;
+    }
 
-        * {
-            font-family: 'Crimson Text', serif;
-            font-size: 36px;
-        }
+    p {
+      font-size: 0.9em;
+    }
 
-        p {
-            font-size: 0.9em;
-        }
+    header,
+    footer p {
+      text-align: center;
+    }
 
-        header, footer p {
-            text-align: center;
-        }
+    main {
+      margin: 0px auto;
+    }
 
-        main {
-            margin: 0px auto;
-        }
+    footer {
+      margin: auto;
+      display: block;
+    }
 
-        footer {
-            margin: auto;
-            display: block;
-        }
+    body {
+      background: #eeeeee;
+    }
 
-        body {
-            background: #eeeeee;
-        }
+    #mainCanvas {
+      padding: 0px;
+      margin: auto;
+      display: block;
+      border: 1px solid gray;
+      background: #ffffff;
+      box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    }
 
-        #mainCanvas {
-            padding: 0px;
-            margin: auto;
-            display: block;
-            border: 1px solid gray;
-            background: #ffffff;
-            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
-        }
+    #controls {
+      margin: auto;
+      display: block;
+      text-align: center;
+      font-size: 0.5em;
+    }
 
-        #controls {
-            margin: auto;
-            display: block;
-            text-align: center;
-            font-size: 0.5em;
-        }
+    #controls label {
+      font-size: 1em;
+    }
 
-        #controls label {
-            font-size: 1em;
-        }
+    #controls select {
+      font-size: 0.7em;
+    }
 
-        #controls select {
-            font-size: 0.7em;
-        }
-        
-        #controls input {
-            font-size: 0.4em;
-        }
+    #controls input {
+      font-size: 0.4em;
+    }
 
-        #controls option {
-            font-size: 1em;
-        }
+    #controls option {
+      font-size: 1em;
+    }
 
-        label {
-            margin-right: 0.75em;
-        }
+    label {
+      margin-right: 0.75em;
+    }
 
-    </style>
+  </style>
 
-    <script>
-        "use strict";
-        window.onload = init;
+  <script>
+    "use strict";
+    window.onload = init;
 
-        // GLOBALS
-        var canvas, ctx, dragging = false,
-            lineWidth, strokeStyle;
+    // GLOBALS
+    var canvas, ctx, dragging = false,
+      lineWidth, strokeStyle;
 
-        // CONSTANTS
-
-
-        // FUNCTIONS
-        function init() {
-            // initialize some globals
-            canvas = document.querySelector('#mainCanvas');
-            ctx = canvas.getContext('2d');
+    // CONSTANTS
+    const DEFAULT_LINE_WIDTH = 3;
+    const DEFAULT_STROKE_STYLE = 'red';
 
 
-
-        }
-
-
-        // EVENT CALLBACK FUNCTIONS
-        function doMousedown(e) {
-            console.log(e.type);
-        }
-
-        function doMousemove(e) {
-
-        }
-
-        function doMouseup(e) {
-            console.log(e.type);
-        }
-
-        // if the user drags out of the canvas
-        function doMouseout(e) {
-            console.log(e.type);
-        }
-
-        function doClear() {
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            drawGrid(ctx, 'lightgray', 10, 10);
-        }
-
-        function doExport() {
-            // open a new window and load the image in it
-            // http://www.w3schools.com/jsref/met_win_open.asp
-            var data = canvas.toDataURL();
-            var windowName = "canvasImage";
-            var windowOptions = "left=0,top=0,width=" + canvas.width + ",height=" + canvas.height +
-                ",toolbar=0,resizable=0";
-            var myWindow = window.open(data, windowName, windowOptions);
-            myWindow.resizeTo(canvas.width, canvas.height); // needed so Chrome would display image
-        }
+    // FUNCTIONS
+    function init() {
+      // initialize some globals
+      canvas = document.querySelector('#mainCanvas');
+      ctx = canvas.getContext('2d');
+      lineWidth = DEFAULT_LINE_WIDTH;
+      strokeStyle = DEFAULT_STROKE_STYLE;
+      
+      // set initial properties
+      ctx.lineWidth = lineWidth;
+      ctx.strokeStyle = strokeStyle;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      
+      // draw the grid.
+      drawGrid(ctx, 'lightgray', 10, 10);
+      
+      // Hook up event listeners
+      canvas.onmousedown = doMousedown;
+      canvas.onmousemove = doMousemove;
+      canvas.onmouseup = doMouseup;
+      canvas.onmouseout = doMouseout;
+      
+      // hook up gui.
+      document.querySelector('#clearButton').onclick = doClear;
+      document.querySelector('#exportButton').onclick = doExport;
+      document.querySelector('#lineWidthChooser').onchange = function(e) {
+        lineWidth = e.target.value;
+      };
+      document.querySelector('#strokeStyleChooser').onchange = function(e) {
+        strokeStyle = e.target.value;
+      };
 
 
-        // UTILITY FUNCTIONS
-        /*
-        These utility functions do not depend on any global variables being in existence, 
-        and produce no "side effects" such as changing ctx state variables.
-        They are "pure functions" - see: http://en.wikipedia.org/wiki/Pure_function
-        */
-
-        // Function Name: getMouse()
-        // returns mouse position in local coordinate system of element
-        // Author: Tony Jefferson
-        // Last update: 3/1/2014
-        function getMouse(e) {
-            var mouse = {}
-            mouse.x = e.pageX - e.target.offsetLeft;
-            mouse.y = e.pageY - e.target.offsetTop;
-            return mouse;
-        }
-
-        /*
-        Function Name: drawGrid()
-        Description: Fills the entire canvas with a grid
-        Last update: 9/1/2014
-        */
-        function drawGrid(ctx, color, cellWidth, cellHeight) {
-            // save the current drawing state as it existed before this function was called
-            ctx.save()
-
-            // set some drawing state variables
-            ctx.strokeStyle = color;
-            ctx.fillStyle = '#ffffff';
-            ctx.lineWidth = 0.5;
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-            // vertical lines all set!
-            for (var x = cellWidth + 0.5; x < ctx.canvas.width; x += cellWidth) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, ctx.canvas.height);
-                ctx.stroke();
-            }
-
-            /*
-            	Need horizontal lines!
-            	You write it!
-            */
+    }
 
 
-            // restore the drawing state
-            ctx.restore();
-        }
-    </script>
+    // EVENT CALLBACK FUNCTIONS
+    function doMousedown(e) {
+      dragging = true;
+      
+      // get mouse location.
+      let mouse = getMouse(e);
+      
+      // pencil tool.
+      ctx.beginPath();
+      
+      // move pen to x, y of mouse.
+      ctx.moveTo(mouse.x, mouse.y);
+      
+    }
+
+    function doMousemove(e) {
+      if(!dragging) return;
+      
+      // pencil tool.
+      ctx.lineWidth = lineWidth;
+      ctx.strokeStyle = strokeStyle;
+      
+      // draw line to x, y of mouse.
+      let mouse = getMouse(e);
+      ctx.lineTo(mouse.x, mouse.y);
+      
+      // stroke.
+      ctx.stroke();
+    }
+
+    function doMouseup(e) {      
+      if(dragging){
+        dragging = false;
+        ctx.closePath();
+      }
+      
+    }
+
+    // if the user drags out of the canvas
+    function doMouseout(e) {
+      if(dragging){
+        dragging = false;
+        ctx.closePath();
+      }
+    }
+
+    function doClear() {
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      drawGrid(ctx, 'lightgray', 10, 10);
+    }
+
+    function doExport() {
+      let data = canvas.toDataURL();
+      let windowName = 'canvasImage';
+      let windowOptions = `left=0,top=0,width=${canvas.width},height=${canvas.height},toolbar=0,resizable=0`;
+      let win = window.open('#', windowName, windowOptions);
+      let content = `<iframe src='${data}' frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`;
+      win.document.write(content);
+      win.resizeTo(canvas.width, canvas.height);
+    }
+    
+    /* function doExport() {
+      
+      // Security update prevents the original from working.
+      // https://ourcodeworld.com/articles/read/682/what-does-the-not-allowed-to-navigate-top-frame-to-data-url-javascript-exception-means-in-google-chrome
+    
+      // open a new window and load the image in it
+      // http://www.w3schools.com/jsref/met_win_open.asp
+      var data = canvas.toDataURL();
+      var windowName = "canvasImage";
+      var windowOptions = "left=0,top=0,width=" + canvas.width + ",height=" + canvas.height +
+        ",toolbar=0,resizable=0";
+      var myWindow = window.open(data, windowName, windowOptions);
+      myWindow.resizeTo(canvas.width, canvas.height); // needed so Chrome would display image
+    } */
+
+
+    // UTILITY FUNCTIONS
+    /*
+    These utility functions do not depend on any global variables being in existence, 
+    and produce no "side effects" such as changing ctx state variables.
+    They are "pure functions" - see: http://en.wikipedia.org/wiki/Pure_function
+    */
+
+    // Function Name: getMouse()
+    // returns mouse position in local coordinate system of element
+    // Author: Tony Jefferson
+    // Last update: 3/1/2014
+    function getMouse(e) {
+      var mouse = {}
+      mouse.x = e.pageX - e.target.offsetLeft;
+      mouse.y = e.pageY - e.target.offsetTop;
+      return mouse;
+    }
+
+    /*
+    Function Name: drawGrid()
+    Description: Fills the entire canvas with a grid
+    Last update: 9/1/2014
+    */
+    function drawGrid(ctx, color, cellWidth, cellHeight) {
+      // save the current drawing state as it existed before this function was called
+      ctx.save()
+
+      // set some drawing state variables
+      ctx.strokeStyle = color;
+      ctx.fillStyle = '#ffffff';
+      ctx.lineWidth = 0.5;
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+      // vertical lines all set!
+      for (var x = cellWidth + 0.5; x < ctx.canvas.width; x += cellWidth) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, ctx.canvas.height);
+        ctx.stroke();
+      }
+
+      // HORIZONTAL LINES
+      for (let y = cellHeight + 0.5; y < ctx.canvas.height; y += cellHeight){
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(ctx.canvas.width, y);
+        ctx.stroke();
+      }
+
+      // restore the drawing state
+      ctx.restore();
+    }
+
+  </script>
 </head>
 
 <body>
 
 
-    <!-- HEADER -->
-    <header>
-        <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
-        <p>Ian Effendi | Week 2B - Canvas Drawing Application (Part 1)</p>
-    </header>
+  <!-- HEADER -->
+  <header>
+    <h1><i class="fad fa-rocket"></i> IGME 330 <i class="fad fa-rocket fa-flip-horizontal"></i></h1>
+    <p>Ian Effendi | Week 2B - Canvas Drawing Application (Part 1)</p>
+  </header>
 
-    <main>
-        <canvas id="mainCanvas" width="700" height="500">
-            Get a real browser!
-        </canvas>
-
-
-        <div id="controls">
-            <label>Tool:
-                <select id="toolChooser">
-                    <option value="toolPencil">Pencil</option>
-                </select>
-            </label>
-
-            <label>Line Width:
-                <select id="lineWidthChooser">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3" selected>3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
-            </label>
-
-            <span><input id="clearButton" type="button" value="Clear" /></span>
-            <span><input id="exportButton" type="button" value="Export" /></span>
-        </div>
-    </main>
+  <main>
+    <canvas id="mainCanvas" width="700" height="500">
+      Get a real browser!
+    </canvas>
 
 
-    <!-- FOOTER -->
-    <footer>
-        <p><a href="../../../index.html">Return to the homepage</a>.</p>
-    </footer>
+    <div id="controls">
+      <label>Tool:
+        <select id="toolChooser">
+          <option value="toolPencil">Pencil</option>
+        </select>
+      </label>
+
+      <label>Line Width:
+        <select id="lineWidthChooser">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </label>
+
+      <label>Stroke Style:
+        <select id="strokeStyleChooser">
+          <option value="red">Red</option>
+          <option value="blue">Blue</option>
+          <option value="green">Green</option>
+          <option value="cyan">Cyan</option>
+          <option value="yellow">Yellow</option>
+          <option value="magenta">Magenta</option>
+          <option value="red">Black</option>
+        </select>
+      </label>
+      
+      <span><input id="clearButton" type="button" value="Clear" /></span>
+      <span><input id="exportButton" type="button" value="Export" /></span>
+    </div>
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <p><a href="../../../index.html">Return to the homepage</a>.</p>
+  </footer>
 
 </body>
 
