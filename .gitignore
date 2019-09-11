@@ -3,6 +3,7 @@
 .vscode
 *.code-workspace
 *rsa*
+*Thumbs.db*
 
 ## NPM ignore commands ##
 
