@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Web Audio Viz - Start</title>
+  <style>
+    body {
+      background: #eeeeee;
+      font-family: tahoma, verdana, sans serif;
+    }
+
+    canvas {
+      margin-left: 10px;
+      margin-top: 10px;
+      box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+      background: black;
+    }
+
+    
+    #controls {
+      margin-left: 10px;
+      margin-top: 10px;
+    }
+    
+    #control-list {
+      list-style: none;
+    }
+    
+    #control-list li {
+      display: block;
+      vertical-align: middle;
+      padding: 5px;
+    }
+    
+    input[type="range"] {
+      height: 10px;
+    }
+
+    section {
+      margin-bottom: 1em;
+    }
+
+    #playButton {
+      font-size: 1.2em;
+      width: 3.5em;
+    }
+
+    button[data-playing="yes"]:after {
+      content: "Pause";
+    }
+
+    button[data-playing="no"]:after {
+      content: "Play";
+    }
+
+    #fsButton {
+      font-size: 1.2em;
+      width: 6em;
+    }
+  </style>
+  <script>
+    "use strict";
+
+    window.onload = init;
+
+    // SCRIPT SCOPED VARIABLES
+
+    // 1- here we are faking an enumeration - we'll look at another way to do this soon 
+    const SOUND_PATH = Object.freeze({
+      sound1: "../files/media/New Adventure Theme.mp3",
+      sound2: "../files/media/Peanuts Theme.mp3",
+      sound3: "../files/media/The Picard Song.mp3"
+    });
+
+    // general elements.
+    let props = {
+      maxRadius: 200,
+      redScale: 1.0,
+      blueScale: 1.5,
+      yellowScale: 0.5
+    };
+
+    // 2 - elements on the page
+    let audioElement, canvasElement;
+
+    // UI
+    let playButton;
+
+    // 3 - our canvas drawing context
+    let drawCtx
+
+    // 4 - our WebAudio context
+    let audioCtx;
+
+    // 5 - nodes that are part of our WebAudio audio routing graph
+    let sourceNode, analyserNode, gainNode;
+
+    // 6 - a typed array to hold the audio frequency data
+    const NUM_SAMPLES = 256;
+    // create a new array of 8-bit integers (0-255)
+    let audioData = new Uint8Array(NUM_SAMPLES / 2);
+
+    // FUNCTIONS
+    function init() {
+      setupWebaudio();
+      setupCanvas();
+      setupUI();
+      update();
+    }
+
+    function setupWebaudio() {
+      // 1 - The || is because WebAudio has not been standardized across browsers yet
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+
+      // 2 - get a reference to the <audio> element on the page
+      audioElement = document.querySelector("audio");
+      audioElement.src = SOUND_PATH.sound3;
+
+      // 3 - create an a source node that points at the <audio> element
+      sourceNode = audioCtx.createMediaElementSource(audioElement);
+
+      // 4 - create an analyser node
+      analyserNode = audioCtx.createAnalyser();
+
+      /*
+      We will request NUM_SAMPLES number of samples or "bins" spaced equally 
+      across the sound spectrum.
+      
+      If NUM_SAMPLES (fftSize) is 256, then the first bin is 0 Hz, the second is 172 Hz, 
+      the third is 344Hz. Each bin contains a number between 0-255 representing 
+      the amplitude of that frequency.
+      */
+
+      // fft stands for Fast Fourier Transform
+      analyserNode.fftSize = NUM_SAMPLES;
+
+      // 5 - create a gain (volume) node
+      gainNode = audioCtx.createGain();
+      gainNode.gain.value = 1;
+
+      // 6 - connect the nodes - we now have an audio graph
+      sourceNode.connect(analyserNode);
+      analyserNode.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+    }
+
+    function setupCanvas() {
+      canvasElement = document.querySelector('canvas');
+      drawCtx = canvasElement.getContext("2d");
+    }
+
+    function setupUI() {
+      playButton = document.querySelector("#playButton");
+      playButton.onclick = e => {
+        console.log(`audioCtx.state = ${audioCtx.state}`);
+
+        // check if context is in suspended state (autoplay policy)
+        if (audioCtx.state == "suspended") {
+          audioCtx.resume();
+        }
+
+        if (e.target.dataset.playing == "no") {
+          audioElement.play();
+          e.target.dataset.playing = "yes";
+          // if track is playing pause it
+        } else if (e.target.dataset.playing == "yes") {
+          audioElement.pause();
+          e.target.dataset.playing = "no";
+        }
+
+      };
+
+      let volumeSlider = document.querySelector("#volumeSlider");
+      volumeSlider.oninput = e => {
+        gainNode.gain.value = e.target.value;
+        volumeLabel.innerHTML = Math.round((e.target.value / 2 * 100));
+      };
+      volumeSlider.dispatchEvent(new InputEvent("input"));
+
+      let maxRadiusSlider = document.querySelector("#maxRadiusSlider");
+      maxRadiusSlider.oninput = e => {
+        props.maxRadius = e.target.value;
+        radiusLabel.innerHTML = Math.round((e.target.value));
+      };
+      maxRadiusSlider.dispatchEvent(new InputEvent("input"));
+
+      let redScaleSlider = document.querySelector("#redScaleSlider");
+      redScaleSlider.oninput = e => {
+        props.redScale = e.target.value;
+        redScaleLabel.innerHTML = Math.round((e.target.value * 100));
+      };
+      redScaleSlider.dispatchEvent(new InputEvent("input"));
+
+      let blueScaleSlider = document.querySelector("#blueScaleSlider");
+      blueScaleSlider.oninput = e => {
+        props.blueScale = e.target.value;
+        blueScaleLabel.innerHTML = Math.round((e.target.value * 100));
+      };
+      blueScaleSlider.dispatchEvent(new InputEvent("input"));
+      
+      let yellowScaleSlider = document.querySelector("#yellowScaleSlider");
+      yellowScaleSlider.oninput = e => {
+        props.yellowScale = e.target.value;
+        yellowScaleLabel.innerHTML = Math.round((e.target.value * 100));
+      };
+      yellowScaleSlider.dispatchEvent(new InputEvent("input"));
+            
+      document.querySelector("#trackSelect").onchange = e => {
+        audioElement.src = e.target.value;
+        // pause the current track if it is playing
+        playButton.dispatchEvent(new MouseEvent("click"));
+      };
+
+
+      // if track ends
+      audioElement.onended = _ => {
+        playButton.dataset.playing = "no";
+      };
+
+      document.querySelector("#fsButton").onclick = _ => {
+        requestFullscreen(canvasElement);
+      };
+
+    }
+
+    function update() {
+      // this schedules a call to the update() method in 1/60 seconds
+      requestAnimationFrame(update);
+
+      /*
+      	Nyquist Theorem
+      	http://whatis.techtarget.com/definition/Nyquist-Theorem
+      	The array of data we get back is 1/2 the size of the sample rate 
+      */
+
+      // populate the audioData with the frequency data
+      // notice these arrays are passed "by reference" 
+      analyserNode.getByteFrequencyData(audioData);
+
+      // OR
+      // analyserNode.getByteTimeDomainData(audioData); // waveform data
+
+      // DRAW!
+      drawCtx.clearRect(0, 0, 800, 600);
+      let barWidth = 4;
+      let barSpacing = 1;
+      let barHeight = 100;
+      let topSpacing = 50;
+
+      // loop through the data and draw!
+      for (let i = 0; i < audioData.length; i++) {
+        // drawCtx.fillStyle = 'rgba(0,255,0,0.6)';
+
+        // the higher the amplitude of the sample (bin) the taller the bar
+        // remember we have to draw our bars left-to-right and top-down
+        //drawCtx.fillRect(i * (barWidth + barSpacing), topSpacing + 256 - audioData[i], barWidth, barHeight);
+
+        // Draw inverted bars.
+        // drawCtx.fillStyle = 'rgba(255,0,0,0.6)';
+        // drawCtx.fillRect(640 - i * (barWidth + barSpacing), topSpacing + 256 - audioData[i] - 20, barWidth, barHeight);
+
+        
+        // Draw circles.
+        let percent = audioData[i] / 255;
+        let circleRadius = percent * props.maxRadius;
+        
+        
+        // Replace bars.
+        drawCtx.beginPath();
+        drawCtx.fillStyle = makeColor(155 * (1 - percent), 50, 200 * percent, 0.6);
+        drawCtx.arc(i * (barWidth + barSpacing), topSpacing + 256 - audioData[i], barWidth, 0, 2 * Math.PI, false);
+        drawCtx.fill();
+        drawCtx.closePath();
+        
+
+        // red circles
+        drawCtx.beginPath();
+        drawCtx.fillStyle = makeColor(255, 111, 111, 0.34 - percent / 3.0);
+        drawCtx.arc(canvasElement.width / 2, canvasElement.height / 2, circleRadius * props.redScale, 0, 2 * Math.PI, false);
+        drawCtx.fill();
+        drawCtx.closePath();
+
+        // blue circles
+        drawCtx.beginPath();
+        drawCtx.fillStyle = makeColor(0, 0, 255, 0.10 - percent / 10.0);
+        drawCtx.arc(canvasElement.width / 2, canvasElement.height / 2, circleRadius * props.blueScale, 0, 2 * Math.PI, false);
+        drawCtx.fill();
+        drawCtx.closePath();
+
+        // yellow circles
+        drawCtx.beginPath();
+        drawCtx.fillStyle = makeColor(200, 200, 0, 0.5 - percent / 5.0);
+        drawCtx.arc(canvasElement.width / 2, canvasElement.height / 2, circleRadius * props.yellowScale, 0, 2 * Math.PI, false);
+        drawCtx.fill();
+        drawCtx.closePath();
+
+      }
+
+    }
+
+
+
+    // HELPER FUNCTIONS
+    function makeColor(red, green, blue, alpha) {
+      var color = 'rgba(' + red + ',' + green + ',' + blue + ', ' + alpha + ')';
+      return color;
+    }
+
+    function requestFullscreen(element) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.mozRequestFullscreen) {
+        element.mozRequestFullscreen();
+      } else if (element.mozRequestFullScreen) { // camel-cased 'S' was changed to 's' in spec
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      }
+      // .. and do nothing if the method is not supported
+    };
+  </script>
+</head>
+
+<body>
+  <canvas width="640" height="400"></canvas>
+  <div id="controls">
+    <audio></audio>
+    <section>
+      <label>Track:
+        <select id="trackSelect">
+          <option value="media/New Adventure Theme.mp3">New Adventure Theme</option>
+          <option value="media/Peanuts Theme.mp3">Peanuts Theme</option>
+          <option value="media/The Picard Song.mp3" selected>The Picard Song</option>
+        </select>
+      </label>
+      <button id="playButton" data-playing="no"></button>
+      <button id="fsButton">Full Screen</button>
+    </section>
+    <section>
+      Controls:
+      <ul id="control-list">
+        <li class="slider">
+          <label>
+            Volume:
+            <input type="range" id="volumeSlider" min="0" max="2" value="1" step="0.01">
+            <span id="volumeLabel">???</span>%
+          </label>
+        </li>
+        <li class="slider">
+          <label>
+            Base Radius:
+            <input type="range" id="maxRadiusSlider" min="1" max="400" value="200" step="1"/>
+            <span id="radiusLabel">???</span>px
+          </label>
+        </li>
+        <li class="slider">
+          <label>
+            Red Circle Scale:
+            <input type="range" id="redScaleSlider" min="0" max="2" value="1" step="0.01"/>
+            <span id="redScaleLabel">???</span>%
+          </label>
+        </li>
+        <li class="slider">
+          <label>
+            Blue Circle Scale:
+            <input type="range" id="blueScaleSlider" min="0" max="2" value="1.5" step="0.01"/>
+            <span id="blueScaleLabel">???</span>%
+          </label>
+        </li>
+        <li class="slider">
+          <label>
+            Yellow Circle Scale:
+            <input type="range" id="yellowScaleSlider" min="0" max="2" value="0.5" step="0.01"/>
+            <span id="yellowScaleLabel">???</span>%
+          </label>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+</body></html>
