@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>ES6 Sprites Plus Bitmap Manipulation</title>
+	<style>
+		body{font-family:sans-serif;margin:2%;}
+		code{font-size:1.1em;}
+		span{margin-right:2em;}
+	</style>
+</head>
+<body>
+<canvas id="mycanvas" width="1000" height="600"></canvas>
+<p>
+	<span><input type="checkbox" id="trailsCB"> <label for="trailsCB">Trails</label></span>
+	<span><input type="checkbox" id="showImageCB"> <label for="showImageCB">Show Image</label></span>
+	<span><input type="checkbox" id="blendingCB"> <label for="blendingCB">Funky Blending</label></span>
+	<span><input type="checkbox" id="noiseCB"> <label for="noiseCB">Red Noise</label></span>
+	<span><input type="checkbox" id="tintCB"> <label for="tintCB">Magenta Tint</label></span>
+    <span><input type="checkbox" id="embossCB"> <label for="embossCB">Emboss</label></span>
+</p>
+<p><b>Works best in Chrome!</b></p>
+<!--
+	DISCUSSION: 
+	1) We split up the JS code into logical units and moved it 
+	out of the HTML file and into external JS files
+	
+	2) We added checkboxes that control various effects:
+	- fading out the animations instead of completely overwriting it every frame
+	- displaying an image
+	- blending (i.e. ctx.globalCompositeOperation)
+	- manipulating the canvas ImageData and adding a noise effect
+	- maniplulating the canvas ImageData and adding a simple tint effect
+	
+	
+	IN-CLASS EXERCISE:
+	
+	1) Add your `RingSprite` class (from Demo: Canvas & Sprites) to sprites.js and then
+	create them instead of regular square Sprites
+	
+	2) Add a checkbox that turns the emboss effect on and off 
+	(see AV Part II for Emboss code) 
+	
+-->
+	<script src="src/canvas-utils.js"></script>
+	<script src="src/utils.js"></script>
+	<script src="src/sprites.js"></script>
+	<script src="src/main.js"></script>
+
+</body>
+</html>
