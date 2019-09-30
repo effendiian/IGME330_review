@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- STYLE + SCRIPT -->
-  <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Heebo:800|Mansalva&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet" type="text/css" />
   <script src="https://kit.fontawesome.com/24af103159.js"></script>
 
@@ -25,7 +25,7 @@
 
     <!-- Content & Canvas -->
     <section id="content">
-      <canvas id="mainCanvas" width="640" height="400">
+      <canvas id="mainCanvas">
         <div id="fallback">
           Please use a browser with support for HTML5 Canvas and the WebAudio API.
         </div>
@@ -33,10 +33,11 @@
     </section>
 
     <!-- Controls for the Visualizer -->
-    <section id="controls">
+    <section id="interactions">
 
       <!-- TRACK SELECTION -->
       <div id="trackSettings">
+        <label><i class="fa fa-cassette-tape"></i></label>
         <select id="trackSelect">
           <option value="" selected>Please select a track</option>
         </select>
@@ -44,9 +45,22 @@
 
       <!-- PLAYBACK SETTINGS -->
       <div id="playbackSettings">
-        <audio>
+        <audio id="player">
           Please use a browser with support for HTML5 Canvas and the WebAudio API.
         </audio>
+        <div id="controls">
+          <button id="toggle"><i class="fa fa-play"></i></button>
+          <span id="gutter">
+            <span id="progress"></span>
+            <span id="handle"></span>
+          </span>
+          <span id="timeleft">-0:00</span>
+          <span id="volume">
+            <button id="volume-icon"><i class="fa fa-volume-off"></i></button>
+            <span id="level"></span>
+            <span id="handle"></span>
+          </span>
+        </div>
       </div>
 
       <!-- FILTER SETTINGS -->
@@ -61,7 +75,7 @@
   <!-- COPYRIGHT INFORMATION -->
   <footer>
     <p id="copyright">(C) 2019 - Ian Effendi</p>
-    <p id="return"><a href="../.." target="_blank">Return to the homepage</a>.</p>
+    <p id="return"><a href="../.." target="_blank">Return to the homepage.</a></p>
   </footer>
 
 
