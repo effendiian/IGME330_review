@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- METADATA -->
+  <title>Vaporwave Visualizer</title>
+  <meta charset="utf-8" />
+  <meta name="description" content="Vaporwave visualizer for coursework." />
+  <meta name="keywords" content="HTML5, Canvas, CSS3, JavaScript" />
+  <meta name="author" content="Ian Effendi" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- STYLE + SCRIPT -->
+  <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://kit.fontawesome.com/24af103159.js"></script>
+
+</head>
+
+<body>
+
+  <!-- MAIN CONTENT -->
+  <main id="visualizer">
+
+    <!-- Content & Canvas -->
+    <section id="content">
+      <canvas id="mainCanvas" width="640" height="400">
+        <div id="fallback">
+          Please use a browser with support for HTML5 Canvas and the WebAudio API.
+        </div>
+      </canvas>
+    </section>
+
+    <!-- Controls for the Visualizer -->
+    <section id="controls">
+
+      <!-- TRACK SELECTION -->
+      <div id="trackSettings">
+        <select id="trackSelect">
+          <option value="" selected>Please select a track</option>
+        </select>
+      </div>
+
+      <!-- PLAYBACK SETTINGS -->
+      <div id="playbackSettings">
+        <audio>
+          Please use a browser with support for HTML5 Canvas and the WebAudio API.
+        </audio>
+      </div>
+
+      <!-- FILTER SETTINGS -->
+      <div id="filterSettings">
+        <!-- TODO -->
+      </div>
+
+    </section>
+  </main>
+
+
+  <!-- COPYRIGHT INFORMATION -->
+  <footer>
+    <p id="copyright">(C) 2019 - Ian Effendi</p>
+    <p id="return"><a href="../.." target="_blank">Return to the homepage</a>.</p>
+  </footer>
+
+
+</body></html>
