@@ -12,9 +12,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- STYLE + SCRIPT -->
-  <link href="https://fonts.googleapis.com/css?family=Heebo:800|Mansalva&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:800|Mansalva&display=swap" rel="stylesheet">
   <link href="style.css" rel="stylesheet" type="text/css" />
   <script src="https://kit.fontawesome.com/24af103159.js"></script>
+  <script src="src/js/util.js"></script>
+  <script src="src/js/audio.js"></script>
+  <script src="src/js/app.js"></script>
+  <script src="src/js/main.js"></script>
 
 </head>
 
@@ -44,23 +48,25 @@
       </div>
 
       <!-- PLAYBACK SETTINGS -->
-      <div id="playbackSettings">
-        <audio id="player">
-          Please use a browser with support for HTML5 Canvas and the WebAudio API.
-        </audio>
-        <div id="controls">
-          <button id="toggle"><i class="fa fa-play"></i></button>
-          <span id="gutter">
-            <span id="progress"></span>
-            <span id="handle"></span>
-          </span>
-          <span id="timeleft">-0:00</span>
-          <span id="volume">
-            <button id="volume-icon"><i class="fa fa-volume-off"></i></button>
-            <span id="level"></span>
-            <span id="handle"></span>
-          </span>
+      <div id="playerSettings">
+        
+        <div class="player track-info">
+          <span class="player track-title">Track Title</span> - 
+          <span class="player track-artist">Track Artist</span> -
+          <span class="player track-album">Track Album</span>        
         </div>
+        
+        <div class="player controls">
+          <audio class="player element" src="src/audio/Tempo - EXO.mp3">
+            Please use a browser with support for HTML5 Canvas and the WebAudio API.
+          </audio>
+          <button class="toggle button"><i class="fa fa-play toggle button icon"></i></button>
+          <progress class="progress progress-bar" value="0.0" value="1.0"></progress>
+          <span class="player track-time">00:00</span> / <span class="player track-duration">00:00</span>
+          <button class="volume button"><i class="fa fa-volume volume button icon"></i></button>
+          <progress class="volume progress-bar" value="0.5" max="1.0"></progress>
+        </div>        
+
       </div>
 
       <!-- FILTER SETTINGS -->
