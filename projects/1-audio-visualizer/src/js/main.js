@@ -8,6 +8,7 @@
 
 // The application object is created in 'app.js'. 
 
+
 // Initialize the visualizer application.
 function init() {
   if(!app){
@@ -17,6 +18,18 @@ function init() {
     app.init();    
     
     let player = app.getPlayer();  
+    let analyser = app.getAnalyser();
+    let renderer = app.getRenderer();
+        
+    function render() {
+        analyser.update();
+        renderer.update();
+        renderer.render(analyser.frequencyData);
+        requestAnimationFrame(render);
+    }
+      
+    requestAnimationFrame(render);
+      
   }  
 };
 

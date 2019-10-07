@@ -1,4 +1,29 @@
 "use strict";
+
+// Constants.
+
+// Ready state values. 
+// Taken from Mozilla docs: https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState
+const READY_STATE = {
+    HAVE_NOTHING: 0,
+    HAVE_METADATA: 1,
+    HAVE_CURRENT_DATA: 2,
+    HAVE_FUTURE_DATA: 3,
+    HAVE_ENOUGH_DATA: 4
+};
+
+// Source file media prefixes.
+const MEDIA_PREFIX = {
+    'AUDIO': "src/audio/",
+    'IMAGE': "src/img/",
+    'SCRIPT': "src/js/"
+};
+
+function makeColor(red, green, blue, alpha) {
+  var color = 'rgba(' + red + ',' + green + ',' + blue + ', ' + alpha + ')';
+  return color;
+}
+
 function getRandomUnitVector(){
 	let x = getRandom(-1,1);
 	let y = getRandom(-1,1);

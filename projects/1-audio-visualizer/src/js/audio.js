@@ -6,16 +6,6 @@
   Used to encapsulate classes pertaining to the audio player.
 */
 
-// Ready state values. 
-// Taken from Mozilla docs: https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState
-const READY_STATE = {
-    HAVE_NOTHING: 0,
-    HAVE_METADATA: 1,
-    HAVE_CURRENT_DATA: 2,
-    HAVE_FUTURE_DATA: 3,
-    HAVE_ENOUGH_DATA: 4
-};
-
 // Store state involving the audio player.
 class AudioPlayer {
 
@@ -33,11 +23,12 @@ class AudioPlayer {
     }
 
     // Initialize the audio player's events.
-    init() {
+    init(analyser) {
         if (!this.element) {
             console.error("Please add an audio element with the class '.player.element' to your page.");
             return;
         }
+        this.analyser = analyser || undefined;
 
         // Prepare event handler methods.
         let _player = this;
@@ -49,11 +40,12 @@ class AudioPlayer {
             } else {
                 _player.play();
             }
-
-            // Update the icon.
-            _player.updateToggleIcon();
         }
-
+        
+        function selectTrack() {
+            _player.updateTrack();
+        }
+        
         function selectProgress(e) {
             let x = e.pageX - this.offsetLeft;
             let val = x * _player.element.duration / this.offsetWidth;
@@ -74,22 +66,36 @@ class AudioPlayer {
             }
             _player.updateVolumeIcon();
         }
-
+        
         // Add event handler methods.
         this.toggleButton.addEventListener('click', togglePlaying);
+        
+        let _analyser = this.analyser;
+        this.toggleButton.addEventListener('click', () => {
+            _analyser.resume();
+        });
+        
         this.volumeButton.addEventListener('click', toggleMute);
         this.progress.addEventListener('click', selectProgress);
         this.volume.addEventListener('click', updateVolume);
-
-        // Call update methods.
-        this.updateProgress();
-        this.updateToggleIcon();
-        this.updateVolumeIcon();
-
+        this.trackInfo.select.addEventListener('change', selectTrack);
+         
         // Update the progress bar on an interval.
-        setInterval(() => {
+        this.element.addEventListener('timeupdate', () => {
             _player.updateProgress();
-        }, this.refreshRate);
+        });
+        
+        // Play next track on song end.
+        this.element.addEventListener('ended', () => {
+            _player.nextTrack();
+        });
+        
+        this.element.addEventListener('loadeddata', () => {
+            _player.play();
+        });
+        
+        // Update the track info.
+        this.updateTrack();
     }
 
     // Is the player paused?
@@ -113,20 +119,35 @@ class AudioPlayer {
     }
 
     // Play the audio source.
-    play() {
+    play() {        
         if (!this.element) {
             return;
         }
 
         if (this.isPaused()) {
-            if (this.element.readyState === READY_STATE.HAVE_NOTHING) {
-                console.error("Cannot play audio element without loaded data.");
-                return;
+            let _player = this;
+            if(this.element.readyState === READY_STATE.HAVE_NOTHING){
+                setTimeout(() => {
+                    _player.play();
+                }, this.refreshRate);                
+            } 
+            else 
+            {   
+                let promise = this.element.play();  
+                
+                if(promise !== undefined){
+                    promise.then(_ => {
+                        _player.updateProgress();
+                        _player.updateToggleIcon();
+                        _player.updateTrackTime();
+                    }).catch(error => {
+                        console.log("Autoplay is prevented due to Chrome's strict autoplay policy.");
+                    });
+                }     
             }
-            this.element.play();
         }
     }
-
+    
     // Pause the audio source.
     pause() {
         if (!this.element) {
@@ -135,6 +156,9 @@ class AudioPlayer {
 
         if (this.isPlaying()) {
             this.element.pause();
+            this.updateProgress();
+            this.updateToggleIcon();                
+            this.updateTrackTime();   
         }
     }
 
@@ -198,15 +222,48 @@ class AudioPlayer {
             // console.log(`Current Progress: ${this.progress.value} % | ${formatTime(this.element.currentTime)}:${formatTime(this.element.duration)}`);   
         }
     }
-    
+
     // Update the progress bar's current time and duration labels.
     updateTrackTime() {
-        if(!this.element){
+        if (!this.element) {
+            return;
+        }
+
+        this.trackInfo.time.innerHTML = formatTime(this.element.currentTime);
+        this.trackInfo.duration.innerHTML = formatTime(this.element.duration);
+    }
+    
+    // Update track based on selection.
+    updateTrack() {
+        if (!this.element) {
             return;
         }
         
-        this.trackInfo.time.innerHTML = formatTime(this.element.currentTime);
-        this.trackInfo.duration.innerHTML = formatTime(this.element.duration);
+        this.setSong(this.trackInfo.select.value);     
+    }
+
+    // Go to the next track based on the selected index.
+    nextTrack() {
+        if(!this.element || !this.trackInfo.select){
+            return;
+        }
+        
+        // Get valid index.
+        let index = this.trackInfo.select.selectedIndex;
+        if(index != -1) {
+            index++;
+        } else {
+            return;
+        }
+        
+        // Wrap if necessary.
+        if(index >= this.trackInfo.select.length) {
+            index = 0;
+        }
+        
+        // Update selected index.
+        this.trackInfo.select.selectedIndex = index;
+        this.updateTrack();
     }
     
     // Set the progress and playback.
@@ -235,10 +292,31 @@ class AudioPlayer {
         if (!this.element) {
             return;
         }
-        
-        this.trackInfo.title = data.title || 'Track Title';
-        this.trackInfo.artist = data.artist || 'Track Artist';
-        this.trackInfo.album = data.album || 'Track Album';
+
+        this.trackInfo.title.innerHTML = data.title || 'Track Title';
+        this.trackInfo.artist.innerHTML  = data.artist || 'Track Artist';
+        this.trackInfo.album.innerHTML  = data.album || 'Track Album';
     }    
     
+    // Set the song source.
+    setSong(keyword) {
+        if(!this.element || !keyword || !TRACKS[keyword]){
+            return;
+        }
+        
+        // Get the song reference.
+        let song = TRACKS[keyword];
+        
+        // Get the source address.
+        let source = song.getAddress();         
+        if(source === ''){
+            return;
+        }
+        
+        // Se the source.
+        this.element.src = source;
+        this.setTrackInfo(song);
+        this.element.load();
+    }
+
 };
