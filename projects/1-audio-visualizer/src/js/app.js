@@ -23,7 +23,14 @@ const app = (function(){
       progress: getElement('.progress.progress-bar'),
       volume: getElement('.volume.progress-bar'),
       volumeButton: getElement('.volume.button'),
-      volumeIcon: getElement('.volume.button.icon')
+      volumeIcon: getElement('.volume.button.icon'),
+      trackInfo: {
+          title: getElement('.player.track-title'),
+          artist: getElement('.player.track-artist'),
+          album: getElement('.player.track-album'),
+          time: getElement('.player.track-time'),
+          duration: getElement('.player.track-duration')
+      },
     });    
     
     _player.init();

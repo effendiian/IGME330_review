@@ -3,86 +3,97 @@
 
 <head>
 
-  <!-- METADATA -->
-  <title>Vaporwave Visualizer</title>
-  <meta charset="utf-8" />
-  <meta name="description" content="Vaporwave visualizer for coursework." />
-  <meta name="keywords" content="HTML5, Canvas, CSS3, JavaScript" />
-  <meta name="author" content="Ian Effendi" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- METADATA -->
+    <title>Vaporwave Visualizer</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Vaporwave visualizer for coursework." />
+    <meta name="keywords" content="HTML5, Canvas, CSS3, JavaScript" />
+    <meta name="author" content="Ian Effendi" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- STYLE + SCRIPT -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:800|Mansalva&display=swap" rel="stylesheet">
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <script src="https://kit.fontawesome.com/24af103159.js"></script>
-  <script src="src/js/util.js"></script>
-  <script src="src/js/audio.js"></script>
-  <script src="src/js/app.js"></script>
-  <script src="src/js/main.js"></script>
+    <!-- STYLE + SCRIPT -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:800|Mansalva&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/24af103159.js"></script>
+    <script src="src/js/util.js"></script>
+    <script src="src/js/audio.js"></script>
+    <script src="src/js/app.js"></script>
+    <script src="src/js/main.js"></script>
 
 </head>
 
 <body>
 
-  <!-- MAIN CONTENT -->
-  <main id="visualizer">
+    <!-- MAIN CONTENT -->
+    <main id="visualizer">
 
-    <!-- Content & Canvas -->
-    <section id="content">
-      <canvas id="mainCanvas">
-        <div id="fallback">
-          Please use a browser with support for HTML5 Canvas and the WebAudio API.
-        </div>
-      </canvas>
-    </section>
+        <!-- Content & Canvas -->
+        <section id="content">
+            <canvas id="mainCanvas">
+                <div id="fallback">
+                    Please use a browser with support for HTML5 Canvas and the WebAudio API.
+                </div>
+            </canvas>
+        </section>
 
-    <!-- Controls for the Visualizer -->
-    <section id="interactions">
+        <!-- Controls for the Visualizer -->
+        <section id="interactions">
 
-      <!-- TRACK SELECTION -->
-      <div id="trackSettings">
-        <label><i class="fa fa-cassette-tape"></i></label>
-        <select id="trackSelect">
-          <option value="" selected>Please select a track</option>
-        </select>
-      </div>
+            <!-- TRACK SELECTION -->
+            <div id="trackSettings">
+                <label><i class="fa fa-cassette-tape"></i></label>
+                <select id="trackSelect">
+                    <option value="" selected>Please select a track</option>
+                </select>
+            </div>
 
-      <!-- PLAYBACK SETTINGS -->
-      <div id="playerSettings">
-        
-        <div class="player track-info">
-          <span class="player track-title">Track Title</span> - 
-          <span class="player track-artist">Track Artist</span> -
-          <span class="player track-album">Track Album</span>        
-        </div>
-        
-        <div class="player controls">
-          <audio class="player element" src="src/audio/Tempo - EXO.mp3">
-            Please use a browser with support for HTML5 Canvas and the WebAudio API.
-          </audio>
-          <button class="toggle button"><i class="fa fa-play toggle button icon"></i></button>
-          <progress class="progress progress-bar" value="0.0" value="1.0"></progress>
-          <span class="player track-time">00:00</span> / <span class="player track-duration">00:00</span>
-          <button class="volume button"><i class="fa fa-volume volume button icon"></i></button>
-          <progress class="volume progress-bar" value="0.5" max="1.0"></progress>
-        </div>        
+            <!-- PLAYBACK SETTINGS -->
+            <div id="playerSettings">
 
-      </div>
+                <div class="player controls">
+                    
+                    <div class="player toggle">
+                        <audio class="player element" src="src/audio/Tempo - EXO.mp3">
+                            Please use a browser with support for HTML5 Canvas and the WebAudio API.
+                        </audio>
+                        <button class="toggle button"><i class="fa fa-play toggle button icon"></i></button>
+                    </div>
+                    
+                    <div class="player track-info">
+                        <div class="player track-metadata">
+                            <span class="player track-title">Track Title</span> -
+                            <span class="player track-artist">Track Artist</span> -
+                            <span class="player track-album">Track Album</span>
+                        </div>
+                        <div class="player track-details">
+                            <progress class="progress progress-bar" value="0.0" value="1.0"></progress>
+                            <span class="player track-time">00:00</span> / <span class="player track-duration">00:00</span>
+                        </div>
+                    </div>
 
-      <!-- FILTER SETTINGS -->
-      <div id="filterSettings">
-        <!-- TODO -->
-      </div>
+                    <div class="player volume">
+                        <button class="volume button"><i class="fa fa-volume volume button icon"></i></button>
+                        <progress class="volume progress-bar" value="0.5" max="1.0"></progress>
+                    </div>
+                    
+                </div>
 
-    </section>
-  </main>
+            </div>
+
+            <!-- FILTER SETTINGS -->
+            <div id="filterSettings">
+                <!-- TODO -->
+            </div>
+
+        </section>
+    </main>
 
 
-  <!-- COPYRIGHT INFORMATION -->
-  <footer>
-    <p id="copyright">(C) 2019 - Ian Effendi</p>
-    <p id="return"><a href="../.." target="_blank">Return to the homepage.</a></p>
-  </footer>
+    <!-- COPYRIGHT INFORMATION -->
+    <footer>
+        <p id="copyright">(C) 2019 - Ian Effendi</p>
+        <p id="return"><a href="../.." target="_blank">Return to the homepage.</a></p>
+    </footer>
 
 
 </body></html>
