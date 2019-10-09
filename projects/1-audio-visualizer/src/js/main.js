@@ -1,16 +1,18 @@
 "use strict";
 /*
-  Main.js
-  Ian Effendi
-  
+  Main.js -  Ian Effendi  
   Entry point for the audio visualizer application.
 */
 
-// The application object is created in 'app.js'. 
+import test from './utils/test.js';
 
+// Test function for testing import statements.
 
 // Initialize the visualizer application.
 function init() {
+        
+  test();
+    
   if(!app){
     console.error("'app.js' has not been added to the page.");
     return;

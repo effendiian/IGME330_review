@@ -11,6 +11,7 @@ let showTrails,showImage,showBlending,showNoise,showTint,showEmboss = false;
 init();
 
 function init(){
+    
 	ctx = document.querySelector("canvas").getContext("2d");
 	canvasWidth = mycanvas.width;
 	canvasHeight = mycanvas.height;
