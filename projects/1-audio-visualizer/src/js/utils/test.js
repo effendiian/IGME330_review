@@ -50,6 +50,11 @@ export function testMath() {
     
 }
 
+// Get element function.
+export function getElement(selector) {
+    return document.querySelector(selector);
+}
+    
 // Test all imported functions.
 export default function () {
     testMath();
