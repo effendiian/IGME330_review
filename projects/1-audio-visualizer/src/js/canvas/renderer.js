@@ -31,9 +31,4 @@ export class Renderer {
         this.initialized = true;
     }
     
-    // Draws necessary information to the canvas.
-    render(){
-        // TODO.    
-    }
-    
 }

@@ -1,10 +1,94 @@
 "use strict";
 /*
-  App.js
-  Ian Effendi
-  
-  Class representing the application.
+    App.js - Ian Effendi
+    Application handles the event flow for the visualizer.
 */
+
+
+// Application class that can be constructed.
+export class Application {
+
+    // Constructor class that takes a canvas and audio source.
+    constructor(options = {}) {
+        this.canvas = options.canvas || undefined;
+        this.audioSource = options.audioSource || undefined;
+        this.controls = options.controls || undefined;
+        this.initialized = false;
+    }
+
+    // Initialize the application.
+    init() {
+
+        // On success, call resolve(result).
+        // On error, call reject(reason).
+        
+        return new Promise((resolve, reject) => {
+            if (this.initialized === true) {
+                console.log("The application has already been initialized.");
+                resolve(this);
+            }
+
+            this.initCanvas().then(() => {
+                return this.initAudio();
+            }).then((result) => {
+                return this.initControls();
+            }).then((result) => {         
+                console.log("All members have been initialized.");
+                this.initialized = true;
+                resolve(this);
+            }).catch((err) => {
+                // Pass the error up the promise chain.
+                reject(err);
+            });
+
+        });
+    }
+
+    // Initialize the canvas.
+    initCanvas() {
+        return new Promise((resolve, reject) => {
+            if (!this.canvas) {
+                reject("The canvas element has not been loaded.");
+            } else {
+                console.log("The canvas element has been initialized.");
+                resolve(this);
+            }
+        });
+    }
+    
+    // Initialize the audio source.
+    initAudio(){
+        return new Promise((resolve, reject) => {
+            if (!this.audioSource) {
+                reject("The audio source element has not been loaded.");
+            } else {
+                console.log("The audio source element has been initialized.");
+                resolve(this);
+            }
+        });
+    }
+    
+    // Initialize the controls.
+    initControls(){
+        return new Promise((resolve, reject) => {
+            if (!this.controls) {
+                reject("The control elements have not been loaded.");
+            } else {
+                console.log("The control elements has been initialized.");
+                resolve(this);
+            }
+        });        
+    }
+
+    // Run the application.
+    run() {
+        
+    }
+
+}
+
+
+/*
 
 // Create the application module.
 const app = (function () {
@@ -86,3 +170,5 @@ const app = (function () {
     };
 
 }());
+
+*/
