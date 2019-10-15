@@ -87,53 +87,59 @@ export function rad2deg(theta) {
 }
 
 // Clamp input value between lower and upper bounds.
-export function clamp(value, lower, upper){
+export function clamp(value, lower, upper) {
     return min(max(value, lower), upper);
 }
 
 // Get random value between lower (inclusive) and upper (exclusive) bounds.
-export function getRandom(lower, upper){
-    return random() * (upper - lower) + lower;    
+export function getRandom(lower, upper) {
+    return random() * (upper - lower) + lower;
 }
 
 // Get a random byte value.
-export function getRandomByte(){
+export function getRandomByte() {
     return round(getRandom(0, 256));
 }
 
 // Get random unit vector.
 export function getRandomUnitVector() {
-	let x = getRandom(-1,1);
-	let y = getRandom(-1,1);
-	let length = Math.sqrt(x*x + y*y);
-	if(length == 0){ // very unlikely
-		x=1; // point right
-		y=0;
-		length = 1;
-	} else{
-		x /= length;
-		y /= length;
-	}
+    let x = getRandom(-1, 1);
+    let y = getRandom(-1, 1);
+    let length = Math.sqrt(x * x + y * y);
+    if (length == 0) { // very unlikely
+        x = 1; // point right
+        y = 0;
+        length = 1;
+    } else {
+        x /= length;
+        y /= length;
+    }
 
-	return {x:x, y:y};
+    return {
+        x: x,
+        y: y
+    };
 }
 
 // Calculate the greatest common denominator.
 export function gcd() {
-    if(arguments.length == 2){
-        if(arguments[1] == 0){
+    if (arguments.length == 2) {
+        if (arguments[1] == 0) {
             return arguments[0];
-        }
-        else 
-        {
+        } else {
             return gcd(arguments[1], arguments[0] % arguments[1]);
         }
-    } else if(arguments.length > 2) {
+    } else if (arguments.length > 2) {
         let result = gcd(arguments[0], arguments[1]);
-        for(let i = 2; i < arguments.length; i++){
+        for (let i = 2; i < arguments.length; i++) {
             result = gcd(result, arguments[i]);
         }
         return result;
     }
 }
 
+// Interpolate between two values.
+export function interpolate(start, end, t) {
+    let state = clamp(t, 0.0, 1.0);
+    return (1 - state) * start + state * end;
+}
