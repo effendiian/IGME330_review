@@ -1,0 +1,265 @@
+
+// NOTES
+
+/*
+
+Organization of Audio Visualizer
+
+Controls | AudioPlayer
+Play / Pause / Resume Button
+Progress Slider
+Volume Slider
+Track Selection
+
+Controls | Effects
+See Web Audio API for Reference
+
+UI / Controls
+-- CSS Interactions should call events.  
+-- 'Play' will load and play song.
+-- 'Pause' will pause song.
+-- 'Resume' will resume song that has been paused.
+-- 'Progress' is called every tick while the song is playing.
+-- 'Volume' is called when the playback volume is changed.
+-- 'Mute' is called when the mute button is clicked.
+-- 'Unmute' is called when the mute button is clicked.
+-- 'SelectTrack' is called when the song ends or when a song is selected.
+
+Math Utility
+Clamp(value, inclusive min, inclusive max)
+Range(inclusive min, exclusive max)
+Interpolate(start value, end value, interpolation value)
+Animate(start time, start value, end time, target value).Evaluate(time t)
+
+Canvas Utility | Canvas
+Resize(height, width)
+Clear() // Draw clear rectangle the size of the window.
+Draw(Shape, Transformation Options, Style Options)
+-- Possibly extend with specific shape methods for each of the following.
+
+Canvas Utility | Transformation
+translationX
+translationY
+rotationX
+rotationY
+scaleX
+scaleY
+
+Canvas Utility | Style
+lineWidth
+lineCap ('butt', 'round', or 'square')
+lineJoin ('round', 'bevel', or 'miter')
+miterLimit
+strokeStyle
+fillStyle
+getLineDash
+setLineDash
+lineDashOffset
+
+Canvas Utility | ShapeDrawer
+DrawSquare(Ctx, Transformation Options, Style Options)
+DrawCircle(Ctx, Transformation Options, Style Options)
+DrawRectangle(Ctx, Transformation Options, Style Options)
+
+Particle // Shape with time to live and vector.
+Callback
+Lifetime // Particle will 'cease' to live.
+Vector2 position
+Vector2 velocity
+Vector2 acceleration
+
+AnimationCurveKey
+timestamp
+value
+
+AnimationCurve
+Keys [ time, value ]
+Between( time ) // returns the key index.
+Evaluate ( time )
+
+Vector2
+x, y // Assumes the vector is pointing from origin 0, 0.
+Normalize
+
+Vector2Field // Field of forces.
+int rowCount
+int colCount
+Vector2 [ ] [ ]
+GetVector(row, col)
+
+AudioVisualizer
+-- Visualizer is able to render sampler data into objects.
+Setup Controls // Setup the event callback.
+Setup Audio Chain // Setup the audio chain.
+Setup Canvas // Setup the canvas.
+bool showWaveform
+bool showFrequencySpectrum
+bool showBPM
+
+AudioContextHandler
+SetupAudioChain() // Builds the audio chain nodes.
+GetContext(HTMLMediaElement <audio> or <video>) // returns a MediaElementAudioSourceNode
+Play() => AudioContext.resume() (if audio has been prepared).
+Pause() => AudioContext.suspend()
+Stop() => AudioContext.close()
+
+AudioSampler
+Constructor(node)
+fftSize => AnalyserNode.fftSize
+minDecibels => AnalyserNode.minDecibels // min value from getByteFrequencyData()
+maxDecibels => AnalyserNode.maxDecibels // max value from getByteFrequencyData()
+smoothing => AnalyserNode.smoothingTimeConstant // double value representing averaging constant.
+bool getFrequencyData, bool getTimeDomainData
+GetFrequencyBinCount() => Half of fftSize.
+GetFrequencyData() => AnalyserNode.getByteFrequencyData()
+GetWaveformData() => AnalyserNode.getByteTimeDomainData()
+Update() // Updates all the measurements by querying from the analyser node.
+SetFFTSize(int)
+SetDecibelRange(min, max)
+SetSmoothingTimeConstant(double smooth)
+CalculatePeaks()
+CalculateIntervalsBetweenPeaks()
+
+-- Should get the audio source. (NUM_SAMPLES)
+-- Should get frequency bands. (8)
+Refer to the C# tutorials for this one.
+
+Audio Visualizer Tutorials for Unity might help for JS.
+-- Outline project structure around modules.
+-- Refactor project into ES6 modules.
+-- Watch tutorials for Unity audio visualizers for inspiration about JS.
+
+
+*/
+// NOTES
+
+/*
+
+Organization of Audio Visualizer
+
+Controls | AudioPlayer
+Play / Pause / Resume Button
+Progress Slider
+Volume Slider
+Track Selection
+
+Controls | Effects
+See Web Audio API for Reference
+
+UI / Controls
+-- CSS Interactions should call events.  
+-- 'Play' will load and play song.
+-- 'Pause' will pause song.
+-- 'Resume' will resume song that has been paused.
+-- 'Progress' is called every tick while the song is playing.
+-- 'Volume' is called when the playback volume is changed.
+-- 'Mute' is called when the mute button is clicked.
+-- 'Unmute' is called when the mute button is clicked.
+-- 'SelectTrack' is called when the song ends or when a song is selected.
+
+Math Utility
+Clamp(value, inclusive min, inclusive max)
+Range(inclusive min, exclusive max)
+Interpolate(start value, end value, interpolation value)
+Animate(start time, start value, end time, target value).Evaluate(time t)
+
+Canvas Utility | Canvas
+Resize(height, width)
+Clear() // Draw clear rectangle the size of the window.
+Draw(Shape, Transformation Options, Style Options)
+-- Possibly extend with specific shape methods for each of the following.
+
+Canvas Utility | Transformation
+translationX
+translationY
+rotationX
+rotationY
+scaleX
+scaleY
+
+Canvas Utility | Style
+lineWidth
+lineCap ('butt', 'round', or 'square')
+lineJoin ('round', 'bevel', or 'miter')
+miterLimit
+strokeStyle
+fillStyle
+getLineDash
+setLineDash
+lineDashOffset
+
+Canvas Utility | ShapeDrawer
+DrawSquare(Ctx, Transformation Options, Style Options)
+DrawCircle(Ctx, Transformation Options, Style Options)
+DrawRectangle(Ctx, Transformation Options, Style Options)
+
+Particle // Shape with time to live and vector.
+Callback
+Lifetime // Particle will 'cease' to live.
+Vector2 position
+Vector2 velocity
+Vector2 acceleration
+
+AnimationCurveKey
+timestamp
+value
+
+AnimationCurve
+Keys [ time, value ]
+Between( time ) // returns the key index.
+Evaluate ( time )
+
+Vector2
+x, y // Assumes the vector is pointing from origin 0, 0.
+Normalize
+
+Vector2Field // Field of forces.
+int rowCount
+int colCount
+Vector2 [ ] [ ]
+GetVector(row, col)
+
+AudioVisualizer
+-- Visualizer is able to render sampler data into objects.
+Setup Controls // Setup the event callback.
+Setup Audio Chain // Setup the audio chain.
+Setup Canvas // Setup the canvas.
+bool showWaveform
+bool showFrequencySpectrum
+bool showBPM
+
+AudioContextHandler
+SetupAudioChain() // Builds the audio chain nodes.
+GetContext(HTMLMediaElement <audio> or <video>) // returns a MediaElementAudioSourceNode
+Play() => AudioContext.resume() (if audio has been prepared).
+Pause() => AudioContext.suspend()
+Stop() => AudioContext.close()
+
+AudioSampler
+Constructor(node)
+fftSize => AnalyserNode.fftSize
+minDecibels => AnalyserNode.minDecibels // min value from getByteFrequencyData()
+maxDecibels => AnalyserNode.maxDecibels // max value from getByteFrequencyData()
+smoothing => AnalyserNode.smoothingTimeConstant // double value representing averaging constant.
+bool getFrequencyData, bool getTimeDomainData
+GetFrequencyBinCount() => Half of fftSize.
+GetFrequencyData() => AnalyserNode.getByteFrequencyData()
+GetWaveformData() => AnalyserNode.getByteTimeDomainData()
+Update() // Updates all the measurements by querying from the analyser node.
+SetFFTSize(int)
+SetDecibelRange(min, max)
+SetSmoothingTimeConstant(double smooth)
+CalculatePeaks()
+CalculateIntervalsBetweenPeaks()
+
+-- Should get the audio source. (NUM_SAMPLES)
+-- Should get frequency bands. (8)
+Refer to the C# tutorials for this one.
+
+Audio Visualizer Tutorials for Unity might help for JS.
+-- Outline project structure around modules.
+-- Refactor project into ES6 modules.
+-- Watch tutorials for Unity audio visualizers for inspiration about JS.
+
+
+*/
