@@ -5,25 +5,18 @@
 */
 
 // Default styles.
-const Styles = {
-    DEFAULT_LINE_WIDTH: 1,
-    DEFAULT_LINE_CAP: 'butt',
-    DEFAULT_LINE_JOIN: 'bevel',
-    DEFAULT_MITER_LIMIT: 10,
-    DEFAULT_FILL_STYLE: 'black',
-    DEFAULT_STROKE_STYLE: 'black'
-};
+import { Styles } from './../config.js';
 
 // Contains style information.
 export class Style {
 
     // Options contains the style information.
     constructor(options = {}) {
-        this.lineWidth = options.lineWidth || Styles.DEFAULT_LINE_WIDTH;
-        this.lineCap = options.lineCap || Styles.DEFAULT_LINE_CAP;
-        this.miterLimit = options.miterLimit || Styles.DEFAULT_MITER_LIMIT;
-        this.fillStyle = options.fillStyle || Styles.DEFAULT_FILL_STYLE;
-        this.strokeStyle = options.strokeStyle || Styles.DEFAULT_STROKE_STYLE;
+        this.lineWidth = options.lineWidth || Styles.DEFAULT.FILL_STYLE;
+        this.lineCap = options.lineCap || Styles.DEFAULT.LINE_CAP;
+        this.miterLimit = options.miterLimit || Styles.DEFAULT.MITER_LIMIT;
+        this.fillStyle = options.fillStyle || Styles.DEFAULT.FILL_STYLE;
+        this.strokeStyle = options.strokeStyle || Styles.DEFAULT.STROKE_STYLE;
     }
 
     // Apply style to the CanvasRenderingContext2D.

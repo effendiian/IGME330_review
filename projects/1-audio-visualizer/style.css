@@ -15,7 +15,7 @@ body {
 }
 
 body {
-    
+
     background: #fbfffe url('src/img/beanstalk-dark.png') round center fixed;
 }
 
@@ -36,8 +36,6 @@ a {
 canvas {
     margin: 0px;
     padding: 0px;
-    width: 320px;
-    height: 400px;
     background: #001514;
     border: #ffbffe dotted 5px;
     border-radius: 15px;
@@ -71,10 +69,11 @@ footer p {
 #playerSettings {
     height: auto;
     min-width: 200px;
-    max-width: 500px;
+    max-width: 700px;
     padding: 5px 5px;
     margin: 15px auto;
-    background-color: #89023E; /* #001514 */
+    background-color: #89023E;
+    /* #001514 */
     border-radius: 8px;
     color: #ffd9da;
     border: 1px solid #ffbffe;
@@ -93,10 +92,11 @@ footer p {
     justify-content: space-between;
     align-items: center;
     width: auto;
-    height: 15px;    
+    height: 15px;
 }
 
-.player.toggle, .player.volume {
+.player.toggle,
+.player.volume {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -116,7 +116,8 @@ footer p {
     margin-right: 5%;
 }
 
-.toggle.button, .volume.button {
+.toggle.button,
+.volume.button {
     background: transparent;
     border: none;
     font-size: 20px;
@@ -124,18 +125,25 @@ footer p {
     color: #ffd9da;
 }
 
+.toggle.button:focus,
+.volume.button:focus {
+    border: 1px solid #fff;
+    outline: thin;
+    box-shadow: 1px 1px 1px 1px #fff;
+}
+
 .player.controls .player.track-info {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: space-around;
     font-size: 10px;
     width: auto;
 }
 
 progress.progress {
     min-width: 200px;
-    max-width: 400px;
+    max-width: 700px;
     margin-right: 5px;
 }
 
@@ -151,7 +159,7 @@ progress {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    
+
     /* OUTER BAR */
     background: #89023E;
     border: 1px solid #ffbffe;
@@ -192,8 +200,6 @@ progress::-ms-fill {
 
     canvas {
         margin: 0px auto;
-        width: 420px;
-        height: 400px;
     }
 
     main {
@@ -206,8 +212,6 @@ progress::-ms-fill {
 
     canvas {
         margin: 0px auto;
-        width: 720px;
-        height: 520px;
     }
 
     main {
@@ -218,14 +222,20 @@ progress::-ms-fill {
         height: 9%;
     }
 
+    progress.progress {
+        min-width: 300px;
+    }
+
+    progress.volume {
+        min-width: 100px;
+    }
+
 }
 
-@media (min-width: 900px){
-    
+@media (min-width: 900px) {
+
     canvas {
         margin: 0px auto;
-        width: 840px;
-        height: 620px;
     }
 
     main {

@@ -4,15 +4,39 @@
     Application handles the event flow for the visualizer.
 */
 
+import {
+    Flags,
+    Styles,
+    createDebugLogger
+} from './config.js';
+
+import {
+    Canvas
+} from './canvas/canvas.js';
+
+import {
+    AudioContextHandler
+} from './audio/handler.js';
+
+import {
+    UI
+} from './ui.js';
+
+import {
+    CountdownTimer,
+    DeltaTimer
+} from './utils/time.js';
 
 // Application class that can be constructed.
 export class Application {
 
     // Constructor class that takes a canvas and audio source.
     constructor(options = {}) {
-        this.canvas = options.canvas || undefined;
-        this.audioSource = options.audioSource || undefined;
-        this.controls = options.controls || undefined;
+        this.print = createDebugLogger('App', Flags.DEBUG.APP);
+        this.timer = new DeltaTimer();
+        this.canvas = new Canvas(options.canvas, options.canvasSettings, this.debug) || undefined;
+        this.handler = new AudioContextHandler(options.audioContextSettings);
+        this.controls = new UI(this.handler, options.controls, this.debug) || undefined;
         this.initialized = false;
     }
 
@@ -21,19 +45,23 @@ export class Application {
 
         // On success, call resolve(result).
         // On error, call reject(reason).
-        
+
         return new Promise((resolve, reject) => {
+
+            // If already initialized, we can resolve this promise immediately.
             if (this.initialized === true) {
-                console.log("The application has already been initialized.");
+                this.print("The application has already been initialized.");
                 resolve(this);
             }
 
+            // If not already initialized, we should execute the following promise chain.
+            // Each init method returns a thennable promise.
             this.initCanvas().then(() => {
                 return this.initAudio();
             }).then((result) => {
                 return this.initControls();
-            }).then((result) => {         
-                console.log("All members have been initialized.");
+            }).then((result) => {
+                this.print("All members have been initialized.");
                 this.initialized = true;
                 resolve(this);
             }).catch((err) => {
@@ -50,39 +78,77 @@ export class Application {
             if (!this.canvas) {
                 reject("The canvas element has not been loaded.");
             } else {
-                console.log("The canvas element has been initialized.");
-                resolve(this);
+                this.canvas.init().then((result) => {
+                    this.print("The canvas element has been initialized.");
+                    resolve(this);
+                }).catch((err) => {
+                    reject(err);
+                });
             }
         });
     }
-    
+
     // Initialize the audio source.
-    initAudio(){
+    initAudio() {
         return new Promise((resolve, reject) => {
-            if (!this.audioSource) {
-                reject("The audio source element has not been loaded.");
+            if (!this.handler) {
+                reject("The audio context handler has not been loaded.");
             } else {
-                console.log("The audio source element has been initialized.");
-                resolve(this);
+                this.handler.init().then((result) => {
+                    this.print("The audio context handler has been loaded.");
+                    resolve(this);
+                }).catch((err) => {
+                    reject(err);
+                });
             }
         });
     }
-    
+
     // Initialize the controls.
-    initControls(){
+    initControls() {
         return new Promise((resolve, reject) => {
             if (!this.controls) {
                 reject("The control elements have not been loaded.");
             } else {
-                console.log("The control elements has been initialized.");
-                resolve(this);
+                this.controls.mediaSource = this.handler.mediaSourceNode;
+                this.controls.init().then((result) => {
+                    this.print("The control elements have been initialized.");
+                    resolve(this);
+                }).catch((err) => {
+                    reject(err);
+                });
             }
-        });        
+        });
     }
 
     // Run the application.
     run() {
-        
+        this.timer.start();
+        this.loop();
+    }
+
+    // Loop.
+    loop() {
+
+        // Update timers.
+        this.timer.update();
+
+        // Clear the canvas.
+        this.canvas.clear();
+
+        // render something to the screen.
+        this.canvas.draw((ctx) => {
+            ctx.strokeStyle = Styles.CANVAS.CONTENT;
+            ctx.lineWidth = Styles.DEFAULT.LINE_WIDTH;
+            ctx.beginPath();
+            ctx.moveTo(10.5, 10);
+            ctx.lineTo(10.5, 100);
+            ctx.stroke();
+        });
+
+        // Request the next animation frame.
+        requestAnimationFrame(this.loop.bind(this));
+
     }
 
 }

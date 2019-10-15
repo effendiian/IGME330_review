@@ -1,10 +1,10 @@
-"use strict";
-/* 
+/* "use strict";
+
   Audio.js 
   Ian Effendi
   
   Used to encapsulate classes pertaining to the audio player.
-*/
+
 
 // Store state involving the audio player.
 class AudioPlayer {
@@ -320,3 +320,5 @@ class AudioPlayer {
     }
 
 };
+
+*/

@@ -4,6 +4,9 @@
     Contains useful metadata information for the audio tracks.
 */
 
+// Import song class.
+import { Song } from './song.js';
+
 // Ready state values. 
 // Taken from Mozilla docs: https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState
 export const READY_STATE_FLAG = {
@@ -68,4 +71,5 @@ export const TRACKS = {
         album: "Steven Universe The Movie",
         filename: "True%20Kinda%20Love%20-%20Steven%20Universe.mp3"
     })
+    
 };

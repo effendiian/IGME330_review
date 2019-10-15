@@ -24,5 +24,9 @@ export class Song {
         this.album = options.album || 'Track Album';
         this.filename = options.filename || undefined;        
     }
+    
+    fullPath(directory = './'){
+        getPath(directory, this);
+    }
         
 }

@@ -28,7 +28,7 @@
 
         <!-- Content & Canvas -->
         <section id="content">
-            <canvas id="mainCanvas">
+            <canvas id="mainCanvas" width="320" height="400">
                 <div id="fallback">
                     Please use a browser with support for HTML5 Canvas and the WebAudio API.
                 </div>
@@ -46,7 +46,7 @@
                             Please use a browser with support for HTML5 Canvas and the WebAudio API.
                         </audio>
                         <button class="toggle button"><i class="fa fa-play toggle button icon"></i></button>
-                    </div>                    
+                    </div>
                     <div class="player track-info">
                         <div class="player track-metadata">
                             <span class="player track-title">Track Title</span> -
@@ -61,10 +61,10 @@
                     <div class="player volume">
                         <button class="volume button"><i class="fa fa-volume volume button icon"></i></button>
                         <progress class="volume progress-bar" value="0.5" max="1.0"></progress>
-                    </div>                    
+                    </div>
                 </div>
             </div>
-            
+
             <!-- TRACK SELECTION -->
             <div id="trackSettings">
                 <label><i class="fa fa-cassette-tape"></i></label>
@@ -93,4 +93,6 @@
     </footer>
 
 
-</body></html>
+</body>
+
+</html>

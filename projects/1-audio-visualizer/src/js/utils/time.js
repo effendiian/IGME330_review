@@ -5,7 +5,7 @@
 */
 
 // Import the floor function.
-import { floor } from 'math.js';
+import { floor } from './math.js';
 
 // Conversion of milliseconds to seconds.
 export function ms2sec(milliseconds){
@@ -70,4 +70,88 @@ export function formatTime(seconds, long = false){
     } else {
         return `${min}:${sec}`;
     }
+}
+    
+// Countdown timer.
+export class CountdownTimer {
+    
+    // Countdown timer. Executes a callback whenever duration is hit.
+    constructor(callback, duration, loop) {
+        this.interval = duration;
+        this.timeUntilTick = duration || 0.0;
+        this.callback = callback; 
+        this.isRunning = false;
+        this.loop = loop || false;
+    }
+    
+    start() {
+        this.isRunning = true;
+    }
+    
+    pause() {
+        this.isRunning = false;
+    }
+    
+    reset() {
+        this.timeUntilTick = this.interval;
+    }
+    
+    stop() {
+        this.reset();
+        this.pause();
+    }
+    
+    // Attempt to execute callback.
+    update(deltaTime) {
+        if(this.isRunning){
+            this.timeUntilTick -= deltaTime;            
+            if(this.timeUntilTick <= 0.0){
+                this.callback();
+                this.reset();
+                if(!this.loop){
+                    this.stop();
+                }
+            }   
+        }        
+    }   
+    
+}
+    
+// Timer used for measuring delta time.
+export class DeltaTimer {
+    
+    // Timer object does not start until 'start' is called.
+    constructor() {
+        // Base timer functionality.
+        this.isRunning = false;
+        this.deltaTime = 0.0;
+        this.time = 0.0;
+    }
+    
+    // Start or resume the timer.
+    start() {        
+        this.isRunning = true;
+    }
+    
+    // Update the timer.
+    update() {
+        if(this.isRunning) {
+            let now = Date.now();
+            this.deltaTime = now - this.time;
+            this.time = this.time + this.deltaTime;  
+        }
+    }
+    
+    // Pause the timer.
+    pause() {
+        this.isRunning = false;   
+    }
+    
+    // Stop and reset the timer.
+    stop() {
+        this.isRunning = false;
+        this.deltaTime = 0.0;
+        this.time = 0.0;
+    }    
+    
 }
