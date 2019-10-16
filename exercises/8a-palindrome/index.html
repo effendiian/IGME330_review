@@ -36,10 +36,6 @@
             <p id="instructions">Click the 'add to list' button to add palindromes to the list below.<br />You can clear the list using the 'clear' button.</p>
             <ul id="palindrome-list">
                 <li class="list-item">Example Palindrome</li>
-                <li class="list-item">Example Palindrome</li>
-                <li class="list-item">Example Palindrome</li>
-                <li class="list-item">Example Palindrome</li>
-                <li class="list-item">Example Palindrome</li>
             </ul>
         </section>
 
@@ -54,21 +50,4 @@
         <div><a href="../../index.html">Return to the homepage.</a></div>
     </footer>
 
-    <script>
-        let input = document.querySelector("#input");
-        let output = document.querySelector("#output");
-
-        input.oninput = doInput; // called whenever the content of the field changes
-        input.onchange = doChange; // called when the field loses focus or when the return key is pressed
-        input.dispatchEvent(new Event("input")); // calls doInput() when the page first loads
-
-        function doInput(e) {
-            let text = e.target.value;
-            output.innerHTML = text;
-        }
-
-        function doChange(e) {
-            output.innerHTML = "The input field no longer has focus, or you hit `return`!";
-        }
-    </script>
 </body></html>

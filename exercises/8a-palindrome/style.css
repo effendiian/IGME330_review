@@ -73,6 +73,14 @@ input#input:focus {
     background: #212121;
 }
 
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
 button {
     font-family: 'Crimson Text', sans-serif;
     font-size: 0.45em;
@@ -103,15 +111,17 @@ li.list-item {
     display: inline-block;
     margin: 5px;
     padding: 15px;
-    color: #ddd;
+    color: #fff;
+    background: transparent;
     border: 1px solid #ddd;
     border-radius: 15px;
-    transition: border 1s ease, color 0.4s ease, padding 1s ease, border-radius 1s ease;
+    transition: border 1s ease, color 0.4s ease, padding 1s ease, border-radius 1s ease, background 1s ease;
 }
 
 li.list-item:hover {
     padding: 7px;
-    color: #fff;
+    color: #212121;
+    background: #fff;
     border: 1px solid #fff;
     border-radius: 5px;
 }
