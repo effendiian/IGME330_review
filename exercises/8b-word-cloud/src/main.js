@@ -19,4 +19,37 @@
     - Enable drag and dropover features for canvas.
 */
 
-// Canvas class.
+// Import statements.
+import {
+    Flags
+}
+from './app/config.js';
+import {
+    debugConsole
+}
+from './utils/debug.js';
+import {
+    Application
+}
+from './app/app.js';
+
+// Entry point for the application.
+function main() {  
+    // Main module debug console.
+    const debug = debugConsole(Flags.DEBUG.MAIN);
+    debug.log("Window is loaded. Starting...");
+    
+    // Construction of the application.
+    const app = new Application();    
+    
+    // Initialize the application and then start if it is successful.
+    app.init().then((result) => {
+        debug.log('Application initialized.');
+        app.start();
+    }).catch((err) => {
+        debug.error(err);
+    });
+}
+
+// Execute init after the window is loaded.
+window.addEventListener('load', main.bind(window));

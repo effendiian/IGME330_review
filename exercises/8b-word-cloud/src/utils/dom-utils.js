@@ -7,7 +7,7 @@
 // Import statements.
 import {
     Flags
-} from './../config.js';
+} from './../app/config.js';
 import {
     debugConsole
 } from './debug.js';
