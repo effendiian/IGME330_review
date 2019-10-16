@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Word Cloud - IGME 330</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet" />
+    <link href="style.css" type="text/css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
+    <script type="module" src="src/main.js"></script>
+</head>
+
+<body>
+
+    <!-- Title -->
+    <header>
+        <h1>Word Cloud</h1>
+    </header>
+
+    <!-- Content -->
+    <main>
+        <section id="interaction">
+            <h2>Word Cloud</h2>
+            <p class="subtitle">Drag your corpus onto the word cloud and watch it load!</p>
+            <canvas id="wordCloud" width="300px" height="400px" >
+                Please use a browser that supports the HTML5 Canvas element.
+            </canvas>            
+        </section>
+
+        <div class="divisor"></div>
+
+        <section id="corpus">
+            <h2>Corpus</h2>
+            <p class="subtitle">All words that appear in the corpus and their frequency count.</p>
+            <p id="corpus-preview">Corpus would go here.</p>
+            <ul id="word-frequency">
+                <li class="list-item">'{word}': {count}</li>
+                <li class="list-item">'{word}': {count}</li>
+                <li class="list-item">'{word}': {count}</li>
+                <li class="list-item">'{word}': {count}</li>
+                <li class="list-item">'{word}': {count}</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>This is a student website hosted on servers owned by the <a href="https://www.rit.edu/">Rochester Institute of Technology</a> <i class="fad fa-external-link fa-xs"></i>.</p>
+        <div class="copyright">
+            (C) 2019 - Ian Effendi
+        </div>
+        <div><a href="../../index.html">Return to the homepage.</a></div>
+    </footer>
+
+</body></html>
