@@ -7,7 +7,7 @@
 // Import the flags.
 import {
     Flags,
-    createDebugLogger
+    Printer
 } from './config.js';
 
 // Import the application class.
@@ -27,7 +27,7 @@ function getElement(selector) {
 }
 
 // log debug information to the console.
-const print = createDebugLogger('Main', Flags.DEBUG.MAIN);
+const printer = new Printer('Main', Flags.DEBUG.MAIN, window);
 
 // Initialize the application.
 function init() {
@@ -52,12 +52,22 @@ function init() {
             volume: getElement('.volume.progress-bar'),
             progress: getElement('.progress.progress-bar'),
             trackSelector: getElement('#trackSelect'),
+            delay: getElement('#delayCB'),
+            delayRange: getElement('#delayRG'),
+            delayLabel: getElement('#delayAmount'),
             trackInformation: {
                 title: getElement('.player.track-title'),
                 artist: getElement('.player.track-artist'),
                 album: getElement('.player.track-album'),
                 time: getElement('.player.track-time'),
                 duration: getElement('.player.track-duration')
+            },
+            imageProcessing: {
+                noise: getElement('#noiseCB'),
+                brighten: getElement('#brightenCB'),
+                invert: getElement('#invertCB'),
+                emboss: getElement('#embossCB'),
+                grayscale: getElement('#grayscaleCB'),
             }
         }
     });
@@ -65,7 +75,7 @@ function init() {
     // Initialize the application and then run it.
     app.init().then((result) => {
         // Promise's resolve().
-        print("Application initialized.");
+        printer.log("Application initialized.");
         app.run();
     }).catch((err) => {
         // Run when an error is reached.

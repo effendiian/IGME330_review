@@ -7,7 +7,7 @@
 // Import the flags from config.
 import {
     Flags,
-    createDebugLogger
+    Printer
 } from './config.js';
 
 // Import math utilities.
@@ -36,7 +36,7 @@ export class UI {
     constructor(audioContextHandler, controls = {}) {
 
         // Setup the debug flag.
-        this.print = createDebugLogger('UI', Flags.DEBUG.UI);
+        this.printer = new Printer(Flags.DEBUG.UI);
 
         // Prepare blank reference, later for the audio element.
         this.handler = audioContextHandler;
@@ -74,7 +74,7 @@ export class UI {
                 this.handler.addEventListener('timeupdate', this.onProgress.bind(this));
                 this.handler.addEventListener('ended', this.onTrackEnd.bind(this));
                 this.handler.addEventListener('loadeddata', this.onTrackStart.bind(this));
-                this.print("Initialized behaviours for the media source handler.");
+                this.printer.log("Initialized behaviours for the media source handler.");
             }
 
             // Setup listeners for the toggle button.
@@ -83,7 +83,7 @@ export class UI {
             } else {
                 this.toggleButton.addEventListener('click', this.onPlayToggle.bind(this));
                 this.toggleButton.addEventListener('click', this.updatePlayToggleIcon.bind(this));
-                this.print("Initialized behaviours for the play/pause toggle button.");
+                this.printer.log("Initialized behaviours for the play/pause toggle button.");
             }
 
             // Setup listeners for the volume button and slider.
@@ -97,7 +97,7 @@ export class UI {
                     let value = x * ui.volume.max / ui.volume.offsetWidth;
                     ui.onVolumeChanged(value);
                 });
-                this.print("Initialized behaviours for the volume button and slider.");
+                this.printer.log("Initialized behaviours for the volume button and slider.");
             }
 
             // Setup listeners for the progerss bar.
@@ -109,7 +109,7 @@ export class UI {
                     let value = x * ui.handler.mediaSource.duration / ui.progress.offsetWidth;
                     ui.onProgressChanged(value);
                 });
-                this.print("Initialized behaviours for the progress bar slider.");
+                this.printer.log("Initialized behaviours for the progress bar slider.");
             }
 
             // Setup listeners for the track selection.
@@ -136,7 +136,7 @@ export class UI {
 
     // What should occur when the toggle button is clicked.
     onPlayToggle() {
-        this.print("Toggle button pressed.");
+        this.printer.log("Toggle button pressed.");
         if (this.handler.mediaSource.paused) {
             this.onPlay();
         } else {
@@ -146,7 +146,7 @@ export class UI {
 
     // What should occur when the volume button is pressed.
     onVolumeToggle() {
-        this.print("Volume button pressed.");
+        this.printer.log("Volume button pressed.");
         if (this.volume.muted) {
             this.onUnmute();
         } else {
@@ -165,19 +165,19 @@ export class UI {
         }
 
         this.updateVolumeIcon();
-        this.print("Volume has changed.");
+        this.printer.log("Volume has changed.");
     }
 
     // What should occur when the progress slider has been modified.
     onProgressChanged(timestamp) {
         this.handler.mediaSource.currentTime = timestamp;
         this.onProgress();
-        this.print("Progress has moved.");
+        this.printer.log("Progress has moved.");
     }
 
     // Processed every tick, while playing.
     onProgress() {
-        this.print("Processing...");
+        this.printer.log("Processing...");
         let percentage = 0.0;
         let currentTime = this.handler.mediaSource.currentTime;
         let duration = this.handler.mediaSource.duration;
@@ -195,26 +195,26 @@ export class UI {
 
     // Called when unpausing.
     onPlay() {
-        this.print("Playing...");
+        this.printer.log("Playing...");
         this.handler.play();
     }
 
     // Called when paused.
     onPause() {
-        this.print("Pausing...");
+        this.printer.log("Pausing...");
         this.handler.pause();
     }
 
     // Called when muted.
     onMute() {
-        this.print("Muting the volume.");
+        this.printer.log("Muting the volume.");
         this.volume.muted = true;
         this.handler.setVolume(0.0);
     }
 
     // Called when unmuting.
     onUnmute() {
-        this.print("Unmuting the volume.");
+        this.printer.log("Unmuting the volume.");
         this.volume.muted = false;
         this.handler.setVolume(this.volume.value);
     }
@@ -223,12 +223,12 @@ export class UI {
     onTrackStart() {
         this.onProgressChanged(0.0);
         this.onPlay();
-        this.print("Loading and playing song from the start.");
+        this.printer.log("Loading and playing song from the start.");
     }
 
     // Called when track reaches the end of the song.
     onTrackEnd() {
-        this.print("The track has reached the end.");
+        this.printer.log("The track has reached the end.");
 
         // Get valid index.
         let index = this.trackSelector.selectedIndex;
@@ -265,7 +265,7 @@ export class UI {
     // Called when track selection value has changed.
     onTrackSelect() {
         this.updateCurrentTrack(); // Updates the current track to point to the current selection.
-        this.print("Track selected.");
+        this.printer.log("Track selected.");
     }
 
     // Update the play button's toggle icon.
@@ -290,7 +290,7 @@ export class UI {
     updateCurrentTrack() {
         // Check if the current track is different from the selected value.
         if (this.currentTrack == this.trackSelector.value) {
-            this.print("No change made to current track selection.");
+            this.printer.log("No change made to current track selection.");
             return;
         }
 
@@ -310,7 +310,7 @@ export class UI {
 
         // Update the current track reference.
         this.currentTrack = key;
-        this.print(`Current track key assigned by the track selector: ${this.currentTrack}`);
+        this.printer.log(`Current track key assigned by the track selector: ${this.currentTrack}`);
 
         // Update the track information.
         this.updateTrackInformation(song);
@@ -321,7 +321,7 @@ export class UI {
         this.updateTrackTitle(metadata.title);
         this.updateTrackArtist(metadata.artist);
         this.updateTrackAlbum(metadata.album);
-        this.print("Updated track information.");
+        this.printer.log("Updated track information.");
     }
 
     // Update the track title.

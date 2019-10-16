@@ -10,10 +10,23 @@ export const Flags = {
         MAIN: false,
         APP: false,
         UI: false,
-        CANVAS: true,
-        HANDLER: true,
+        CANVAS: false,
+        HANDLER: false,
+        SAMPLER: false,
     }
 };
+
+// Analyser settings.
+export const Settings = {
+    DEFAULT: {
+        LATENCY_HINT: 'interactive',
+        NUM_SAMPLES: 48000,
+        FFT_SIZE: 2048,
+        MIN_DB: -100,
+        MAX_DB: -25,
+        SMOOTHING: 0.5
+    }
+}
 
 // Style flags for the canvas.
 export const Styles = {
@@ -37,11 +50,11 @@ export const Styles = {
     }
 };
 
-// Return a debug logger, given input of the necessary flag and the label.
-export function createDebugLogger(label, flag) {
-    return (msg) => {
-        if (flag) {
-            console.log(`${label} [Debug]: ${msg}`);
-        }
-    };
+// Printer used for debugging.
+export function Printer(flag) {
+    let debug = {};
+    for (let key in console) {
+        debug[key] = (typeof console[key] == 'function' && flag === true) ? (console[key].bind(window.console)) : () => {};
+    }
+    return debug;
 }

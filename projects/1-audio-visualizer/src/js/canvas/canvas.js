@@ -8,7 +8,7 @@
 import {
     Flags,
     Styles,
-    createDebugLogger
+    Printer
 } from './../config.js';
 
 // Class wrapping functions for the canvas.
@@ -16,7 +16,7 @@ export class Canvas {
 
     // Construct a canvas element using an existing HTMLCanvasElement or its selector.
     constructor(canvasElement, options = {}) {
-        this.print = createDebugLogger('Canvas', Flags.DEBUG.CANVAS);
+        this.printer = new Printer(Flags.DEBUG.CANVAS);
         this.canvas = canvasElement;
         this.background = options.background;
         this.context = (this.canvas) ? this.canvas.getContext("2d") : undefined;
@@ -33,7 +33,7 @@ export class Canvas {
 
                 // Initialize the context.
                 this.context = this.context || this.canvas.getContext("2d");
-                this.print('CanvasRenderingContext2D initialized.');
+                this.printer.log('CanvasRenderingContext2D initialized.');
 
                 // Initialize the media query events.
                 // From: https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio
@@ -126,6 +126,20 @@ export class Canvas {
         paintCallback(this.context);
 
         this.context.restore();
+    }
+
+    manipulate(imageCallback) {
+        imageCallback(this.context);
+    }
+
+    // Get canvas width.
+    getWidth() {
+        return this.canvas.width;
+    }
+
+    // Get canvas height.    
+    getHeight() {
+        return this.canvas.height;
     }
 
 }

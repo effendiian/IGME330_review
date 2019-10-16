@@ -13,17 +13,23 @@ import {
 export class Transform {
 
     // Construction of a transform takes in either no arguments or translation, rotation, and scale.
-    constructor(position = undefined, rotation = undefined, scale = undefined) {
-        this.position = position || new vec2(0, 0);
-        this.rotation = rotation || 0.0;
-        this.scale = scale || new vec2(0, 0);
+    constructor(position, rotation, scale) {
+        this.position = position;
+        this.rotation = rotation;
+        this.scale = scale;
     }
 
     // Apply transformation in the order of (S)cale - (R)otate - (T)ranslate to the CanvasRenderingContext2D.
     applyTransformation(context) {
-        context.scale(this.scale.x, this.scale.y);
-        context.rotate(this.rotation);
-        context.translate(this.position.x, this.position.y);
+        if (this.scale) {
+            context.scale(this.scale.x, this.scale.y);
+        }
+        if (this.rotation) {
+            context.rotate(this.rotation);
+        }
+        if (this.position) {
+            context.translate(this.position.x, this.position.y);
+        }
     }
-    
+
 }

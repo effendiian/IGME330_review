@@ -7,20 +7,31 @@
 // Import helper.
 import {
     Flags,
-    createDebugLogger
+    Settings,
+    Printer
 } from './../config.js';
+
+// Import the sampler class.
+import {
+    AudioSampler
+} from './sampler.js';
 
 // Handles an audio context and builds the web audio API chain.
 export class AudioContextHandler {
 
     // Construct an audio context handler.
     constructor(options = {}) {
-        this.print = createDebugLogger('AudioContextHandler', Flags.DEBUG.HANDLER);
+        this.printer = new Printer(Flags.DEBUG.HANDLER);
         this.mediaSource = options.mediaSource;
-        this.mediaSourceNode = undefined;
-        this.audioContext = undefined;
         this.audioContextSettings = options;
         this.autoplayCheck = true;
+
+        // Other members.
+        this.audioContext = undefined;
+        this.audioSampler = undefined;
+        this.destination = undefined;
+        this.mediaSourceNode = undefined;
+        this.gainNode = undefined;
     }
 
     // Initialize the audio context.
@@ -31,12 +42,13 @@ export class AudioContextHandler {
             if (!this.audioContextSettings) {
                 reject("The audio context settings must be provided.");
             } else {
-                this.print("Creating the audio context.");
+                this.printer.log("Creating the audio context.");
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 this.audioContext = new AudioContext({
-                    latencyHint: this.audioContextSettings.latencyHint || 'interactive',
-                    sampleRate: this.audioContextSettings.sampleRate || 48000,
+                    latencyHint: this.audioContextSettings.latencyHint || Settings.DEFAULT.LATENCY_HINT,
+                    sampleRate: this.audioContextSettings.sampleRate || Settings.DEFAULT.NUM_SAMPLES,
                 });
+                this.destination = this.audioContext.destination;
             }
 
             // Is there a media source element?
@@ -45,28 +57,59 @@ export class AudioContextHandler {
             } else if (!this.audioContext) {
                 reject("Cannot create media source node without audio context.");
             } else {
-                this.print("Creating source node.");
+                this.printer.log("Creating source node.");
                 this.mediaSourceNode = this.audioContext.createMediaElementSource(this.mediaSource);
             }
 
-            // Initialize nodes.
-            this.initializeNodes();
-
-            // Connect nodes.
-            this.print("Connecting audio nodes.");
-            this.mediaSourceNode.connect(this.gainNode);
-            this.gainNode.connect(this.audioContext.destination);
+            // Setup the audio chain.
+            this.setupAudioChain();
 
             // If nothing has gone wrong, we can resolve this here.
             resolve(this);
         });
     }
 
-
-    // Initialize nodes.
-    initializeNodes() {
-        this.print("Creating audio nodes.");
+    // Initialize and connect nodes.
+    setupAudioChain() {
+        // Prepare nodes.
+        this.printer.log("Creating audio nodes.");
         this.gainNode = this.audioContext.createGain();
+        this.audioSampler = new AudioSampler(this.audioContext, this.audioContextSettings.analyserSettings);
+
+        this.delay = false;
+        this.delayValue = 0.5;
+        this.delayNode = this.audioContext.createDelay(0.5);
+
+        // Connect nodes.
+        this.printer.log("Connecting audio nodes.");
+        // Analyser chain.
+        this.mediaSourceNode.connect(this.audioSampler.analyserNode);
+        this.audioSampler.connect(this.gainNode);
+
+        // Delay chain.
+        this.gainNode.connect(this.audioContext.destination);
+    }
+
+    // Enable delay.
+    enableDelay(flag) {
+        this.delay = flag;
+        if (this.delay === true) {
+            this.mediaSourceNode.connect(this.delayNode);
+            this.delayNode.connect(this.gainNode);
+            this.setDelay(this.delayValue);
+        } else {
+            this.delayNode.delayTime.setValueAtTime(0, this.audioContext.currentTime);
+            this.delayNode.disconnect(this.gainNode);
+            this.mediaSourceNode.disconnect(this.delayNode);
+        }
+    }
+
+    // Set the delay node value.
+    setDelay(value) {
+        this.delayValue = value;
+        if (this.delay) {
+            this.delayNode.delayTime.setValueAtTime(this.delayValue, this.audioContext.currentTime);
+        }
     }
 
     // Add event listener to the media source.
@@ -89,16 +132,16 @@ export class AudioContextHandler {
                     this.audioContext.resume();
                     if (this.autoplayCheck) {
                         // Autoplay started.
-                        this.print("Autoplay started successfully.");
+                        this.printer.log("Autoplay started successfully.");
                         this.autoplayCheck = false;
                     } else {
-                        this.print("Played track successfully.");
+                        this.printer.log("Played track successfully.");
                     }
                 }).catch((err) => {
                     if (this.autoplayCheck) {
                         // Autoplay was prevented.
                         this.autoplayCheck = false;
-                        this.print(`Autoplay was prevented. ${err}.`);
+                        this.printer.log(`Autoplay was prevented. ${err}.`);
                     } else {
                         console.error(`[Handler] Could not play element. ${err}.`);
                     }
@@ -115,8 +158,5 @@ export class AudioContextHandler {
             this.audioContext.suspend();
         }
     }
-
-
-
 
 }
