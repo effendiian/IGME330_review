@@ -1,0 +1,184 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Crimson Text', serif;
+    font-size: 32px;
+    background: #222222;
+    color: #edeeef;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+body {
+    font-size: 1em;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 1em;
+    margin: 0px;
+    padding: 0px;
+}
+
+h2 {
+    font-size: 0.8em;
+}
+
+main p {
+    font-size: 0.6em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+p {
+    transition: font-size 1s, color 0.35s;
+}
+
+a {
+    color: #ff5252;
+    text-decoration: none;
+}
+
+p.subtitle {
+    color: #ddd;
+    font-size: 0.55em;
+    margin: 0.5em auto;
+}
+
+header {
+    text-align: center;
+    padding: 15px 0px;
+}
+
+main {
+    text-align: center;
+    padding: 0.2em;
+    margin: 0px auto;
+    width: 60%;
+    transition: width 0.4s ease, margin 0.4s ease;
+}
+
+canvas#wordCloud {
+    position:relative;
+    padding: 0px;
+    margin: 0px auto;  
+    background: transparent;
+    border: 7px solid #ddd;
+    border-radius: 5px;
+}
+
+ul#word-frequency {
+    display: block;
+    font-size: 0.5em;
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    text-align: center;
+}
+
+li.list-item {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    color: #fff;
+    background: transparent;
+    border: 1px solid #ddd;
+    transition: color 0.4s ease, border 1s ease, background 1s ease, padding 1s ease, margin 1s ease;
+}
+
+li.list-item:hover {
+    margin: 3px;
+    padding: 7px;
+    color: #212121;
+    background: #fff;
+    border: 1px solid #fff;
+}
+
+footer {
+    position: relative;
+    left: 0px;
+    right: 0px;
+    padding: 0px 0px 1em 0em;
+    margin: 0px auto;
+    text-align: center;
+    background: black;
+    font-size: 0.4em;
+}
+
+div.divisor {
+    position: relative;
+    margin: 15px auto;
+    width: 70%;
+    height: 7px;
+    background: #fff;
+    border: 1px solid #fff;
+    border-radius: 50px;
+}
+
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 1.4em;
+    }
+
+    main {
+        padding: 0.5em 1em;
+        margin: 0px auto;
+        width: auto;
+    }
+
+    p.subtitle {
+        font-size: 0.5em;
+    }
+
+    footer {
+        padding: 0.5em;
+        font-size: 0.4em;
+    }
+}
+
+@media (max-width: 720px) {
+    h1 {
+        font-size: 1.2em;
+    }
+
+    main {
+        padding: 0.1em;
+        margin: 0px auto;
+        width: auto;
+        text-align: center;
+        font-size: 1em;
+    }
+
+    p.subtitle {
+        font-size: 0.45em;
+    }
+
+    footer {
+        padding: 0.5em;
+        font-size: 0.4em;
+    }
+    
+    canvas#wordCloud {
+        padding: 0px;
+        margin: 0px auto;    
+    }
+    
+    section#corpus {
+        padding-bottom: 5px;
+    }
+}

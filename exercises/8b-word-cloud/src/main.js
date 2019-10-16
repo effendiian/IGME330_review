@@ -18,3 +18,5 @@
     - Animate words (side to side?) (looping?).
     - Enable drag and dropover features for canvas.
 */
+
+// Canvas class.
