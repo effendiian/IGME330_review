@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Palindrome Detector - IGME 330</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet" />
+    <link href="style.css" type="text/css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/24af103159.js"></script> <!-- Font Awesome bundle for icons -->
+    <script type="module" src="src/main.js"></script>
+</head>
+
+<body>
+
+    <!-- Title -->
+    <header>
+        <h1>Load Text - <code>&lt;input></code> element</h1>
+    </header>
+
+    <!-- Content -->
+    <main>
+        <section id="tester">
+            <p>
+                <input id="input" type="text" size="50" maxlength="50" autofocus value="It was a dark and stormy night ..." />
+                <button id="addToList">Add to List</button>
+                <button id="clearList">Clear List</button>
+            </p>
+            <p id="output"></p>
+            <p id="message">Type in a palindrome using the input box above.</p>
+        </section>
+
+        <div class="divisor"></div>
+
+        <section id="list">
+            <p id="instructions">Click the 'add to list' button to add palindromes to the list below.<br />You can clear the list using the 'clear' button.</p>
+            <ul id="palindrome-list">
+                <li class="list-item">Example Palindrome</li>
+                <li class="list-item">Example Palindrome</li>
+                <li class="list-item">Example Palindrome</li>
+                <li class="list-item">Example Palindrome</li>
+                <li class="list-item">Example Palindrome</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>This is a student website hosted on servers owned by the <a href="https://www.rit.edu/">Rochester Institute of Technology</a> <i class="fad fa-external-link fa-xs"></i>.</p>
+        <div class="copyright">
+            (C) 2019 - Ian Effendi
+        </div>
+        <div><a href="../../index.html">Return to the homepage.</a></div>
+    </footer>
+
+    <script>
+        let input = document.querySelector("#input");
+        let output = document.querySelector("#output");
+
+        input.oninput = doInput; // called whenever the content of the field changes
+        input.onchange = doChange; // called when the field loses focus or when the return key is pressed
+        input.dispatchEvent(new Event("input")); // calls doInput() when the page first loads
+
+        function doInput(e) {
+            let text = e.target.value;
+            output.innerHTML = text;
+        }
+
+        function doChange(e) {
+            output.innerHTML = "The input field no longer has focus, or you hit `return`!";
+        }
+    </script>
+</body></html>

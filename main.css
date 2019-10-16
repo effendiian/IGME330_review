@@ -1,240 +1,269 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-  font-family: 'Crimson Text', serif;
-  font-size: 36px;
-  background: #222222;
-  color: #edeeef;
-  margin: 0;
+    font-family: 'Crimson Text', serif;
+    font-size: 36px;
+    background: #222222;
+    color: #edeeef;
+    margin: 0;
 }
 
 body {
-  font-size: 1em;
-  margin: 0;
+    font-size: 1em;
+    margin: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Anton', sans-serif;
-  color: #ff5252;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Anton', sans-serif;
+    color: #ff5252;
 }
 
-h1, h2, h3, h4, h5, h6, a, p {
-  transition: font-size 1s, color 0.35s;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+p {
+    transition: font-size 1s, color 0.35s;
 }
 
 a {
-  color: #ff5252;
-  text-decoration: none;
+    color: #ff5252;
+    text-decoration: none;
 }
 
 a:visited {
-  color: #ff7d52;
+    color: #ff7d52;
 }
 
 a:hover {
-  color: #ff9f9f;
-  text-decoration: underline;
+    color: #ff9f9f;
+    text-decoration: underline;
 }
 
 .hidden {
-  display: none;
+    display: none;
 }
 
-h1 { font-size: 2.5em; }
-h2 { font-size: 2em; }
-h3 { font-size: 1.9em; }
-h4 { font-size: 1.7em; }
-h5 { font-size: 1.5em; }
-h6 { font-size: 1.3em; }
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    font-size: 1.9em;
+}
+
+h4 {
+    font-size: 1.7em;
+}
+
+h5 {
+    font-size: 1.5em;
+}
+
+h6 {
+    font-size: 1.3em;
+}
 
 header {
-  padding: 1em;
-  margin: 0px;
-  text-align: center;
+    padding: 1em;
+    margin: 0px;
+    text-align: center;
 }
 
 header p {
-  color: white;
+    color: white;
 }
 
 nav {
-  padding: 0px;
-  margin: 0px;
-  border-top: 5px #edeeef solid;
-  border-bottom: 1em #edeeef solid;
+    padding: 0px;
+    margin: 0px;
+    border-top: 5px #edeeef solid;
+    border-bottom: 1em #edeeef solid;
 }
 
 #nav-links {
-  padding: 0.5em;
-  margin: 0px;
-  overflow: hidden;
-  background: black;
-  list-style: none;
+    padding: 0.5em;
+    margin: 0px;
+    overflow: hidden;
+    background: black;
+    list-style: none;
 }
 
 .nav-link a {
-  float: left;
-  display: block;
-  color: #ff5252;
-  text-align: center;
-  padding: 14px 20px;
-  text-decoration: none;
+    float: left;
+    display: block;
+    color: #ff5252;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
 }
 
 .nav-link.right a {
-  float: right;
+    float: right;
 }
 
 .nav-link a:hover {
-  background-color: #edeeef;
-  text-decoration: none;
-  color: #ff9f9f;
+    background-color: #edeeef;
+    text-decoration: none;
+    color: #ff9f9f;
 }
 
 .nav-link a:visited {
-  color: #ff7d52;
+    color: #ff7d52;
 }
 
 main {
-  padding: 1em;
-  margin: 1em auto 1em 5em;
-  width: 60%;  
+    padding: 1em;
+    margin: 1em auto 1em 5em;
+    width: 60%;
 }
 
 main h2 {
-  margin: 1em 0px 0.4em 0px;
-  font-size: 1.3em;
+    margin: 1em 0px 0.4em 0px;
+    font-size: 1.3em;
 }
 
 main ul {
-  padding: 0px;
-  margin: 10px;
-  list-style: none;
+    padding: 0px;
+    margin: 10px;
+    list-style: none;
 }
 
 .content-link {
-  font-size: 0.7em;
+    font-size: 0.7em;
 }
 
 .divisor {
-  margin: 1em auto;
-  border-top: 5px white solid;
-  transition: border 1.5s ease, margin 1.5s ease;
+    margin: 1em auto;
+    border-top: 5px white solid;
+    transition: border 1.5s ease, margin 1.5s ease;
 }
 
 footer {
-  padding: 1em 1em 2em 1em;
-  margin: 0px auto;
-  text-align: center;  
-  background: black;
-  font-size: 0.7em;
+    padding: 1em 1em 2em 1em;
+    margin: 0px auto;
+    text-align: center;
+    background: black;
+    font-size: 0.7em;
 }
 
 /*
   Responsive layout when the screen is less than 1024px wide.
 */
 
-@media (max-width: 1024px){
-  header h1 {
-    font-size: 1.4em;
-  }
-  
-  header p {
-    font-size: 0.55em;
-  }
-  
-  nav {    
-    width: 100%;
-    padding: 1em;
-    font-size: 0.7em;
-    transition: margin 1.5s, padding 1.5s;
-  }
-  
-  #nav-links {
-    margin: 0px auto;
-    text-align: center;
-  }
-  
-  .nav-link {
-    display: inline-block;
-    font-size: 0.77em;
-  }
-    
-  .nav-link a {
-    width: auto;
-    float: none;
-  }
-  
-  .nav-link.right a {
-    float: none;
-  }
+@media (max-width: 1024px) {
+    header h1 {
+        font-size: 1.4em;
+    }
 
-  main {
-    padding: 1em;
-    margin: 0px auto;
-    width: auto;
-  }
-  
-  footer {
-    padding: 0.5em;
-    font-size: 0.4em;
-  }
+    header p {
+        font-size: 0.55em;
+    }
+
+    nav {
+        width: 100%;
+        padding: 1em;
+        font-size: 0.7em;
+        transition: margin 1.5s, padding 1.5s;
+    }
+
+    #nav-links {
+        margin: 0px auto;
+        text-align: center;
+    }
+
+    .nav-link {
+        display: inline-block;
+        font-size: 0.77em;
+    }
+
+    .nav-link a {
+        width: auto;
+        float: none;
+    }
+
+    .nav-link.right a {
+        float: none;
+    }
+
+    main {
+        padding: 1em;
+        margin: 0px auto;
+        width: auto;
+    }
+
+    footer {
+        padding: 0.5em;
+        font-size: 0.4em;
+    }
 }
 
 /*
   Responsive layout when the screen is less than 720px wide.
 */
 
-@media (max-width: 720px){
-  header h1 {
-    font-size: 1.4em;
-  }
-  
-  header p {
-    font-size: 0.55em;
-  }
-  
-  nav {
-    margin: 0px auto;
-    width: 100%;
-    font-size: 0.7em;
-    border-top: 1px white solid;
-    border-bottom: 1px white solid;
-  }
-  
-  .nav-link {
-    width: auto;
-  }
-  
-  .nav-link a {
-    display: block;
-    margin: 0px auto;
-    float: none;
-    width: 7em;
-  }
-  
-  .divisor {
-    margin: 0px;
-    border-top: 0px white solid;
-  }
-  
-  .nav-link.right a {
-    display: block;
-    float: none;
-  }
+@media (max-width: 720px) {
+    header h1 {
+        font-size: 1.4em;
+    }
 
-  main {
-    padding: 1em;
-    margin: 0px auto;
-    width: auto;
-    text-align: center;
-    font-size: 0.7em;
-  }
-  
-  footer {
-    padding: 0.5em;
-    font-size: 0.4em;
-  }
+    header p {
+        font-size: 0.55em;
+    }
+
+    nav {
+        margin: 0px auto;
+        width: 100%;
+        font-size: 0.7em;
+        border-top: 1px white solid;
+        border-bottom: 1px white solid;
+    }
+
+    .nav-link {
+        width: auto;
+    }
+
+    .nav-link a {
+        display: block;
+        margin: 0px auto;
+        float: none;
+        width: 7em;
+    }
+
+    .divisor {
+        margin: 0px;
+        border-top: 0px white solid;
+    }
+
+    .nav-link.right a {
+        display: block;
+        float: none;
+    }
+
+    main {
+        padding: 1em;
+        margin: 0px auto;
+        width: auto;
+        text-align: center;
+        font-size: 0.7em;
+    }
+
+    footer {
+        padding: 0.5em;
+        font-size: 0.4em;
+    }
 }
