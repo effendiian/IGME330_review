@@ -43,3 +43,17 @@ export function isElement(param) {
     // https://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
     return param instanceof Element || param instanceof HTMLDocument;
 }
+
+// Get the computed style dimensions of an element, without units. Key is optional.
+export function getComputedSize(element, key) {
+    if (!element) {
+        return -1;
+    } else if (!key) {
+        return {
+            width: getDimension(element, 'width'),
+            height: getDimension(element, 'height')
+        };
+    } else {
+        getComputedStyle(element).getPropertyValue(key).slice(0, -2);
+    }
+}

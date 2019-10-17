@@ -6,7 +6,8 @@
 
 // Import statements.
 import {
-    Flags
+    Flags,
+    Settings
 }
 from './config.js';
 import {
@@ -15,7 +16,8 @@ import {
 from './../utils/debug.js';
 import {
     isElement,
-    getElement
+    getElement,
+    getComputedSize
 }
 from './../utils/dom-utils.js';
 
@@ -23,14 +25,68 @@ from './../utils/dom-utils.js';
 export class CanvasHandler {
 
     // Create the canvas handler.
-    constructor(canvasElement) {
+    constructor(canvasElement, height, width) {
         this.debug = debugConsole(Flags.DEBUG.CANVAS);
 
         // If the canvasElement is not an element, check if it's a selector.
-        this.canvas = (!dom.isElement(canvasElement)) ? dom.getElement(canvasElement) : canvasElement;
+        this.canvas = (!isElement(canvasElement)) ? getElement(canvasElement) : canvasElement;
         this.debug.dir(`Canvas element: ${this.canvas}`);
-        this.context = (this.canvas) ? this.canvas.getContext("2d") : null;
-        this.debug.dir(`CanvasRenderingContext2D: ${this.context}`);
+    }
+
+    // Initialize the canvas object. Returns a promise that passes along this instance of the handler on success.
+    init() {
+        return new Promise((resolve, reject) => {
+            // Check if canvas was properly set.
+            if (!this.canvas) {
+                reject("Cannot initialize handler without canvas.");
+            }
+
+            // Get the rendering context.
+            this.context = (this.canvas) ? this.canvas.getContext("2d") : null;
+            this.debug.dir(`CanvasRenderingContext2D: ${this.context}`);
+            if (!this.context) {
+                reject("Failed to initialize the CanvasRenderingContext2D.");
+            }
+
+            // Initialize the unscaled dimensions.
+            this.unscaledWidth = (this.canvas && this.canvas.width) ? this.canvas.width : Settings.DEFAULT.CANVAS.SIZE.WIDTH;
+            this.unscaledHeight = (this.canvas && this.canvas.height) ? this.canvas.height : Settings.DEFAULT.CANVAS.SIZE.HEIGHT;
+
+            // Fix the dpi.
+            this.resize({
+                width: this.unscaledWidth,
+                height: this.unscaledHeight
+            });
+
+            // Resolve once successfully initialized.
+            resolve(this);
+        });
+    }
+
+    // Fix the DPI ratio.
+    // https://medium.com/wdstack/fixing-html5-2d-canvas-blur-8ebe27db07da
+    resize(dimensions = undefined) {
+        // Only overwrite the dimensions if they were passed in.
+        this.unscaledWidth = (dimensions && dimensions.width) ? dimensions.width : this.unscaledWidth;
+        this.unscaledHeight = (dimensions && dimensions.height) ? dimensions.height : this.unscaledHeight;
+
+        // Retrieve the dpi of the window if we haven't already cached it.
+        this.dpi = this.dpi || window.devicePixelRatio;
+
+        // Retrieve the computed style information.        
+        let style = {
+            width: (canvas) => {
+                return +getComputedSize(canvas, 'width');
+            },
+            height: (canvas) => {
+                return +getComputedSize(canvas, 'height');
+            }
+        };
+
+        // Update the attributes on the canvas.
+        this.canvas.setAttribute('width', style.width(this.canvas) * this.dpi);
+        this.canvas.setAttribute('height', style.height(this.canvas) * this.dpi);
+        this.debug.log(`Set canvas dimensions to ${this.canvas.width} by ${this.canvas.height} with DPI of ${this.dpi}.`);
     }
 
 }

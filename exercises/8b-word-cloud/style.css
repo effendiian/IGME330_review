@@ -74,12 +74,22 @@ main {
 }
 
 canvas#wordCloud {
-    position:relative;
+    position: relative;
     padding: 0px;
-    margin: 0px auto;  
+    margin: 0px auto;
     background: transparent;
     border: 7px solid #ddd;
+    border-radius: 0px;
+    cursor: default;
+    transition: padding 1s ease, border 1s ease, border-radius 1s ease;
+}
+
+canvas#wordCloud:hover,
+canvas#wordCloud.dragOver {
+    margin: 0px auto;
+    border: 7px solid #fff;
     border-radius: 5px;
+    cursor: cell;
 }
 
 ul#word-frequency {
@@ -172,12 +182,12 @@ div.divisor {
         padding: 0.5em;
         font-size: 0.4em;
     }
-    
+
     canvas#wordCloud {
         padding: 0px;
-        margin: 0px auto;    
+        margin: 0px auto;
     }
-    
+
     section#corpus {
         padding-bottom: 5px;
     }
