@@ -85,7 +85,7 @@ canvas#wordCloud {
 }
 
 canvas#wordCloud:hover,
-canvas#wordCloud.dragOver {
+canvas#wordCloud.dragging {
     margin: 0px auto;
     border: 7px solid #fff;
     border-radius: 5px;

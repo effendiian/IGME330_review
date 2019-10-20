@@ -16,8 +16,7 @@ import {
 from './../utils/debug.js';
 import {
     isElement,
-    getElement,
-    getComputedSize
+    getElement
 }
 from './../utils/dom-utils.js';
 
@@ -47,10 +46,10 @@ export class CanvasHandler {
             if (!this.context) {
                 reject("Failed to initialize the CanvasRenderingContext2D.");
             }
-
+            
             // Initialize the unscaled dimensions.
-            this.unscaledWidth = (this.canvas && this.canvas.width) ? this.canvas.width : Settings.DEFAULT.CANVAS.SIZE.WIDTH;
-            this.unscaledHeight = (this.canvas && this.canvas.height) ? this.canvas.height : Settings.DEFAULT.CANVAS.SIZE.HEIGHT;
+            this.unscaledWidth = (this.canvas) ? this.canvas.width : Settings.DEFAULT.CANVAS.SIZE.WIDTH;
+            this.unscaledHeight = (this.canvas) ? this.canvas.height : Settings.DEFAULT.CANVAS.SIZE.HEIGHT;
 
             // Fix the dpi.
             this.resize({
@@ -67,8 +66,8 @@ export class CanvasHandler {
     // https://medium.com/wdstack/fixing-html5-2d-canvas-blur-8ebe27db07da
     resize(dimensions = undefined) {
         // Only overwrite the dimensions if they were passed in.
-        this.unscaledWidth = (dimensions && dimensions.width) ? dimensions.width : this.unscaledWidth;
-        this.unscaledHeight = (dimensions && dimensions.height) ? dimensions.height : this.unscaledHeight;
+        this.unscaledWidth = (dimensions.width) ? dimensions.width : this.unscaledWidth;
+        this.unscaledHeight = (dimensions.height) ? dimensions.height : this.unscaledHeight;
 
         // Retrieve the dpi of the window if we haven't already cached it.
         this.dpi = this.dpi || window.devicePixelRatio;
@@ -76,13 +75,13 @@ export class CanvasHandler {
         // Retrieve the computed style information.        
         let style = {
             width: (canvas) => {
-                return +getComputedSize(canvas, 'width');
+                return +window.getComputedStyle(canvas).getPropertyValue('width').slice(0, -2);
             },
             height: (canvas) => {
-                return +getComputedSize(canvas, 'height');
+                return +window.getComputedStyle(canvas).getPropertyValue('height').slice(0, -2);
             }
         };
-
+        
         // Update the attributes on the canvas.
         this.canvas.setAttribute('width', style.width(this.canvas) * this.dpi);
         this.canvas.setAttribute('height', style.height(this.canvas) * this.dpi);

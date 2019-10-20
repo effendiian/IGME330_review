@@ -14,6 +14,9 @@ import {
 }
 from './../utils/debug.js';
 import {
+    getElement
+} from './../utils/dom-utils.js';
+import {
     CanvasHandler
 } from './canvas.js';
 
@@ -44,6 +47,44 @@ export class Application {
                 this.debug.error(e);
                 reject('Could not initialize the CanvasHandler.');
             });
+            
+            // Prepare the controls.
+            this.controls = {
+                output: getElement('#corpus-preview'),                
+            };
+            
+            // Initialize dragging events.
+            let _preview = this.controls.output;
+            if(!_preview){
+                reject('Could not initialize dragover events.');
+            }
+            
+            // Set up the drag events.            
+            this.canvasHandler.canvas.ondragenter = (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                e.target.classList.add("dragging");
+            };
+            
+            this.canvasHandler.canvas.ondragover = (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+            };
+            
+            this.canvasHandler.canvas.ondrop = (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                e.target.classList.remove("dragging");
+                let file = e.dataTransfer.files[0];
+                if(file){
+                    let reader = new FileReader();
+                    reader.onload = (evt) => {
+                        let s = evt.target.result;
+                        _preview.innerHTML = s;
+                    };
+                    reader.readAsText(file);                        
+                }
+            };
 
             // Currently not implemented.
             reject('Application class not implemented.');
