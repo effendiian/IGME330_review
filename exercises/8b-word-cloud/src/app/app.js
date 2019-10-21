@@ -52,7 +52,9 @@ export class Application {
             // Prepare the controls.
             this.controls = {
                 output: getElement('#corpus-preview'),
+                wordLimit: getElement('#word-limit')
             };
+            this.controls.wordLimit.innerHTML = Settings.DEFAULT.CANVAS.WORD_LIMIT;
 
             // Initialize dragging events.
             let _preview = this.controls.output;
@@ -60,6 +62,9 @@ export class Application {
                 reject('Could not initialize dragover events.');
             }
 
+            // Wrapper.
+            let _canvasHandler = this.canvasHandler;
+            let _app = this;
             // Process text functions.
             function processText(e) {
 
@@ -73,7 +78,7 @@ export class Application {
                 let array = TextAnalyser.parseText(text);
 
                 // Show metadata for the array.
-                TextAnalyser.printMetadata(array);
+                // TextAnalyser.printMetadata(array);
 
                 // Filter out unnecessary data. //                
                 array = array.filter((word) => {
@@ -121,11 +126,10 @@ export class Application {
                 });
 
                 // Show metadata for the array.
-                TextAnalyser.printMetadata(array);
+                // TextAnalyser.printMetadata(array);
 
                 // Count frequency of words and return dictionary. 
                 let wordFrequencyDictionary = TextAnalyser.calculateWordFrequency(array);
-                console.dir(wordFrequencyDictionary);
 
                 // Sort the keys alphabetically.
                 let sortedFrequency = {};
@@ -133,7 +137,6 @@ export class Application {
                 Object.keys(wordFrequencyDictionary).sort().forEach((key) => {
                     sortedFrequency[key] = wordFrequencyDictionary[key];
                 });
-                console.dir(sortedFrequency);
 
                 let truncatedData = {};
                 for (let word in sortedFrequency) {
@@ -144,6 +147,10 @@ export class Application {
 
                 // Display the output keys.
                 TextAnalyser.displayWordCount(truncatedData);
+
+                // Prepare the word cloud.
+                _canvasHandler.prepareWordCloud(truncatedData);
+                _app.draw();
             }
 
             // Set up the drag events. //
@@ -177,6 +184,12 @@ export class Application {
             // If initialized, return this.
             resolve(this);
         });
+    }
+
+    draw() {
+        // Loop through by drawing the word cloud.
+        this.canvasHandler.clear(Settings.DEFAULT.CANVAS.COLOR.BACKGROUND);
+        this.canvasHandler.drawWordCloud();
     }
 
 }

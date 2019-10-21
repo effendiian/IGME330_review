@@ -34,17 +34,18 @@ import {
 from './app/app.js';
 
 // Entry point for the application.
-function main() {  
+function main() {
     // Main module debug console.
     const debug = debugConsole(Flags.DEBUG.MAIN);
     debug.log("Window is loaded. Starting...");
-    
+
     // Construction of the application.
-    const app = new Application();    
-    
+    const app = new Application();
+
     // Initialize the application and then start if it is successful.
     app.init().then((result) => {
         debug.log('Application initialized.');
+        app.draw();
     }).catch((err) => {
         debug.error(err);
     });

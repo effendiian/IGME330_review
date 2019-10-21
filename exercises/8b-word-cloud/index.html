@@ -21,7 +21,7 @@
     <!-- Content -->
     <main>
         <section id="interaction">
-            <p class="subtitle">Drag your corpus onto the word cloud and watch it load!</p>
+            <p class="subtitle">Drag your corpus onto the word cloud and watch the <span id="word-limit">20</span> most popular words load!</p>
             <div class="page-wrap">
                 <canvas id="wordCloud" width="600" height="400">
                     Please use a browser that supports the HTML5 Canvas element.
@@ -33,28 +33,11 @@
 
         <section id="corpus">
             <h2>Corpus</h2>
-            <p class="subtitle">All words that appear in the corpus and their frequency count.</p>
+            <p class="subtitle">All significant words that appear in the corpus and their frequency count.</p>
             <ul id="word-frequency">
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
-                <li class="list-item">'{word}': {count}</li>
+                <li class="list-item">Words and their frequency will appear here.</li>
             </ul>
-            <p id="corpus-preview">'{Corpus would go here}'</p>
+            <p id="corpus-preview">A preview of the corpus will go here once you drop a file over the canvas.</p>
         </section>
 
     </main>
@@ -68,6 +51,4 @@
         <div><a href="../../index.html">Return to the homepage.</a></div>
     </footer>
 
-</body>
-
-</html>
+</body></html>

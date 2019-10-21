@@ -7,11 +7,11 @@
 // Application flags.
 export const Flags = {
     DEBUG: {
-        MAIN: true,
-        CANVAS: true,
-        APP: true,
+        MAIN: false,
+        CANVAS: false,
+        APP: false,
         UTILS: {
-            DOM_UTILS: true,
+            DOM_UTILS: false,
         }
     }
 };
@@ -19,17 +19,23 @@ export const Flags = {
 // Settings to apply to elements on the page.
 export const Settings = {
     DEFAULT: {
-        CANVAS: { // In pixels.
-            SIZE: {
+        CANVAS: {
+            SIZE: { // In pixels.
                 WIDTH: 600,
                 HEIGHT: 400,
             },
-            WORD_LIMIT: 15,
+            FONT: 'Anton',
+            FONT_SIZE: { // In pixels
+                ERROR: 36,
+                MIN: 8,
+                MAX: 48,
+            },
+            COLOR: {
+                BACKGROUND: 'rgb(246, 243, 220)',
+                ERROR: '#f07d7d',
+            },
+            WORD_LIMIT: 25,
             FREQ_LIMIT: 1,
-        },
-        FONT_SIZE: { // In pixels.
-            MIN: 12,
-            MAX: 36,
         }
     },
     STOP_WORDS: [
