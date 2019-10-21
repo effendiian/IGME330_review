@@ -6,7 +6,8 @@
 
 // Import statements.
 import {
-    Flags
+    Flags,
+    Settings
 }
 from './config.js';
 import {
@@ -19,7 +20,7 @@ import {
 import {
     CanvasHandler
 } from './canvas.js';
-
+import * as TextAnalyser from './analyser.js';
 
 // Application class can be initialized and then run.
 export class Application {
@@ -47,61 +48,135 @@ export class Application {
                 this.debug.error(e);
                 reject('Could not initialize the CanvasHandler.');
             });
-            
+
             // Prepare the controls.
             this.controls = {
-                output: getElement('#corpus-preview'),                
+                output: getElement('#corpus-preview'),
             };
-            
+
             // Initialize dragging events.
             let _preview = this.controls.output;
-            if(!_preview){
+            if (!_preview) {
                 reject('Could not initialize dragover events.');
             }
-            
-            // Set up the drag events.            
+
+            // Process text functions.
+            function processText(e) {
+
+                // Get the text.
+                let text = e.target.result;
+
+                // Update the corpus preview.
+                _preview.innerHTML = text;
+
+                // Get the text as an array.
+                let array = TextAnalyser.parseText(text);
+
+                // Show metadata for the array.
+                TextAnalyser.printMetadata(array);
+
+                // Filter out unnecessary data. //                
+                array = array.filter((word) => {
+
+                    // Convert, trim, and lowercase word.
+                    let candidate = word.trim();
+
+                    // 2 - loop through array:
+                    // A - get rid of stop words
+                    // B - get rid of numbers
+                    // C - get rid of 1 character words
+                    // D - count up frequency of each word and store values in a dictionary (i.e. Object)
+
+                    // Remove whitespace.
+                    if (TextAnalyser.isWhitespace(candidate)) {
+                        // console.log(`[Whitespace] Removing word '${word}'.`);
+                        return false;
+                    }
+
+                    // Remove stop words.
+                    if (TextAnalyser.isStopword(candidate)) {
+                        // console.log(`[Stopword] Removing word '${word}'.`);
+                        return false;
+                    }
+
+                    // Remove numerics.
+                    if (TextAnalyser.isNumeric(candidate)) {
+                        // console.log(`[Numeric] Removing word '${word}'.`);
+                        return false;
+                    }
+
+                    // Remove words with numerics in them.
+                    if (TextAnalyser.containsNumerics(candidate)) {
+                        // console.log(`[Contains Numerics] Removing word '${word}'.`);
+                        return false;
+                    }
+
+                    // Remove single character word.
+                    if (TextAnalyser.isSingleCharacter(candidate)) {
+                        // console.log(`[Single character] Removing word '${word}'.`);
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                // Show metadata for the array.
+                TextAnalyser.printMetadata(array);
+
+                // Count frequency of words and return dictionary. 
+                let wordFrequencyDictionary = TextAnalyser.calculateWordFrequency(array);
+                console.dir(wordFrequencyDictionary);
+
+                // Sort the keys alphabetically.
+                let sortedFrequency = {};
+                // Sort an object literal: https://stackoverflow.com/questions/5467129/sort-javascript-object-by-key
+                Object.keys(wordFrequencyDictionary).sort().forEach((key) => {
+                    sortedFrequency[key] = wordFrequencyDictionary[key];
+                });
+                console.dir(sortedFrequency);
+
+                let truncatedData = {};
+                for (let word in sortedFrequency) {
+                    if (sortedFrequency[word] > Settings.DEFAULT.CANVAS.FREQ_LIMIT) {
+                        truncatedData[word] = sortedFrequency[word];
+                    }
+                }
+
+                // Display the output keys.
+                TextAnalyser.displayWordCount(truncatedData);
+            }
+
+            // Set up the drag events. //
+
+            // Add the dragging class when over the canvas.
             this.canvasHandler.canvas.ondragenter = (e) => {
                 e.stopPropagation();
                 e.preventDefault();
                 e.target.classList.add("dragging");
             };
-            
+
+            // Stop the default dragover behaviour when over the element.
             this.canvasHandler.canvas.ondragover = (e) => {
                 e.stopPropagation();
                 e.preventDefault();
             };
-            
+
+            // Load the text once it's been dropped atop the word cloud.
             this.canvasHandler.canvas.ondrop = (e) => {
                 e.stopPropagation();
                 e.preventDefault();
                 e.target.classList.remove("dragging");
                 let file = e.dataTransfer.files[0];
-                if(file){
+                if (file) {
                     let reader = new FileReader();
-                    reader.onload = (evt) => {
-                        let s = evt.target.result;
-                        _preview.innerHTML = s;
-                    };
-                    reader.readAsText(file);                        
+                    reader.addEventListener('load', processText);
+                    reader.readAsText(file);
                 }
             };
-
-            // Currently not implemented.
-            reject('Application class not implemented.');
 
             // If initialized, return this.
             resolve(this);
         });
-    }
-
-    // First run of the application.
-    start() {
-        this.debug.log('Starting application.');
-    }
-
-    // Application loop.
-    loop() {
-
     }
 
 }

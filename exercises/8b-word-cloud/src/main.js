@@ -45,7 +45,6 @@ function main() {
     // Initialize the application and then start if it is successful.
     app.init().then((result) => {
         debug.log('Application initialized.');
-        app.start();
     }).catch((err) => {
         debug.error(err);
     });
