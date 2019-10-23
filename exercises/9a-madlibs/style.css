@@ -62,6 +62,10 @@ textarea {
     padding: 4px;
     color: #212121;
     background: #fff;
+    min-width: 200px;
+    max-width: 500px;
+    min-height: 200px;
+    max-height: 400px;
     transition: padding 1s ease, border 1s ease, color 0.4s ease, background 1s ease;
 }
 
@@ -99,12 +103,14 @@ button:hover {
     border: 1px solid #fff;
 }
 
-ul#palindrome-list {
+ul.pos-list {
     margin: 15px auto;
     margin-top: 45px;
     padding: 0px;
     list-style: none;
     font-size: 0.7em;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 li.list-item {
@@ -127,7 +133,7 @@ li.list-item:hover {
 }
 
 footer {
-    position: absolute;
+    position: relative;
     left: 0px;
     right: 0px;
     bottom: 0px;
@@ -187,9 +193,11 @@ div.divisor {
     border-radius: 50px;
 }
 
-p#instructions {
+p#text-output {
     font-size: 0.6em;
     margin: 0px auto;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 @media (max-width: 1024px) {
@@ -200,6 +208,7 @@ p#instructions {
     main {
         padding: 1em;
         margin: 25px auto;
+        margin-bottom: 5%;
         width: auto;
     }
 
