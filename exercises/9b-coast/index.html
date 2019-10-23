@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <title>RiTa - 2</title>
-    <meta charset="UTF-8" />
+    <head>
+    <title>Ill-favored Coast</title>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet" />
     <link href="style.css" type="text/css" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/24af103159.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rita/1.3.94/rita-full.js" integrity="sha256-JiBQUIqNWcLOeJ9hzQE/fu+9+m3gg0Vhndm3+q+2dBs=" crossorigin="anonymous"></script>
     <!-- Font Awesome bundle for icons -->
-    <script type="module" src="src/rita-2/main.js"></script>
+    <script type="module" src="src/main.js"></script>
 </head>
 
 <body>
 
-    <!-- TITLE -->
+    <!-- HEADER -->
     <header>
-        <h1>RiTa - 2</h1>
+        <h1>Ill-favored Coast</h1>
+        <p class="subtitle">Fantasy 'Coast' name generator.</p>
+        <p class="subtitle">Generate names that you can use for your next "lost coast".</p>
+        <p class="subtitle">Returns between <span id="min">0</span> and <span id="max">0</span> names.</p>
     </header>
 
     <!-- CONTENT -->
     <main>
         <section>
-            <p>
-                <textarea cols="40" rows="7">It was a dark and stormy night ...</textarea>
-            </p>
-            <p id="text-output"></p>
-            <div class="divisor"></div>
-            <p id="pos-output"></p>
+            <button id="expand">Here Lies The Forgotten Lands!</button>
+            <ul class="coast-list">
+                <li class="list-item">Coast names will appear here.</li>
+            </ul>
         </section>
     </main>
 
