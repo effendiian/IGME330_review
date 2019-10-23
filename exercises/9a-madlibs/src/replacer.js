@@ -70,18 +70,21 @@ export default (() => {
     // Return the noun type. Returns null if not a noun.
     function getNounType(word) {
         let rs = getRiString(word.toLowerCase());
+        // console.log("Noun", rs.text(), RiTa.isNoun(rs.text()));
         return (RiTa.isNoun(rs.text())) ? getPOS(word) : null;
     }
 
     // Return the adjective type. Returns null if not an adjective.
     function getAdjectiveType(word) {
         let rs = getRiString(word.toLowerCase());
+        // console.log("Adjective", rs.text(), RiTa.isNoun(rs.text()));
         return (RiTa.isAdjective(rs.text())) ? getPOS(word) : null;
     }
 
     // Return the verb type. Returns null if not a verb.
     function getVerbType(word) {
         let rs = getRiString(word.toLowerCase());
+        // console.log("Verb", rs.text(), RiTa.isNoun(rs.text()));
         return (RiTa.isVerb(rs.text())) ? getPOS(word) : null;
     }
 
@@ -96,6 +99,7 @@ export default (() => {
         let rs = getRiString(seed);
         let capitalize = isCapitalized(seed);
         let pos = getNounType(rs) || getAdjectiveType(rs) || getVerbType(rs);
+        // console.log("Seed Word:", rs.text(), pos);
         let result = (pos == null) ? seed : getRandomWord(rs, pos);
         if (capitalize === true) {
             return getRiString(toSentenceCase(result)).text();

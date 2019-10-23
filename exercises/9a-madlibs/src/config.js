@@ -11,7 +11,7 @@ export const POS = {
     "dt": "Determiner",
     "ex": "Existential there",
     "fw": "Foreign word",
-    "in": "Preposition or subordinating conjunction",
+    "in": "Preposition or subordinating conjunction (can be an adjective).",
     "jj": "Adjective",
     "jjr": "Adjective, comparative",
     "jjs": "Adjective, superlative",
