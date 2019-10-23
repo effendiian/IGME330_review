@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/rimij405/igme-330-review#readme",
   "dependencies": {
+    "cowsay": "^1.4.0",
+    "request": "^2.88.0",
     "smoothscroll-polyfill": "^0.4.4"
   }
 }
