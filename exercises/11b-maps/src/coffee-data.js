@@ -1,3 +1,4 @@
+"use strict";
 const coffeeShops = [
     {
         latitude: 43.084156,

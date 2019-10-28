@@ -4,7 +4,27 @@ body {
     margin: 0;
     padding: 0;
 }
-
 #map {
     height: 100%;
+}
+button {
+    position: absolute;
+    color: red;
+    font-weight: bold;
+    height: 30px;
+    width: 150px;
+    z-index: 100;
+    left: 10px;
+}
+#worldZoomButton {
+    top: 70px;
+}
+#defaultZoomButton {
+    top: 110px;
+}
+#buildingZoomButton {
+    top: 150px;
+}
+#isometricZoomButton {
+    top: 190px;
 }

@@ -2,19 +2,32 @@
 <html>
 
 <head>
-    <title>Simple Map</title>
+    <title>RIT Coffee Map</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://fonts.googleapis.com/css?family=Anton|Crimson+Text&display=swap" rel="stylesheet" />
     <link href="style.css" type="text/css" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/24af103159.js"></script>
     <!-- Font Awesome bundle for icons -->
+    <script src="src/building-data.js"></script>
+    <script src="src/coffee-data.js"></script>
     <script type="module" src="src/main.js"></script>
 </head>
 
 <body>
     <div id="map"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <p>
+        <button id="worldZoomButton">World Zoom (1)</button>
+    </p>
+    <p>
+        <button id="defaultZoomButton">Default Zoom (16)</button>
+    </p>
+    <p>
+        <button id="buildingZoomButton">Building Zoom (20)</button>
+    </p>
+    <p>
+        <button id="isometricZoomButton">Isometric View (18)</button>
+    </p>
 </body>
 
 </html>
