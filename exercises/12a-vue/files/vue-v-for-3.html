@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>v-for 3</title>
+
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+
+    <!-- Load polyfills to support older browsers -->
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+
+    <style>
+        #root {
+            margin: 1em
+        }
+
+        #badge {
+            margin: 1em
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <h1>{{ title }}</h1>
+        <div id="badge">
+            <b-button id="badgeBtn" variant="primary">
+                Number of Guests: <b-badge>{{ countNames }}</b-badge>
+            </b-button>
+        </div>
+        <ul id="names">
+            <li v-for="item in names">
+                {{ item.name }}
+            </li>
+        </ul>
+        <input type="text" v-model="message">
+        <button v-on:click="addName">Add Name</button>
+        <button v-on:click="removeName">Remove First Name</button>
+    </div>
+
+    <script>
+        let input = document.querySelector("input");
+        let addNameButton = document.querySelector("#addBtn");
+        let removeNameButton = document.querySelector("#removeBtn");
+
+        let data = {
+            title: "RSVP List",
+            message: "",
+            names: [{
+                    name: "Scooby"
+                },
+                {
+                    name: "Shaggy"
+                },
+                {
+                    name: "Velma"
+                },
+                {
+                    name: "Fred"
+                },
+                {
+                    name: "Daphne"
+                }
+            ]
+        };
+
+        let methods = {
+            addName: (e) => {
+                let value = vm.message.trim();
+                if (value != "") {
+                    data.names.push({
+                        name: value
+                    });
+                }
+            },
+            removeName: (e) => {
+                if (data.names.length > 0) {
+                    let item = data.names.shift();
+                }
+            }
+        };
+
+        let computed = {
+            countNames: function() {
+                return `${(this.names ? (this.names.length) : 0)}`;
+            }
+        };
+
+        var vm = new Vue({
+            el: '#root',
+            data: data,
+            methods: methods,
+            computed: computed
+        });
+    </script>
+</body></html>

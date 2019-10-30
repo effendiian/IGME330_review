@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Data Binding - Hard</title>
+</head>
+
+<body>
+    <div id="root">
+        <input type="text" id="input">
+        <p id="output">???</p>
+    </div>
+
+    <script>
+        let data = {
+            message: "Hello world"
+        };
+
+        let input = document.querySelector("#input");
+        let output = document.querySelector("#output");
+
+        let onInput = (e) => {
+            data.message = e.target.value;
+            output.innerHTML = data.message;
+        }
+
+        let onChange = (e) => {
+            output.innerHTML = data.message;
+        };
+
+        input.addEventListener("input", onInput);
+        input.addEventListener("change", onChange);
+        input.dispatchEvent(new Event("change"));
+    </script>
+</body></html>

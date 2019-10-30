@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Data Binding - Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <input type="text" id="input" v-model="message">
+        <p id="output">{{ message }}</p>
+    </div>
+
+    <script>
+        let data = {
+            message: "Hello world"
+        };
+
+        var vm = new Vue({
+            el: '#root',
+            data: data
+        });
+    </script>
+</body></html>

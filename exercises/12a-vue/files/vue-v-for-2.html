@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>v-for 2</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <ul id="names">
+            <li v-for="item in names">
+                {{ item.name }}
+            </li>
+        </ul>
+        <input type="text" v-model="message">
+        <button v-on:click="addName">Add Name</button>
+        <button v-on:click="removeName">Remove Name</button>
+    </div>
+
+    <script>
+        let input = document.querySelector("input");
+        let addNameButton = document.querySelector("#addBtn");
+        let removeNameButton = document.querySelector("#removeBtn");
+
+        let data = {
+            message: "",
+            names: [{
+                    name: "Scooby"
+                },
+                {
+                    name: "Shaggy"
+                },
+                {
+                    name: "Velma"
+                },
+                {
+                    name: "Fred"
+                },
+                {
+                    name: "Daphne"
+                }
+            ]
+        };
+
+        let methods = {
+            addName: (e) => {
+                let value = vm.message.trim();
+                if (value != "") {
+                    data.names.push({
+                        name: value
+                    });
+                }
+            },
+            removeName: (e) => {
+                if (data.names.length > 0) {
+                    let item = data.names.shift();
+                }
+            }
+        };
+
+        var vm = new Vue({
+            el: '#root',
+            data: data,
+            methods: methods
+        });
+    </script>
+</body></html>
