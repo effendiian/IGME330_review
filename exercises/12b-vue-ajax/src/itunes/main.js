@@ -17,12 +17,12 @@ var vm = undefined;
 function getFetchData() {
     // Prepare the data.
     let fetchData = {
-        mode: "no-cors",
+        mode: "cors",
         headers: new Headers()
     }
 
     // Prepare the headers.
-    // fetchData.headers.append("X-Requested-With", "client"); // For CORS-Anywhere service.
+    fetchData.headers.append("X-Requested-With", "client"); // For CORS-Anywhere service.
     fetchData.headers.append("Accepts", "application/json"); // Accept header.
 
     // Return the fetch data.
@@ -41,7 +41,7 @@ function getFetchURL(params = null) {
         });
         url = `${CONFIG.URL_ROOT}?${qs.join("&")}`;
     }
-    return `${encodeURI(url)}`;
+    return `${CONFIG.CORS_ANYWHERE_ROOT}${encodeURI(url)}`;
 }
 
 // Create the application data.
