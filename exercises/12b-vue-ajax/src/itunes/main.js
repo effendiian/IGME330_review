@@ -17,6 +17,7 @@ var vm = undefined;
 function getFetchData() {
     // Prepare the data.
     let fetchData = {
+        mode: "no-cors",
         headers: new Headers()
     }
 
@@ -49,7 +50,8 @@ const appData = {
     data: {
         title: CONFIG.TITLE,
         service: CONFIG.SERVICE,
-        endpoint: CONFIG.ENDPOINT,api: CONFIG.URL_ROOT,
+        endpoint: CONFIG.ENDPOINT,
+        api: CONFIG.URL_ROOT,
         results: {},
         limit: CONFIG.DEFAULT_LIMIT,
         term: "",
