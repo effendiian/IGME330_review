@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Friend Lister</title>
+    <!-- 	Pure.css -->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <!-- Development Version of Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- Main Entry -->
+    <script type="module" src="src/main.js"></script>
+
+    <style>
+        #root {
+            margin: 1em 2em;
+        }
+
+        table {
+            width: 250px;
+            margin-bottom: 2em;
+        }
+
+        th {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+
+        <friend-list v-bind:names="names" v-bind:title="title"></friend-list>
+
+        <div>
+            <!-- Check out the .trim qualifier - https://vuejs.org/v2/guide/forms.html#trim -->
+            <input type="text" v-model.trim="newName">
+            <button @click="addName">Add Name</button>
+        </div>
+    </div>
+</body></html>
