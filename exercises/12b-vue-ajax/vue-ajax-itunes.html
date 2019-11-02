@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Bitcoin API Example (with Vue)!</title>
+    <title>iTunes API Example (with Vue)!</title>
 
     <!-- Load required Bootstrap and BootstrapVue CSS -->
     <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
@@ -17,7 +17,7 @@
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
 
     <!-- Main Module -->
-    <script type="module" src="src/bitcoin/main.js"></script>
+    <script type="module" src="src/itunes/main.js"></script>
 
     <style>
         /* .myheader grabbed from Bootstrap's jumbotron example - https://getbootstrap.com/docs/4.0/examples/jumbotron/ */
@@ -43,46 +43,42 @@
     <div id="app">
         <div class="myheader">
             <h1 class="display-5">{{ title }}</h1>
-            <p class="lead text-muted">In this example we are hitting our <b>{{ service }}</b> located at: <a :href="api">{{ endpoint }}</a>.</p>
+            <p class="lead text-muted">In this example we are hitting our <b>{{ service }}</b> endpoint located at: <a :href="api">{{ endpoint }}</a>.</p>
             <p class="text-muted">Because we are using the <code>Fetch API</code>, we can download ordinary <code>JSON</code>, rather than <code>JSON-P</code>.</p>
-            <p class="text-muted">To handle the CORS policy, we utilize the proxy service <b><a :href="proxy">{{ proxy }}</a></b> and we pass in our API Key via CoinMarketCap's special header <code>X-CMC_PRO_API_KEY</code>.</p>
         </div>
 
         <div class="container">
             <div class="row search-row">
                 <div class="col-md-12">
-                    <!-- <input class="form-control" placeholder="This input does nothing for now"> -->
-
-                    <b-form-select v-model="limit" v-on:change="onLimitChange" class="w-25">
-                        <option :value="100">Default (100)</option>
+                    <b-input class="w-50" placeholder="Keywords..." v-model="term"></b-input>
+                    <b-form-select v-model="limit" class="w-25">
+                        <option :value="50">Default (50)</option>
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="25">25</option>
                     </b-form-select>
-                    <button class="btn btn-outline-success" type="submit" v-on:click="newSearch">Search</button>
-                    <button class="btn btn-outline-warning" type="submit" v-on:click="previous">Previous {{ limit }}</button>
-                    <button class="btn btn-outline-info" type="submit" v-on:click="next">Next {{ limit }}</button>
-                    <span>| Showing results {{ from }} to {{ to }}.</span>
+                    <button class="btn btn-outline-success" type="submit" v-on:click="search">Search</button>
+                    <p class="text-center">{{ status }}</p>
                 </div>
             </div> <!-- end row -->
 
             <div class="row">
                 <div class="col-md-12">
                     <!-- Table goes here -->
-                    <table class="table table-striped table-sm">
+                    <table class="table table-striped table-lg">
                         <tr class="text-primary">
-                            <th>Name</th>
-                            <th>Symbol</th>
-                            <th>Price (USD)</th>
-                            <th>% Change 24h</th>
-                            <th>% Change 7d</th>
+                            <th>Artist</th>
+                            <th>Album</th>
+                            <th>Track Name</th>
+                            <th>Preview</th>
                         </tr>
                         <tr v-for="data in results" class="text-muted">
-                            <th>{{ data.name }}</th>
-                            <th>{{ data.symbol }}</th>
-                            <th>${{ data.quote.USD.price }}</th>
-                            <th>{{ data.quote.USD.percent_change_24h }}%</th>
-                            <th>{{ data.quote.USD.percent_change_7d }}%</th>
+                            <th>{{ data.artistName }}</th>
+                            <th>{{ data.collectionName }}</th>
+                            <th>{{ data.trackName || data.collectionName + " | Audiobook" }}</th>
+                            <th>
+                                <audio :src="data.previewUrl" controls style="border:1px solid black;border-radius:50px"></audio>
+                            </th>
                         </tr>
                     </table>
                 </div>

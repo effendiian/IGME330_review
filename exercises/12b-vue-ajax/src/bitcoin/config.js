@@ -14,6 +14,7 @@ export default {
     SERVICE: "CoinMarketCap",
     ENDPOINT: "coinmarketcap.com/api",
     API_KEY: SECRETS.API_KEY,
+    CORS_ANYWHERE_ROOT: "https://cors-anywhere.herokuapp.com/",
     URL_ROOT: "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
-    DEBUG_MODE: true
+    DEBUG_MODE: false
 };
