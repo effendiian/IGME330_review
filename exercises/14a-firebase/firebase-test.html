@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>High Score App</title>
+    <title>Firebase Test</title>
     <style>
         * {
             font-family: monospace;
@@ -20,7 +20,6 @@
             text-align: center;
             padding-top: 1em;
         }
-
     </style>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -29,24 +28,8 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 
-</head>
-
-<body>
-
-    <p id="scoreElement">0</p>
-    <p>Name --> <input type="text" value="MADMAX" id="nameField"></p>
-    <button id="clickMeButton">Click Me!</button>
-    <button id="saveScoreButton">Save High Score</button>
-
-    <!--
-        Details 
-        Part 1: https://github.com/tonethar/IGME-330-Master/blob/master/notes/firebase-1.md
-        Part 2: https://github.com/tonethar/IGME-330-Master/blob/master/notes/firebase-2.md
-        Part 3: https://github.com/tonethar/IGME-330-Master/blob/master/notes/firebase-3.md
-    -->
-
-    <!-- #1 - link to Firebase goes here  -->
-
+    <!-- Require the core realtime database. -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-database.js"></script>
 
     <script>
         // Your web app's Firebase configuration
@@ -59,13 +42,60 @@
             messagingSenderId: "188601635516",
             appId: "1:188601635516:web:af195a1d1e2468bcd376b9"
         };
+
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 
+        console.dir(firebase);
+
+        // #1 - get a reference to the databse
+        let database = firebase.database();
+
+        // #2 - refer to a root node named `scores`
+        let ref = database.ref('scores');
+
+        // #3 - create some data
+        let data = {
+            id: null,
+            name: "MADMAX",
+            realName: "Maxine Mayfield",
+            gameName: "Dig Dug",
+            score: 750200
+        };
+
+        // #4 - send data, in this case we are adding it to the `scores` node
+        let newScoreRef = ref.push(data);
+        console.log(newScoreRef.id);
+        console.log(newScoreRef.toString());
+
+        // Refer to a new node known as users.
+        ref = database.ref('users');
+
+        data = {
+            id: null,
+            firstName: "Bob",
+            lastName: "Jones",
+        }
+
+        let newUserRef = ref.push(data);
+        data.id = newUserRef.getKey();
+        console.dir(data);
+
+        data = {
+            id: null,
+            firstName: "Jill",
+            lastName: "Bones",
+        }
+
+        newUserRef = ref.push(data);
+        data.id = newUserRef.getKey();
+        console.dir(data);
     </script>
 
-    <script type="module" src="src/main.js"></script>
+</head>
 
-</body>
+<body>
+    Testing Realtime Database
 
-</html>
+
+</body></html>
