@@ -3,22 +3,25 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>High Score App</title>
+    <title>Firebase Admin</title>
     <style>
         * {
             font-family: monospace;
             font-size: 1.2em;
         }
 
-        #scoreElement {
-            font-size: 3em;
-            width: 5em;
-            height: 2.5em;
+        h1 {
+            text-align: center;
+        }
+
+        #scoresList {
+            list-style: none;
+            font-size: 1em;
             color: white;
             background-color: black;
             border: 5px solid gray;
             text-align: center;
-            padding-top: 1em;
+            padding: 1em;
         }
     </style>
 
@@ -34,21 +37,14 @@
 </head>
 
 <body>
+    <h1>High Scores</h1>
+    <ul id="scoresList">
+        <li>No data yet!</li>
+    </ul>
 
-    <p id="scoreElement">0</p>
-    <p>Name --> <input type="text" value="MADMAX" id="nameField"></p>
-    <button id="clickMeButton">Click Me!</button>
-    <button id="saveScoreButton">Save High Score</button>
+    <h2>MADMAX Score</h2>
+    <p id="madmaxScore">Score</p>
 
-    <!--
-        Details 
-        Part 1: https://github.com/tonethar/IGME-330-Master/blob/master/notes/firebase-1.md
-        Part 2: https://github.com/tonethar/IGME-330-Master/blob/master/notes/firebase-2.md
-        Part 3: https://github.com/tonethar/IGME-330-Master/blob/master/notes/firebase-3.md
-    -->
-
-    <!-- #1 - link to Firebase goes here  -->
-
-    <script type="module" src="src/main.js"></script>
+    <script type="module" src="src/admin.js"></script>
 
 </body></html>

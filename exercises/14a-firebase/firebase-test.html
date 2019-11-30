@@ -20,6 +20,7 @@
             text-align: center;
             padding-top: 1em;
         }
+
     </style>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -31,10 +32,14 @@
     <!-- Require the core realtime database. -->
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-database.js"></script>
 
-    <script>
+    <script type="module">
+        "use strict";
+        
+        import { default as SECRETS } from './src/_secret.js';
+        
         // Your web app's Firebase configuration
         var firebaseConfig = {
-            apiKey: "AIzaSyAI-DSts52_cza6i4OW4396JEeKZJCMzgU",
+            apiKey: SECRETS.API_KEY,
             authDomain: "igme330-highscoreproject.firebaseapp.com",
             databaseURL: "https://igme330-highscoreproject.firebaseio.com",
             projectId: "igme330-highscoreproject",
@@ -65,7 +70,7 @@
 
         // #4 - send data, in this case we are adding it to the `scores` node
         let newScoreRef = ref.push(data);
-        console.log(newScoreRef.id);
+        console.log(newScoreRef.key);
         console.log(newScoreRef.toString());
 
         // Refer to a new node known as users.
@@ -90,6 +95,7 @@
         newUserRef = ref.push(data);
         data.id = newUserRef.getKey();
         console.dir(data);
+
     </script>
 
 </head>
@@ -98,4 +104,6 @@
     Testing Realtime Database
 
 
-</body></html>
+</body>
+
+</html>
