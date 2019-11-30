@@ -1,0 +1,21 @@
+body {
+    background: #eeeeee;
+    font-family: tahoma, verdana, sans serif;
+}
+
+canvas {
+    background: #ffffff;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+#controls {
+    margin-top: 1em;
+}
+
+#controls button {
+    font-size: 1.25em;
+}
+
+#controls button:hover {
+    background-color: lightgray;
+}
