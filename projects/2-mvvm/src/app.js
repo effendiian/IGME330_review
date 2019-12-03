@@ -8,6 +8,10 @@ import {
     default as header
 } from './components/v-header.js';
 
+import {
+    default as footer
+} from './components/v-footer.js';
+
 const Components = [
     header
 ];
@@ -31,7 +35,8 @@ export class Application {
         this.Vue = new Vue({
             el: "#root",
             data: {
-                title: "Hello!"
+                title: "Pokemon Jazz!",
+                links: footer.data().links
             },
             vuetify: new Vuetify()
         });

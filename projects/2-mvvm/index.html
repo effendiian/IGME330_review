@@ -10,6 +10,7 @@
 
     <!-- Stylesheets -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="main.css" />
@@ -32,21 +33,77 @@
                 <!-- -->
             </v-navigation-drawer>
 
-            <v-app-bar app>
-                <!-- -->
-                Pokemon Jazz
+            <v-app-bar app color="deep-purple accent-4 white--text">
+
+                <v-app-bar-nav-icon></v-app-bar-nav-icon>
+                <v-toolbar-title>{{ title }}</v-toolbar-title>
+                <v-spacer></v-spacer>
+
+                <v-btn icon>
+                    <v-icon>mdi-heart</v-icon>
+                </v-btn>
+
+                <v-btn icon>
+                    <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+
             </v-app-bar>
 
             <v-content>
                 <v-container>
-                    This is a work in progress:
-                    <ul>
-                        <li>Needs both API.</li>
-                        <li>Needs to add searchbar component.</li>
-                    </ul>
+
+                    <v-card>
+                        <v-card-title>Search</v-card-title>
+                        <v-card-subtitle class="pb-0">Search for your favorite Pokemon here! We'll tell you their favorite genre of music.</v-card-subtitle>
+
+                        <v-form ref="searchbar" v-model="valid" lazy-validation>
+                            <v-text-field v-model="name" :counter="11" :rules="nameRules" label="Pokemon" required>
+                                <i class="material-icons">magnify</i>
+                            </v-text-field>
+                        </v-form>
+
+                        <v-card-actions>
+                            <v-btn color="orange" text :disabled="!valid">Search</v-btn>
+                            <v-btn color="orange" text>I'm Feeling Lucky! <i class="material-icons">heart</i></v-btn>
+                        </v-card-actions>
+                    </v-card>
+
+                    <v-spacer></v-spacer>
+
+                    <v-card>
+                        <v-card-text>
+                            This is a work in progress:
+                            <ul>
+                                <li>I'm using <a href="https://vuetifyjs.com/en/">Vuetify</a> for CSS styling. It's like Bootstrap-Vue but for Material Design.</li>
+                                <li>I'm going to be using the <a href="https://pokeapi.co/">PokeAPI</a> to give back details about searched Pokemon.</li>
+                                <li>I'm going to be using the <a href="https://binaryjazz.us/generator-api">Binary Jazz</a> API to generate music genres a searched Pokemon will enjoy.</li>
+                                <li>Users will be able to save, vote, and rank locally stored results. (If this was a Heroku app, I would have used MongoDB to store them online, but, that's a bit out of scope).</li>
+                                <li>I still need to set up user controls.</li>
+                                <li>No functionality at this point in time, unfortunately. Just wanted to have something up.</li>
+                            </ul>
+                        </v-card-text>
+                    </v-card>
                 </v-container>
             </v-content>
+
+            <v-footer>
+                <v-card flat tile width="100%" class="red lighten-1 text-center" padless>
+                    <v-row justify="center" no-gutters>
+                        <v-btn v-for="link in links" :key="link.title" v-bind:href="link.src" color="white" text rounded class="my-2">
+                            {{ link.title }}
+                        </v-btn>
+                    </v-row>
+                    <v-divider></v-divider>
+
+                    <v-card-text class="red py-4 text-center white--text" cols="12">
+                        {{ new Date().getFullYear() }} - <strong>Ian Effendi</strong>
+                    </v-card-text>
+                </v-card>
+
+            </v-footer>
         </v-app>
     </div>
 
-</body></html>
+</body>
+
+</html>
