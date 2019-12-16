@@ -1,9 +1,24 @@
-# Pocket Monster Poetry #
+# pokemon-poetry
 
-Search for your favorite pokemon and use them to generate poems.
+## Project setup
+```
+npm install
+```
 
-## Features ##
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-- Search for your favorite pokemon and get information about them back.
-- Generate a poem using RiTa and save it to the cloud.
-- Browse other poem-image-pokemon pairings and upvote/downvote them.
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

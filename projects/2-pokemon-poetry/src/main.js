@@ -1,29 +1,8 @@
-"use strict";
-/*
-    MAIN.js
-    Main entry point for the application.
-*/
+import Vue from 'vue'
+import App from './App.vue'
 
-import {
-    default as Root
-} from './components/root.js';
+Vue.config.productionTip = false
 
-// Prepare the application.
-window.onload = (() => {
-
-    console.log("Window has loaded.")
-
-    // Register root component globally.
-    Vue.component(
-        Root.name,
-        Root.config
-    );
-
-    // Initialize the VUE application.
-    let app = new Vue({
-        el: "#root",
-        data: {}
-    });
-
-
-})();
+new Vue({
+  render: h => h(App),
+}).$mount('#app')
