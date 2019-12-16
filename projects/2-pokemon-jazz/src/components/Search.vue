@@ -1,7 +1,7 @@
 <template>
 
   <form novalidate class="search md-layout md-gutter md-alignment-center" @submit.prevent="validateName">
-    <md-card md-with-hover class="md-layout-item md-size-50 md-small-size-100">
+    <md-card md-with-hover class="md-primary md-layout-item md-size-35 md-small-size-100">
       
       <md-card-header>
         <div class="md-title">Find That Pokemon!</div>
@@ -24,14 +24,14 @@
       <md-progress-bar md-mode="indeterminate" v-if="sending" />
       
       <md-card-actions>
-        <md-button type="submit" class="md-primary md-fab" :disabled="sending">
+        <md-button type="submit" class="md-primary md-fab md-raised" :disabled="sending">
           <md-icon>search</md-icon>
         </md-button>
       </md-card-actions>
     </md-card>    
     
-    <md-snackbar :md-active.sync="success">The pokemon {{ lastSearch }} was found.</md-snackbar>
-    <md-snackbar :md-active.sync="error">No pokemon with the name {{ lastSearch }} could be found.</md-snackbar>
+    <md-snackbar :md-active.sync="success">The pokemon "{{ lastSearch }}" was found.</md-snackbar>
+    <md-snackbar :md-active.sync="error">No pokemon with the name "{{ lastSearch }}" could be found.</md-snackbar>
 
   </form>
 </template>
@@ -39,7 +39,10 @@
 <script>
   import { validationMixin } from 'vuelidate'
   import { required, minLength } from 'vuelidate/lib/validators'
-  
+  import PokeAPI from './../app/poke-api.js'
+    
+  const LAST_KEY = "vue-lastSearchedPokemon";    
+    
   export default {
     name: 'SearchBar',
     mixins: [ validationMixin ],
@@ -48,10 +51,7 @@
         form: {
           pokemonName: null
         },
-        output: {
-          results: false,
-          output: null
-        },
+        results: null,
         lastSearch: null,
         success: false,
         error: false,
@@ -67,32 +67,58 @@
       }
     },
     props: {
-      placeholder: undefined
+      placeholder: undefined,
     },
     watch: {
-      output: {
+      results: {
         handler: function() {
-          this.$emit('search', [ this.output.results, this.output.output ])
+          this.$emit('search', [ this.results ])
         },
         deep: true
       }
     },
+    created: function() {      
+      // Check if last stored name exists.
+      let lastStoredName = window.localStorage.getItem(LAST_KEY) || null;
+      
+      if(lastStoredName){
+        this.form.pokemonName = lastStoredName;
+        this.lastSearch = lastStoredName;
+      }      
+    },
     methods: {
       search: function() {
-        this.sending = true;
+        
+        this.results = null;
         this.success = false;
         this.error = false;
         
-        window.setTimeout(() => {
-          this.lastSearch = this.form.pokemonName;
-          this.success = true;
-          this.sending = false;
+        PokeAPI.getURL(this.form.pokemonName.toLowerCase()).then((url) => {
+          let searchURL = url;
           
-          this.output = {
-            results: true,
-            output: this.form.pokemonName
-          }
-        }, 1500);
+          this.lastSearch = this.form.pokemonName;
+          this.sending = true;
+          
+          PokeAPI.getData(searchURL).then((e) => {    
+            window.localStorage.setItem(LAST_KEY, this.form.pokemonName);
+            let json = JSON.parse(e.target.responseText);
+            this.results = {
+              name: json.name,
+              sprite: json.sprites.front_default,
+              lastSearch: this.lastSearch
+            };
+            this.success = true;
+          }).catch((error) => {
+            this.results = { error };
+            this.error = true;
+          }).finally(() => {
+            this.sending = false;
+          });          
+          
+        }).catch(() => {
+          this.sending = false;
+          this.error = true;
+        });
       },
       getValidationClass (fieldName) {
         const field = this.$v.form[fieldName];
@@ -120,6 +146,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  
   #searchbar {
     padding: 6px;
     text-align: left;
@@ -139,7 +166,4 @@
     box-shadow: 0 0 0 2pt #31c0ff;
   }
   
-  
-  
-
 </style>
